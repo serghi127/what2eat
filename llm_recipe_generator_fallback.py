@@ -84,6 +84,8 @@ Return ONLY a JSON object with this exact format:
   "carbs": 30,
   "fat": 15,
   "sugar": 5,
+  "cholesterol": 50,
+  "fiber": 8,
   "tags": ["tag1", "tag2", "tag3"],
   "ingredients": [
     "1 cup ingredient",
@@ -163,7 +165,9 @@ Make sure the recipe is creative, delicious, and perfectly matches the user's ne
                 "protein": 18,
                 "carbs": 8,
                 "fat": 28,
-                "sugar": 2
+                "sugar": 2,
+                "cholesterol": 370,
+                "fiber": 6
             },
             "lunch": {
                 "name": "Custom Lunch Salad",
@@ -180,7 +184,9 @@ Make sure the recipe is creative, delicious, and perfectly matches the user's ne
                 "protein": 12,
                 "carbs": 15,
                 "fat": 20,
-                "sugar": 8
+                "sugar": 8,
+                "cholesterol": 15,
+                "fiber": 8
             },
             "dinner": {
                 "name": "Custom Dinner Plate",
@@ -197,7 +203,9 @@ Make sure the recipe is creative, delicious, and perfectly matches the user's ne
                 "protein": 25,
                 "carbs": 35,
                 "fat": 18,
-                "sugar": 5
+                "sugar": 5,
+                "cholesterol": 60,
+                "fiber": 6
             }
         }
         
