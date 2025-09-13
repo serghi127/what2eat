@@ -12,3 +12,5 @@ export default function MealPlannerApp() {
     </ProtectedRoute>
   );
 }
+
+//test comment
