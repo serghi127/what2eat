@@ -1,0 +1,4093 @@
+{
+  "recipe_categories": {
+    "https://smittenkitchen.com/2025/07/burrata-with-crushed-cherries-and-pistachios/": [
+      "party snacks",
+      "appetizers",
+      "vegetarian",
+      "cherries",
+      "summer",
+      "ingredients or fewer"
+    ],
+    "https://smittenkitchen.com/2025/04/charred-salt-and-vinegar-cabbage/": [
+      "cabbage",
+      "vegetarian",
+      "gluten-free",
+      "budget",
+      "sheet pan",
+      "ingredients or fewer",
+      "side dish",
+      "winter"
+    ],
+    "https://smittenkitchen.com/2025/04/simplest-brisket-with-braised-onions/": [
+      "ingredients or fewer",
+      "passover",
+      "dinner",
+      "beef",
+      "braiser",
+      "meat",
+      "jewish"
+    ],
+    "https://smittenkitchen.com/2024/06/blistered-peas-in-the-pod-with-lemon-and-salt/": [
+      "appetizers",
+      "spring",
+      "grilling",
+      "ingredients or fewer",
+      "peas"
+    ],
+    "https://smittenkitchen.com/2024/04/steamed-artichokes/": [
+      "appetizers",
+      "spring",
+      "artichokes",
+      "ingredients or fewer",
+      "side dish"
+    ],
+    "https://smittenkitchen.com/2023/04/hash-brown-patties/": [
+      "breakfast",
+      "potatoes",
+      "dairy-free",
+      "egg-free",
+      "put an egg on it",
+      "ingredients or fewer"
+    ],
+    "https://smittenkitchen.com/2023/01/cauliflower-salad-with-dates-and-pistachios/": [
+      "lunch",
+      "winter",
+      "dates",
+      "dairy-free",
+      "egg-free",
+      "salad",
+      "cauliflower",
+      "ingredients or fewer",
+      "vegan",
+      "ramadan"
+    ],
+    "https://smittenkitchen.com/2022/08/grilled-nectarines-with-gorgonzola-and-hazelnuts/": [
+      "brunch",
+      "appetizers",
+      "quick",
+      "peach / nectarine",
+      "salad",
+      "grilling",
+      "ingredients or fewer"
+    ],
+    "https://smittenkitchen.com/2022/07/buttered-noodles-for-frances/": [
+      "quick",
+      "kid favorites",
+      "pasta",
+      "ingredients or fewer"
+    ],
+    "https://smittenkitchen.com/2022/07/roasted-tomatoes-with-white-beans/": [
+      "appetizers",
+      "beans",
+      "tomatoes",
+      "budget",
+      "egg-free",
+      "ingredients or fewer",
+      "side dish",
+      "best of smitten kitchen",
+      "vegan"
+    ],
+    "https://smittenkitchen.com/2016/09/magic-apple-plum-cobbler/": [
+      "christmas",
+      "sandwich",
+      "tarts/pies",
+      "pumpkin",
+      "figs",
+      "seafood",
+      "budget",
+      "peach / nectarine",
+      "beef",
+      "meat",
+      "soup",
+      "winter",
+      "disasters",
+      "arugula",
+      "grapes",
+      "watermelon",
+      "vegetarian",
+      "green beans",
+      "radicchio",
+      "dates",
+      "raspberries",
+      "apricots",
+      "peas",
+      "wedding cake",
+      "plum",
+      "pudding",
+      "beans",
+      "russian",
+      "everyday cakes",
+      "summer",
+      "blackberries",
+      "tofu",
+      "party snacks",
+      "peppers",
+      "dessert sauces",
+      "potatoes",
+      "dairy-free",
+      "pear",
+      "japanese",
+      "middle eastern",
+      "blueberries",
+      "pickled",
+      "multi-cooker",
+      "sweet projects",
+      "cucumber",
+      "fennel",
+      "grain/rice",
+      "waffles",
+      "rhubarb",
+      "stew",
+      "pantry",
+      "lemon",
+      "swiss chard",
+      "lunch",
+      "muffin/quick bread",
+      "eggs",
+      "vietnamese",
+      "celebration cakes",
+      "snack",
+      "scones/biscuits",
+      "israeli",
+      "weeknight favorite",
+      "breakfast",
+      "casserole",
+      "brussels sprouts",
+      "mushrooms",
+      "pizza",
+      "chinese",
+      "strawberries",
+      "tarts/quiche",
+      "greek",
+      "lime",
+      "endive",
+      "indian",
+      "ramadan",
+      "thanksgiving",
+      "brunch",
+      "broccoli",
+      "kid favorites",
+      "summer squash",
+      "freezer friendly",
+      "honeydew",
+      "side dish",
+      "best of smitten kitchen",
+      "spring",
+      "tomatoes",
+      "celery",
+      "avocado",
+      "bananas",
+      "spanish",
+      "gluten-free",
+      "food gifts",
+      "winter squash",
+      "date night",
+      "cranberries",
+      "fall",
+      "artichokes",
+      "pineapple",
+      "thai",
+      "appetizers",
+      "cookie",
+      "turkey",
+      "pasta",
+      "tex-mex",
+      "savory condiments",
+      "north african",
+      "irish",
+      "dinner",
+      "coconut",
+      "cake",
+      "hanukkah",
+      "escarole",
+      "broccoli rabe",
+      "bread",
+      "dumplings",
+      "passover",
+      "asparagus",
+      "german",
+      "apple",
+      "travel",
+      "drinks",
+      "picnics",
+      "british",
+      "chicken",
+      "slow cooker",
+      "mango",
+      "egg-free",
+      "salad",
+      "chocolate",
+      "greens",
+      "corn",
+      "quick",
+      "pork",
+      "savory projects",
+      "citrus",
+      "peanut butter",
+      "eggplant",
+      "easter",
+      "and popsicles",
+      "cauliflower",
+      "crumbles/crisps",
+      "pomegranate",
+      "italian",
+      "spinach",
+      "kale",
+      "leeks",
+      "and blondies",
+      "braiser",
+      "put an egg on it",
+      "carrots",
+      "radishes",
+      "baby food",
+      "cherries",
+      "grapefruit",
+      "zucchini",
+      "austrian",
+      "brown butter",
+      "candy",
+      "orange",
+      "ingredients or fewer",
+      "lamb",
+      "french",
+      "doughnut",
+      "portuguese",
+      "cheese",
+      "cabbage",
+      "herbs",
+      "bourbon",
+      "cantaloupe",
+      "sheet pan",
+      "onions",
+      "grilling",
+      "jewish",
+      "vegan",
+      "game day",
+      "pancakes"
+    ],
+    "https://smittenkitchen.com/2025/09/cabbage-and-halloumi-skewers/": [
+      "christmas",
+      "sandwich",
+      "tarts/pies",
+      "pumpkin",
+      "figs",
+      "seafood",
+      "budget",
+      "peach / nectarine",
+      "beef",
+      "meat",
+      "soup",
+      "winter",
+      "disasters",
+      "arugula",
+      "grapes",
+      "watermelon",
+      "vegetarian",
+      "green beans",
+      "radicchio",
+      "dates",
+      "raspberries",
+      "apricots",
+      "peas",
+      "wedding cake",
+      "plum",
+      "pudding",
+      "beans",
+      "russian",
+      "everyday cakes",
+      "summer",
+      "blackberries",
+      "tofu",
+      "party snacks",
+      "peppers",
+      "dessert sauces",
+      "potatoes",
+      "dairy-free",
+      "pear",
+      "japanese",
+      "middle eastern",
+      "blueberries",
+      "pickled",
+      "multi-cooker",
+      "sweet projects",
+      "cucumber",
+      "fennel",
+      "grain/rice",
+      "waffles",
+      "rhubarb",
+      "stew",
+      "pantry",
+      "lemon",
+      "swiss chard",
+      "lunch",
+      "muffin/quick bread",
+      "eggs",
+      "vietnamese",
+      "celebration cakes",
+      "snack",
+      "scones/biscuits",
+      "israeli",
+      "weeknight favorite",
+      "breakfast",
+      "casserole",
+      "brussels sprouts",
+      "mushrooms",
+      "pizza",
+      "chinese",
+      "strawberries",
+      "tarts/quiche",
+      "greek",
+      "lime",
+      "endive",
+      "indian",
+      "ramadan",
+      "thanksgiving",
+      "brunch",
+      "broccoli",
+      "kid favorites",
+      "summer squash",
+      "freezer friendly",
+      "honeydew",
+      "side dish",
+      "best of smitten kitchen",
+      "spring",
+      "tomatoes",
+      "celery",
+      "avocado",
+      "bananas",
+      "spanish",
+      "gluten-free",
+      "food gifts",
+      "winter squash",
+      "date night",
+      "cranberries",
+      "fall",
+      "artichokes",
+      "pineapple",
+      "thai",
+      "appetizers",
+      "cookie",
+      "turkey",
+      "pasta",
+      "tex-mex",
+      "savory condiments",
+      "north african",
+      "irish",
+      "dinner",
+      "coconut",
+      "cake",
+      "hanukkah",
+      "escarole",
+      "broccoli rabe",
+      "bread",
+      "dumplings",
+      "passover",
+      "asparagus",
+      "german",
+      "apple",
+      "travel",
+      "drinks",
+      "picnics",
+      "british",
+      "chicken",
+      "slow cooker",
+      "mango",
+      "egg-free",
+      "salad",
+      "chocolate",
+      "greens",
+      "corn",
+      "quick",
+      "pork",
+      "savory projects",
+      "citrus",
+      "peanut butter",
+      "eggplant",
+      "easter",
+      "and popsicles",
+      "cauliflower",
+      "crumbles/crisps",
+      "pomegranate",
+      "italian",
+      "spinach",
+      "kale",
+      "leeks",
+      "and blondies",
+      "braiser",
+      "put an egg on it",
+      "carrots",
+      "radishes",
+      "baby food",
+      "cherries",
+      "grapefruit",
+      "zucchini",
+      "austrian",
+      "brown butter",
+      "candy",
+      "orange",
+      "ingredients or fewer",
+      "lamb",
+      "french",
+      "doughnut",
+      "portuguese",
+      "cheese",
+      "cabbage",
+      "herbs",
+      "bourbon",
+      "cantaloupe",
+      "sheet pan",
+      "onions",
+      "grilling",
+      "jewish",
+      "vegan",
+      "game day",
+      "pancakes"
+    ],
+    "https://smittenkitchen.com/2021/08/baked-farro-with-summer-vegetables/": [
+      "christmas",
+      "sandwich",
+      "tarts/pies",
+      "pumpkin",
+      "figs",
+      "seafood",
+      "budget",
+      "peach / nectarine",
+      "beef",
+      "meat",
+      "soup",
+      "winter",
+      "disasters",
+      "arugula",
+      "grapes",
+      "watermelon",
+      "vegetarian",
+      "green beans",
+      "radicchio",
+      "dates",
+      "raspberries",
+      "apricots",
+      "peas",
+      "wedding cake",
+      "plum",
+      "pudding",
+      "beans",
+      "russian",
+      "everyday cakes",
+      "summer",
+      "blackberries",
+      "tofu",
+      "party snacks",
+      "peppers",
+      "dessert sauces",
+      "potatoes",
+      "dairy-free",
+      "pear",
+      "japanese",
+      "middle eastern",
+      "blueberries",
+      "pickled",
+      "multi-cooker",
+      "sweet projects",
+      "cucumber",
+      "fennel",
+      "grain/rice",
+      "waffles",
+      "rhubarb",
+      "stew",
+      "pantry",
+      "lemon",
+      "swiss chard",
+      "lunch",
+      "muffin/quick bread",
+      "eggs",
+      "vietnamese",
+      "celebration cakes",
+      "snack",
+      "scones/biscuits",
+      "israeli",
+      "weeknight favorite",
+      "breakfast",
+      "casserole",
+      "brussels sprouts",
+      "mushrooms",
+      "pizza",
+      "chinese",
+      "strawberries",
+      "tarts/quiche",
+      "greek",
+      "lime",
+      "endive",
+      "indian",
+      "ramadan",
+      "thanksgiving",
+      "brunch",
+      "broccoli",
+      "kid favorites",
+      "summer squash",
+      "freezer friendly",
+      "honeydew",
+      "side dish",
+      "best of smitten kitchen",
+      "spring",
+      "tomatoes",
+      "celery",
+      "avocado",
+      "bananas",
+      "spanish",
+      "gluten-free",
+      "food gifts",
+      "winter squash",
+      "date night",
+      "cranberries",
+      "fall",
+      "artichokes",
+      "pineapple",
+      "thai",
+      "appetizers",
+      "cookie",
+      "turkey",
+      "pasta",
+      "tex-mex",
+      "savory condiments",
+      "north african",
+      "irish",
+      "dinner",
+      "coconut",
+      "cake",
+      "hanukkah",
+      "escarole",
+      "broccoli rabe",
+      "bread",
+      "dumplings",
+      "passover",
+      "asparagus",
+      "german",
+      "apple",
+      "travel",
+      "drinks",
+      "picnics",
+      "british",
+      "chicken",
+      "slow cooker",
+      "mango",
+      "egg-free",
+      "salad",
+      "chocolate",
+      "greens",
+      "corn",
+      "quick",
+      "pork",
+      "savory projects",
+      "citrus",
+      "peanut butter",
+      "eggplant",
+      "easter",
+      "and popsicles",
+      "cauliflower",
+      "crumbles/crisps",
+      "pomegranate",
+      "italian",
+      "spinach",
+      "kale",
+      "leeks",
+      "and blondies",
+      "braiser",
+      "put an egg on it",
+      "carrots",
+      "radishes",
+      "baby food",
+      "cherries",
+      "grapefruit",
+      "zucchini",
+      "austrian",
+      "brown butter",
+      "candy",
+      "orange",
+      "ingredients or fewer",
+      "lamb",
+      "french",
+      "doughnut",
+      "portuguese",
+      "cheese",
+      "cabbage",
+      "herbs",
+      "bourbon",
+      "cantaloupe",
+      "sheet pan",
+      "onions",
+      "grilling",
+      "jewish",
+      "vegan",
+      "game day",
+      "pancakes"
+    ],
+    "https://smittenkitchen.com/2008/01/rigatoni-with-eggplant-puree/": [
+      "christmas",
+      "sandwich",
+      "tarts/pies",
+      "pumpkin",
+      "figs",
+      "seafood",
+      "budget",
+      "peach / nectarine",
+      "beef",
+      "meat",
+      "soup",
+      "winter",
+      "disasters",
+      "arugula",
+      "grapes",
+      "watermelon",
+      "vegetarian",
+      "green beans",
+      "radicchio",
+      "dates",
+      "raspberries",
+      "apricots",
+      "peas",
+      "wedding cake",
+      "plum",
+      "pudding",
+      "beans",
+      "russian",
+      "everyday cakes",
+      "summer",
+      "blackberries",
+      "tofu",
+      "party snacks",
+      "peppers",
+      "dessert sauces",
+      "potatoes",
+      "dairy-free",
+      "pear",
+      "japanese",
+      "middle eastern",
+      "blueberries",
+      "pickled",
+      "multi-cooker",
+      "sweet projects",
+      "cucumber",
+      "fennel",
+      "grain/rice",
+      "waffles",
+      "rhubarb",
+      "stew",
+      "pantry",
+      "lemon",
+      "swiss chard",
+      "lunch",
+      "muffin/quick bread",
+      "eggs",
+      "vietnamese",
+      "celebration cakes",
+      "snack",
+      "scones/biscuits",
+      "israeli",
+      "weeknight favorite",
+      "breakfast",
+      "casserole",
+      "brussels sprouts",
+      "mushrooms",
+      "pizza",
+      "chinese",
+      "strawberries",
+      "tarts/quiche",
+      "greek",
+      "lime",
+      "endive",
+      "indian",
+      "ramadan",
+      "thanksgiving",
+      "brunch",
+      "broccoli",
+      "kid favorites",
+      "summer squash",
+      "freezer friendly",
+      "honeydew",
+      "side dish",
+      "best of smitten kitchen",
+      "spring",
+      "tomatoes",
+      "celery",
+      "avocado",
+      "bananas",
+      "spanish",
+      "gluten-free",
+      "food gifts",
+      "winter squash",
+      "date night",
+      "cranberries",
+      "fall",
+      "artichokes",
+      "pineapple",
+      "thai",
+      "appetizers",
+      "cookie",
+      "turkey",
+      "pasta",
+      "tex-mex",
+      "savory condiments",
+      "north african",
+      "irish",
+      "dinner",
+      "coconut",
+      "cake",
+      "hanukkah",
+      "escarole",
+      "broccoli rabe",
+      "bread",
+      "dumplings",
+      "passover",
+      "asparagus",
+      "german",
+      "apple",
+      "travel",
+      "drinks",
+      "picnics",
+      "british",
+      "chicken",
+      "slow cooker",
+      "mango",
+      "egg-free",
+      "salad",
+      "chocolate",
+      "greens",
+      "corn",
+      "quick",
+      "pork",
+      "savory projects",
+      "citrus",
+      "peanut butter",
+      "eggplant",
+      "easter",
+      "and popsicles",
+      "cauliflower",
+      "crumbles/crisps",
+      "pomegranate",
+      "italian",
+      "spinach",
+      "kale",
+      "leeks",
+      "and blondies",
+      "braiser",
+      "put an egg on it",
+      "carrots",
+      "radishes",
+      "baby food",
+      "cherries",
+      "grapefruit",
+      "zucchini",
+      "austrian",
+      "brown butter",
+      "candy",
+      "orange",
+      "ingredients or fewer",
+      "lamb",
+      "french",
+      "doughnut",
+      "portuguese",
+      "cheese",
+      "cabbage",
+      "herbs",
+      "bourbon",
+      "cantaloupe",
+      "sheet pan",
+      "onions",
+      "grilling",
+      "jewish",
+      "vegan",
+      "game day",
+      "pancakes"
+    ],
+    "https://smittenkitchen.com/2025/08/double-chocolate-zucchini-bread/": [
+      "christmas",
+      "tarts/pies",
+      "figs",
+      "beef",
+      "arugula",
+      "disasters",
+      "grapes",
+      "watermelon",
+      "vegetarian",
+      "green beans",
+      "radicchio",
+      "dates",
+      "apricots",
+      "peas",
+      "wedding cake",
+      "plum",
+      "pudding",
+      "everyday cakes",
+      "summer",
+      "blackberries",
+      "tofu",
+      "dessert sauces",
+      "dairy-free",
+      "pickled",
+      "japanese",
+      "middle eastern",
+      "blueberries",
+      "sweet projects",
+      "multi-cooker",
+      "cucumber",
+      "fennel",
+      "waffles",
+      "grain/rice",
+      "rhubarb",
+      "stew",
+      "pantry",
+      "lemon",
+      "swiss chard",
+      "lunch",
+      "muffin/quick bread",
+      "eggs",
+      "vietnamese",
+      "celebration cakes",
+      "israeli",
+      "casserole",
+      "brussels sprouts",
+      "pizza",
+      "chinese",
+      "tarts/quiche",
+      "greek",
+      "lime",
+      "endive",
+      "indian",
+      "ramadan",
+      "thanksgiving",
+      "brunch",
+      "summer squash",
+      "freezer friendly",
+      "honeydew",
+      "tomatoes",
+      "celery",
+      "avocado",
+      "spanish",
+      "gluten-free",
+      "food gifts",
+      "cranberries",
+      "fall",
+      "artichokes",
+      "pineapple",
+      "thai",
+      "appetizers",
+      "tex-mex",
+      "savory condiments",
+      "north african",
+      "irish",
+      "coconut",
+      "hanukkah",
+      "escarole",
+      "broccoli rabe",
+      "dumplings",
+      "passover",
+      "german",
+      "spring",
+      "picnics",
+      "peppers",
+      "british",
+      "greens",
+      "slow cooker",
+      "mango",
+      "chocolate",
+      "corn",
+      "pork",
+      "citrus",
+      "easter",
+      "and popsicles",
+      "cauliflower",
+      "crumbles/crisps",
+      "pomegranate",
+      "spinach",
+      "leeks",
+      "braiser",
+      "radishes",
+      "baby food",
+      "cherries",
+      "grapefruit",
+      "zucchini",
+      "austrian",
+      "orange",
+      "ingredients or fewer",
+      "lamb",
+      "doughnut",
+      "portuguese",
+      "cabbage",
+      "herbs",
+      "cantaloupe",
+      "sheet pan",
+      "onions",
+      "grilling",
+      "jewish",
+      "pancakes"
+    ],
+    "https://smittenkitchen.com/2024/04/new-york-crumb-cake/": [
+      "best of smitten kitchen",
+      "cake",
+      "everyday cakes"
+    ],
+    "https://smittenkitchen.com/2024/01/french-onion-baked-lentils-and-farro/": [
+      "cheese",
+      "beans",
+      "dinner",
+      "casserole",
+      "winter",
+      "braiser",
+      "best of smitten kitchen"
+    ],
+    "https://smittenkitchen.com/2023/11/olive-oil-brownies/": [
+      "dairy-free",
+      "chocolate",
+      "freezer friendly",
+      "and blondies",
+      "best of smitten kitchen"
+    ],
+    "https://smittenkitchen.com/2023/09/chicken-rice-with-buttered-onions/": [
+      "casserole",
+      "budget",
+      "chicken",
+      "braiser",
+      "freezer friendly",
+      "meat",
+      "onions",
+      "best of smitten kitchen",
+      "grain/rice"
+    ],
+    "https://smittenkitchen.com/2023/09/simple-eggplant-parmesan/": [
+      "italian",
+      "casserole",
+      "eggplant",
+      "freezer friendly",
+      "best of smitten kitchen"
+    ],
+    "https://smittenkitchen.com/2023/03/easy-freezer-waffles/": [
+      "kid favorites",
+      "breakfast",
+      "freezer friendly",
+      "best of smitten kitchen",
+      "waffles"
+    ],
+    "https://smittenkitchen.com/2022/10/apple-and-cheddar-crisp-salad/": [
+      "cheese",
+      "apple",
+      "greens",
+      "salad",
+      "fall",
+      "lunch",
+      "side dish",
+      "best of smitten kitchen"
+    ],
+    "https://smittenkitchen.com/2022/06/summer-ricotta-with-grilled-vegetables/": [
+      "best of smitten kitchen",
+      "cheese",
+      "picnics",
+      "grilling"
+    ],
+    "https://smittenkitchen.com/2022/05/poolside-sesame-slaw/": [
+      "best of smitten kitchen",
+      "chicken",
+      "lunch"
+    ],
+    "https://smittenkitchen.com/2010/05/oatmeal-pancakes/": [
+      "sandwich",
+      "pumpkin",
+      "figs",
+      "seafood",
+      "budget",
+      "peach / nectarine",
+      "meat",
+      "soup",
+      "winter",
+      "disasters",
+      "grapes",
+      "watermelon",
+      "vegetarian",
+      "radicchio",
+      "dates",
+      "raspberries",
+      "apricots",
+      "wedding cake",
+      "plum",
+      "beans",
+      "russian",
+      "everyday cakes",
+      "summer",
+      "tofu",
+      "party snacks",
+      "dessert sauces",
+      "potatoes",
+      "pear",
+      "japanese",
+      "middle eastern",
+      "multi-cooker",
+      "fennel",
+      "waffles",
+      "grain/rice",
+      "swiss chard",
+      "vietnamese",
+      "snack",
+      "scones/biscuits",
+      "israeli",
+      "weeknight favorite",
+      "breakfast",
+      "casserole",
+      "mushrooms",
+      "strawberries",
+      "greek",
+      "endive",
+      "broccoli",
+      "kid favorites",
+      "freezer friendly",
+      "honeydew",
+      "side dish",
+      "best of smitten kitchen",
+      "tomatoes",
+      "celery",
+      "bananas",
+      "winter squash",
+      "date night",
+      "pineapple",
+      "thai",
+      "cookie",
+      "turkey",
+      "pasta",
+      "north african",
+      "irish",
+      "dinner",
+      "cake",
+      "escarole",
+      "broccoli rabe",
+      "bread",
+      "dumplings",
+      "asparagus",
+      "drinks",
+      "german",
+      "travel",
+      "apple",
+      "british",
+      "chicken",
+      "slow cooker",
+      "mango",
+      "egg-free",
+      "salad",
+      "chocolate",
+      "corn",
+      "quick",
+      "savory projects",
+      "peanut butter",
+      "eggplant",
+      "crumbles/crisps",
+      "pomegranate",
+      "italian",
+      "kale",
+      "and blondies",
+      "put an egg on it",
+      "carrots",
+      "baby food",
+      "grapefruit",
+      "zucchini",
+      "austrian",
+      "brown butter",
+      "candy",
+      "lamb",
+      "french",
+      "doughnut",
+      "portuguese",
+      "cheese",
+      "herbs",
+      "bourbon",
+      "cantaloupe",
+      "sheet pan",
+      "grilling",
+      "vegan",
+      "game day"
+    ],
+    "https://smittenkitchen.com/2024/05/black-bean-and-vegetable-bake/": [
+      "beans",
+      "dinner",
+      "weeknight favorite",
+      "budget",
+      "spinach",
+      "greens",
+      "braiser",
+      "tex-mex"
+    ],
+    "https://smittenkitchen.com/2023/03/bean-and-vegetable-burritos/": [
+      "beans",
+      "pantry",
+      "budget",
+      "freezer friendly",
+      "tex-mex"
+    ],
+    "https://smittenkitchen.com/2023/02/pasta-with-longer-cooked-broccoli/": [
+      "italian",
+      "budget",
+      "broccoli",
+      "pasta"
+    ],
+    "https://smittenkitchen.com/2022/04/simplest-mushroom-pasta/": [
+      "mushrooms",
+      "budget",
+      "pasta"
+    ],
+    "https://smittenkitchen.com/2021/04/lemon-potatoes/": [
+      "lemon",
+      "budget",
+      "potatoes",
+      "greek"
+    ],
+    "https://smittenkitchen.com/2020/12/brussels-sprout-and-bacon-frittata/": [
+      "brussels sprouts",
+      "eggs",
+      "pork",
+      "budget"
+    ],
+    "https://smittenkitchen.com/2020/04/roast-chicken-with-schmaltzy-cabbage/": [
+      "cabbage",
+      "budget"
+    ],
+    "https://smittenkitchen.com/2009/05/slaw-tartare/": [
+      "disasters"
+    ],
+    "https://smittenkitchen.com/2008/09/the-duds-of-summer/": [
+      "disasters"
+    ],
+    "https://smittenkitchen.com/2008/01/candied-grapefruit-peels/": [
+      "grapefruit",
+      "disasters"
+    ],
+    "https://smittenkitchen.com/2008/01/anything-but-clementine-clafoutis/": [
+      "disasters"
+    ],
+    "https://smittenkitchen.com/2007/12/apple-cranberry-crisp/": [
+      "disasters",
+      "cranberries"
+    ],
+    "https://smittenkitchen.com/2007/04/mixed-berry-pavlova/": [
+      "disasters"
+    ],
+    "https://smittenkitchen.com/2007/02/caustic-confit/": [
+      "disasters"
+    ],
+    "https://smittenkitchen.com/2006/09/gut-and-other-ignored-things/": [
+      "disasters"
+    ],
+    "https://smittenkitchen.com/2006/08/my-date-with-martha-did-not-go-well/": [
+      "disasters"
+    ],
+    "https://smittenkitchen.com/2024/11/skillet-baked-macaroni-and-cheese/": [
+      "thanksgiving",
+      "cheese",
+      "vegetarian",
+      "kid favorites",
+      "pasta",
+      "side dish",
+      "game day"
+    ],
+    "https://smittenkitchen.com/2022/11/green-angel-hair-with-garlic-butter-smitten-kitchen-keepers-is-here/": [
+      "greens",
+      "kid favorites",
+      "pasta"
+    ],
+    "https://smittenkitchen.com/2021/03/crispiest-chicken-cutlets/": [
+      "kid favorites",
+      "freezer friendly"
+    ],
+    "https://smittenkitchen.com/2021/01/parmesan-oven-risotto/": [
+      "kid favorites",
+      "italian",
+      "grain/rice"
+    ],
+    "https://smittenkitchen.com/2020/10/simple-cauliflower-tacos/": [
+      "tex-mex",
+      "kid favorites",
+      "cauliflower"
+    ],
+    "https://smittenkitchen.com/2020/03/chicken-leek-and-rice-soup/": [
+      "soup",
+      "kid favorites",
+      "ramadan",
+      "grain/rice"
+    ],
+    "https://smittenkitchen.com/2020/02/sweet-potato-salad-with-pepita-dressing/": [
+      "avocado",
+      "kid favorites",
+      "lunch"
+    ],
+    "https://smittenkitchen.com/2019/09/crisped-chickpeas-with-herbs-and-garlic-yogurt/": [
+      "pantry",
+      "kid favorites",
+      "zucchini",
+      "lunch",
+      "ramadan"
+    ],
+    "https://smittenkitchen.com/2025/05/one-pan-ditalini-and-peas/": [
+      "quick",
+      "spring",
+      "weeknight favorite",
+      "braiser",
+      "pasta",
+      "peas"
+    ],
+    "https://smittenkitchen.com/2023/06/sliced-egg-sandwich/": [
+      "sandwich",
+      "quick",
+      "breakfast",
+      "lunch",
+      "eggs"
+    ],
+    "https://smittenkitchen.com/2022/02/crispy-cabbage-and-cauliflower-salad/": [
+      "cabbage",
+      "quick",
+      "dairy-free",
+      "egg-free",
+      "cauliflower",
+      "vegan"
+    ],
+    "https://smittenkitchen.com/2021/05/soy-glazed-chicken/": [
+      "chicken",
+      "quick"
+    ],
+    "https://smittenkitchen.com/2021/04/sheet-pan-chow-mein/": [
+      "broccoli",
+      "quick",
+      "peppers",
+      "sheet pan",
+      "chinese",
+      "carrots"
+    ],
+    "https://smittenkitchen.com/2021/02/rigatoni-alla-vodka/": [
+      "pantry",
+      "italian",
+      "date night",
+      "quick"
+    ],
+    "https://smittenkitchen.com/2021/02/baked-feta-with-tomatoes-and-chickpeas/": [
+      "cheese",
+      "tomatoes",
+      "quick"
+    ],
+    "https://smittenkitchen.com/2020/10/skillet-turkey-chili/": [
+      "tex-mex",
+      "game day",
+      "turkey",
+      "quick"
+    ],
+    "https://smittenkitchen.com/2025/05/eggs-florentine/": [
+      "brunch",
+      "breakfast",
+      "spinach",
+      "savory projects",
+      "greens",
+      "eggs"
+    ],
+    "https://smittenkitchen.com/2022/01/spanakopita/": [
+      "herbs",
+      "spinach",
+      "savory projects",
+      "greens",
+      "tarts/quiche",
+      "greek"
+    ],
+    "https://smittenkitchen.com/2021/12/short-rib-onion-soup/": [
+      "stew",
+      "savory projects",
+      "beef",
+      "soup",
+      "winter"
+    ],
+    "https://smittenkitchen.com/2021/10/winter-squash-and-spinach-pasta-bake/": [
+      "casserole",
+      "spinach",
+      "savory projects",
+      "winter squash",
+      "greens",
+      "fall",
+      "freezer friendly",
+      "pasta"
+    ],
+    "https://smittenkitchen.com/2020/05/simple-essential-bolognese/": [
+      "beef",
+      "savory projects",
+      "date night"
+    ],
+    "https://smittenkitchen.com/2019/07/crispy-oven-pulled-pork/": [
+      "game day",
+      "pork",
+      "savory projects",
+      "sandwich"
+    ],
+    "https://smittenkitchen.com/2019/05/potato-vareniki/": [
+      "russian",
+      "savory projects",
+      "dumplings"
+    ],
+    "https://smittenkitchen.com/2019/03/essential-french-onion-soup/": [
+      "savory projects",
+      "date night",
+      "onions",
+      "soup",
+      "french"
+    ],
+    "https://smittenkitchen.com/2018/12/falafel/": [
+      "pantry",
+      "israeli",
+      "savory projects",
+      "hanukkah",
+      "middle eastern"
+    ],
+    "https://smittenkitchen.com/2018/11/cabbage-and-mushroom-lasagna/": [
+      "winter",
+      "cabbage",
+      "mushrooms",
+      "savory projects"
+    ],
+    "https://smittenkitchen.com/2025/08/grilled-chicken-salad-with-cilantro-lime-dressing/": [
+      "avocado",
+      "dinner",
+      "weeknight favorite",
+      "chicken",
+      "salad",
+      "meat",
+      "summer",
+      "corn"
+    ],
+    "https://smittenkitchen.com/2025/02/ziti-chickpeas-with-sausage-and-kale/": [
+      "gluten-free",
+      "beans",
+      "dinner",
+      "weeknight favorite",
+      "pork",
+      "casserole",
+      "kale",
+      "greens",
+      "braiser",
+      "meat"
+    ],
+    "https://smittenkitchen.com/2025/01/potato-leek-soup/": [
+      "vegetarian",
+      "gluten-free",
+      "weeknight favorite",
+      "potatoes",
+      "leeks",
+      "soup"
+    ],
+    "https://smittenkitchen.com/2024/09/lemon-chicken-with-potatoes-and-chickpeas/": [
+      "gluten-free",
+      "beans",
+      "lemon",
+      "weeknight favorite",
+      "dinner",
+      "potatoes",
+      "chicken",
+      "dairy-free",
+      "meat"
+    ],
+    "https://smittenkitchen.com/2024/07/braised-chickpeas-with-zucchini-and-pesto/": [
+      "gluten-free",
+      "beans",
+      "weeknight favorite",
+      "summer squash",
+      "zucchini",
+      "braiser",
+      "summer"
+    ],
+    "https://smittenkitchen.com/2024/07/summer-steak-with-corn-and-tomatoes/": [
+      "dinner",
+      "weeknight favorite",
+      "beef",
+      "meat",
+      "grilling",
+      "tomatoes",
+      "corn"
+    ],
+    "https://smittenkitchen.com/2024/04/spinach-and-artichoke-pan-pizza/": [
+      "dinner",
+      "weeknight favorite",
+      "spinach",
+      "greens",
+      "artichokes",
+      "pizza"
+    ],
+    "https://smittenkitchen.com/2024/03/turkey-meatloaf-for-skeptics/": [
+      "dinner",
+      "weeknight favorite",
+      "potatoes",
+      "meat",
+      "turkey"
+    ],
+    "https://smittenkitchen.com/2019/05/austrian-torn-fluffy-pancake/": [
+      "plum",
+      "pancakes",
+      "austrian"
+    ],
+    "https://smittenkitchen.com/2016/11/apple-strudel/": [
+      "german",
+      "apple",
+      "austrian"
+    ],
+    "https://smittenkitchen.com/2013/12/linzer-torte/": [
+      "austrian"
+    ],
+    "https://smittenkitchen.com/2013/10/purple-plum-torte/": [
+      "figs",
+      "swiss chard",
+      "muffin/quick bread",
+      "arugula",
+      "vietnamese",
+      "grapes",
+      "pomegranate",
+      "pineapple",
+      "thai",
+      "watermelon",
+      "israeli",
+      "radicchio",
+      "dates",
+      "apricots",
+      "radishes",
+      "wedding cake",
+      "greek",
+      "plum",
+      "north african",
+      "irish",
+      "grapefruit",
+      "endive",
+      "austrian",
+      "hanukkah",
+      "zucchini",
+      "celery",
+      "escarole",
+      "summer",
+      "broccoli rabe",
+      "lamb",
+      "dumplings",
+      "tofu",
+      "doughnut",
+      "portuguese",
+      "cabbage",
+      "herbs",
+      "german",
+      "dessert sauces",
+      "cantaloupe",
+      "summer squash",
+      "british",
+      "slow cooker",
+      "mango",
+      "japanese",
+      "middle eastern",
+      "honeydew",
+      "fennel",
+      "waffles"
+    ],
+    "https://smittenkitchen.com/2016/10/pumpkin-bread/": [
+      "pumpkin",
+      "figs",
+      "winter squash",
+      "vietnamese",
+      "pomegranate",
+      "grapes",
+      "pineapple",
+      "watermelon",
+      "israeli",
+      "radicchio",
+      "apricots",
+      "wedding cake",
+      "greek",
+      "irish",
+      "grapefruit",
+      "endive",
+      "austrian",
+      "escarole",
+      "broccoli rabe",
+      "lamb",
+      "tofu",
+      "doughnut",
+      "portuguese",
+      "german",
+      "dessert sauces",
+      "cantaloupe",
+      "british",
+      "slow cooker",
+      "mango",
+      "japanese",
+      "honeydew",
+      "fennel",
+      "celery"
+    ],
+    "https://smittenkitchen.com/2019/08/ultimate-zucchini-bread/": [
+      "figs",
+      "muffin/quick bread",
+      "vietnamese",
+      "pomegranate",
+      "grapes",
+      "pineapple",
+      "watermelon",
+      "israeli",
+      "radicchio",
+      "apricots",
+      "irish",
+      "grapefruit",
+      "endive",
+      "austrian",
+      "zucchini",
+      "escarole",
+      "broccoli rabe",
+      "doughnut",
+      "portuguese",
+      "german",
+      "dessert sauces",
+      "cantaloupe",
+      "british",
+      "slow cooker",
+      "mango",
+      "japanese",
+      "honeydew",
+      "fennel",
+      "celery"
+    ],
+    "https://smittenkitchen.com/2020/03/ultimate-banana-bread/": [
+      "bananas",
+      "figs",
+      "vietnamese",
+      "grapes",
+      "pineapple",
+      "watermelon",
+      "israeli",
+      "radicchio",
+      "apricots",
+      "irish",
+      "grapefruit",
+      "endive",
+      "austrian",
+      "everyday cakes",
+      "escarole",
+      "broccoli rabe",
+      "doughnut",
+      "portuguese",
+      "german",
+      "dessert sauces",
+      "cantaloupe",
+      "british",
+      "mango",
+      "japanese",
+      "honeydew",
+      "fennel"
+    ],
+    "https://smittenkitchen.com/2020/04/how-i-stock-the-smitten-kitchen/": [
+      "figs",
+      "vietnamese",
+      "grapes",
+      "israeli",
+      "radicchio",
+      "apricots",
+      "irish",
+      "grapefruit",
+      "endive",
+      "austrian",
+      "escarole",
+      "broccoli rabe",
+      "portuguese",
+      "german",
+      "dessert sauces",
+      "cantaloupe",
+      "mango",
+      "japanese",
+      "honeydew"
+    ],
+    "https://smittenkitchen.com/2020/12/vanilla-custard-slices/": [
+      "and blondies",
+      "british"
+    ],
+    "https://smittenkitchen.com/2016/07/blueberry-bread-and-butter-pudding/": [
+      "blueberries",
+      "british"
+    ],
+    "https://smittenkitchen.com/2014/11/date-cake-with-toffee-sauce/": [
+      "british",
+      "dates"
+    ],
+    "https://smittenkitchen.com/2014/10/cauliflower-cheese/": [
+      "british"
+    ],
+    "https://smittenkitchen.com/2010/03/bakewell-tart/": [
+      "british"
+    ],
+    "https://smittenkitchen.com/2017/01/chicken-wonton-soup/": [
+      "chinese"
+    ],
+    "https://smittenkitchen.com/2016/02/hot-and-sour-soup/": [
+      "chinese",
+      "mushrooms",
+      "tofu"
+    ],
+    "https://smittenkitchen.com/2015/08/takeout-style-sesame-noodles-with-cucumber/": [
+      "chinese",
+      "cucumber"
+    ],
+    "https://smittenkitchen.com/2014/07/sticky-sesame-chicken-wings/": [
+      "chinese"
+    ],
+    "https://smittenkitchen.com/2011/12/scallion-meatballs-with-soy-ginger-glaze/": [
+      "chinese",
+      "turkey"
+    ],
+    "https://smittenkitchen.com/2010/02/ginger-fried-rice/": [
+      "chinese",
+      "leeks"
+    ],
+    "https://smittenkitchen.com/2008/04/peanut-sesame-noodles/": [
+      "chinese",
+      "tofu"
+    ],
+    "https://smittenkitchen.com/2007/02/on-obsessiveness-and-ollies/": [
+      "chinese",
+      "dumplings",
+      "tofu"
+    ],
+    "https://smittenkitchen.com/2006/11/party-of-five/": [
+      "chinese"
+    ],
+    "https://smittenkitchen.com/2025/02/classic-lemon-curd-tart/": [
+      "winter",
+      "lemon",
+      "french",
+      "tarts/pies"
+    ],
+    "https://smittenkitchen.com/2024/12/invisible-apple-cake/": [
+      "apple",
+      "french",
+      "cake"
+    ],
+    "https://smittenkitchen.com/2020/08/mathildes-tomato-tart/": [
+      "french",
+      "tarts/quiche",
+      "tomatoes"
+    ],
+    "https://smittenkitchen.com/2019/11/perfect-apple-tarte-tatin/": [
+      "apple",
+      "french",
+      "tarts/pies"
+    ],
+    "https://smittenkitchen.com/2016/01/cabbage-and-sausage-casserole/": [
+      "cabbage",
+      "french"
+    ],
+    "https://smittenkitchen.com/2016/01/swiss-chard-pancakes/": [
+      "french",
+      "pancakes",
+      "swiss chard"
+    ],
+    "https://smittenkitchen.com/2015/12/feta-tapenade-tarte-soleil/": [
+      "french",
+      "tarts/quiche"
+    ],
+    "https://smittenkitchen.com/2014/06/valeries-french-chocolate-cake/": [
+      "french"
+    ],
+    "https://smittenkitchen.com/2014/02/dijon-and-cognac-beef-stew/": [
+      "french",
+      "stew"
+    ],
+    "https://smittenkitchen.com/2014/09/sunken-apple-and-honey-cake/": [
+      "german"
+    ],
+    "https://smittenkitchen.com/2014/05/soft-pretzel-buns-and-knots/": [
+      "german"
+    ],
+    "https://smittenkitchen.com/2013/04/bee-sting-cake/": [
+      "german"
+    ],
+    "https://smittenkitchen.com/2018/05/ruffled-milk-pie/": [
+      "greek"
+    ],
+    "https://smittenkitchen.com/2016/05/chicken-gyro-salad/": [
+      "onions",
+      "greek",
+      "cucumber"
+    ],
+    "https://smittenkitchen.com/2014/04/lamb-meatballs-with-feta-and-lemon/": [
+      "lamb",
+      "greek"
+    ],
+    "https://smittenkitchen.com/2013/05/greek-salad-with-lemon-and-oregano/": [
+      "peppers",
+      "greek"
+    ],
+    "https://smittenkitchen.com/2009/09/grilled-lamb-kebabs-tzatziki/": [
+      "lamb",
+      "greek"
+    ],
+    "https://smittenkitchen.com/2019/10/chicken-curry/": [
+      "ramadan",
+      "indian"
+    ],
+    "https://smittenkitchen.com/2019/02/cauliflower-and-tomato-masala-with-peas/": [
+      "peas",
+      "cauliflower",
+      "ramadan",
+      "indian"
+    ],
+    "https://smittenkitchen.com/2017/03/punjabi-style-black-lentil-dal/": [
+      "indian"
+    ],
+    "https://smittenkitchen.com/2016/09/indian-spiced-cauliflower-soup/": [
+      "cauliflower",
+      "indian"
+    ],
+    "https://smittenkitchen.com/2016/05/cucumber-yogurt-raita-salad/": [
+      "indian",
+      "cucumber"
+    ],
+    "https://smittenkitchen.com/2016/04/sheet-pan-chicken-tikka/": [
+      "sheet pan",
+      "cauliflower",
+      "indian"
+    ],
+    "https://smittenkitchen.com/2010/02/chana-masala/": [
+      "indian"
+    ],
+    "https://smittenkitchen.com/2009/02/red-kidney-bean-curry/": [
+      "indian",
+      "stew"
+    ],
+    "https://smittenkitchen.com/2007/11/curried-lentils-and-sweet-potatoes/": [
+      "indian"
+    ],
+    "https://smittenkitchen.com/2007/06/everyday-yellow-dal/": [
+      "indian"
+    ],
+    "https://smittenkitchen.com/2022/03/castle-breakfast/": [
+      "scones/biscuits",
+      "irish"
+    ],
+    "https://smittenkitchen.com/2016/12/homemade-irish-cream/": [
+      "irish",
+      "food gifts"
+    ],
+    "https://smittenkitchen.com/2007/03/skillet-irish-soda-bread/": [
+      "irish"
+    ],
+    "https://smittenkitchen.com/2006/11/ganached-guinness-goodness/": [
+      "irish"
+    ],
+    "https://smittenkitchen.com/2017/07/hummus-heaped-with-tomatoes-and-cucumbers/": [
+      "north african",
+      "israeli",
+      "picnics",
+      "middle eastern",
+      "onions",
+      "cucumber"
+    ],
+    "https://smittenkitchen.com/2010/04/shakshuka/": [
+      "israeli",
+      "north african"
+    ],
+    "https://smittenkitchen.com/2007/07/israeli-salad-pita-chips/": [
+      "israeli"
+    ],
+    "https://smittenkitchen.com/2025/07/focaccia-with-zucchini-and-potatoes/": [
+      "italian",
+      "vegetarian",
+      "picnics",
+      "zucchini",
+      "potatoes",
+      "egg-free",
+      "summer",
+      "vegan",
+      "bread"
+    ],
+    "https://smittenkitchen.com/2022/09/turkey-pesto-meatballs-and-orecchiette/": [
+      "italian",
+      "summer squash",
+      "zucchini",
+      "turkey",
+      "pasta"
+    ],
+    "https://smittenkitchen.com/2022/09/eggplant-involtini/": [
+      "eggplant",
+      "italian"
+    ],
+    "https://smittenkitchen.com/2020/07/pasta-with-pesto-genovese/": [
+      "italian"
+    ],
+    "https://smittenkitchen.com/2020/02/perfect-vegetable-lasagna/": [
+      "casserole",
+      "cheese",
+      "italian"
+    ],
+    "https://smittenkitchen.com/2019/09/stuffed-eggplant-parmesan/": [
+      "eggplant",
+      "winter",
+      "italian",
+      "date night"
+    ],
+    "https://smittenkitchen.com/2016/03/sesame-soba-and-ribboned-omelet-salad/": [
+      "japanese"
+    ],
+    "https://smittenkitchen.com/2014/08/cold-noodles-with-miso-lime-and-ginger/": [
+      "japanese",
+      "radishes"
+    ],
+    "https://smittenkitchen.com/2013/05/japanese-cabbage-and-vegetable-pancakes/": [
+      "japanese"
+    ],
+    "https://smittenkitchen.com/2024/12/chicken-meatball-and-noodle-soup/": [
+      "chicken",
+      "braiser",
+      "meat",
+      "soup",
+      "jewish"
+    ],
+    "https://smittenkitchen.com/2022/10/focaccia-onion-board/": [
+      "brunch",
+      "breakfast",
+      "onions",
+      "jewish",
+      "bread"
+    ],
+    "https://smittenkitchen.com/2022/04/chicken-liver-pate/": [
+      "passover",
+      "party snacks",
+      "appetizers",
+      "chicken",
+      "jewish"
+    ],
+    "https://smittenkitchen.com/2021/02/marbled-cheesecake-hamantaschen/": [
+      "cookie",
+      "jewish"
+    ],
+    "https://smittenkitchen.com/2020/11/bialy-babka/": [
+      "bread",
+      "onions",
+      "jewish"
+    ],
+    "https://smittenkitchen.com/2020/09/tangy-braised-chickpeas/": [
+      "vegan",
+      "carrots",
+      "mushrooms",
+      "jewish"
+    ],
+    "https://smittenkitchen.com/2017/09/chocolate-tahini-challah-buns/": [
+      "jewish"
+    ],
+    "https://smittenkitchen.com/2016/03/apricot-hazelnut-brown-butter-hamantaschen/": [
+      "jewish"
+    ],
+    "https://smittenkitchen.com/2015/12/unfussy-rugelach/": [
+      "hanukkah",
+      "jewish"
+    ],
+    "https://smittenkitchen.com/2016/09/homemade-merguez-with-herby-yogurt/": [
+      "lamb",
+      "north african",
+      "middle eastern"
+    ],
+    "https://smittenkitchen.com/2015/03/baked-chickpeas-with-pita-chips-and-yogurt/": [
+      "middle eastern"
+    ],
+    "https://smittenkitchen.com/2014/10/fall-toush-salad/": [
+      "brussels sprouts",
+      "middle eastern",
+      "winter squash"
+    ],
+    "https://smittenkitchen.com/2014/08/smoky-eggplant-dip/": [
+      "eggplant",
+      "middle eastern"
+    ],
+    "https://smittenkitchen.com/2014/02/stuck-pot-rice-with-lentils-and-yogurt/": [
+      "middle eastern"
+    ],
+    "https://smittenkitchen.com/2013/01/ethereally-smooth-hummus/": [
+      "middle eastern"
+    ],
+    "https://smittenkitchen.com/2019/10/chickpea-and-kale-shakshuka/": [
+      "north african",
+      "stew",
+      "pantry",
+      "casserole",
+      "kale",
+      "eggs",
+      "ramadan"
+    ],
+    "https://smittenkitchen.com/2014/10/homemade-harissa/": [
+      "north african",
+      "peppers",
+      "savory condiments"
+    ],
+    "https://smittenkitchen.com/2010/05/carrot-salad-with-harissa-feta-and-mint/": [
+      "north african"
+    ],
+    "https://smittenkitchen.com/2009/11/moroccan-spiced-spaghetti-squash/": [
+      "north african"
+    ],
+    "https://smittenkitchen.com/2009/01/squash-and-chickpea-moroccan-stew/": [
+      "north african"
+    ],
+    "https://smittenkitchen.com/2016/09/garlic-wine-and-butter-steamed-clams/": [
+      "seafood",
+      "portuguese"
+    ],
+    "https://smittenkitchen.com/2016/09/piri-piri-chicken/": [
+      "portuguese"
+    ],
+    "https://smittenkitchen.com/2024/02/crispy-potatoes-with-mushrooms/": [
+      "potatoes",
+      "russian",
+      "fall",
+      "mushrooms",
+      "winter"
+    ],
+    "https://smittenkitchen.com/2021/12/russian-napoleon/": [
+      "russian",
+      "sweet projects",
+      "celebration cakes"
+    ],
+    "https://smittenkitchen.com/2016/10/russian-honey-cake/": [
+      "russian"
+    ],
+    "https://smittenkitchen.com/2016/07/eggplant-with-yogurt-and-tomato-relish/": [
+      "russian",
+      "eggplant"
+    ],
+    "https://smittenkitchen.com/2014/01/cheese-blintz/": [
+      "russian"
+    ],
+    "https://smittenkitchen.com/2012/01/apple-sharlotka/": [
+      "russian"
+    ],
+    "https://smittenkitchen.com/2010/07/raspberry-brown-sugar-gratin/": [
+      "russian"
+    ],
+    "https://smittenkitchen.com/2009/04/black-bread/": [
+      "russian"
+    ],
+    "https://smittenkitchen.com/2009/02/alexs-moms-stuffed-cabbage/": [
+      "russian"
+    ],
+    "https://smittenkitchen.com/2017/09/tomato-bread-a-bit-about-spain/": [
+      "bread",
+      "party snacks",
+      "put an egg on it",
+      "spanish"
+    ],
+    "https://smittenkitchen.com/2016/03/churros/": [
+      "doughnut",
+      "spanish"
+    ],
+    "https://smittenkitchen.com/2014/12/endives-with-oranges-and-almonds/": [
+      "endive",
+      "citrus",
+      "orange",
+      "spanish"
+    ],
+    "https://smittenkitchen.com/2010/03/romesco-potatoes/": [
+      "spanish"
+    ],
+    "https://smittenkitchen.com/2010/03/spinach-and-chickpeas/": [
+      "spanish"
+    ],
+    "https://smittenkitchen.com/2009/07/asparagus-with-chorizo-and-croutons/": [
+      "spanish"
+    ],
+    "https://smittenkitchen.com/2009/01/potato-and-artichoke-tortilla/": [
+      "spanish"
+    ],
+    "https://smittenkitchen.com/2007/10/gazpacho-and-lentil-chorizo-salads/": [
+      "spanish"
+    ],
+    "https://smittenkitchen.com/2007/10/arroz-con-pollo/": [
+      "spanish"
+    ],
+    "https://smittenkitchen.com/2007/09/fideos-with-chorizo-and-almonds/": [
+      "spanish"
+    ],
+    "https://smittenkitchen.com/2022/03/simple-chicken-tortilla-soup/": [
+      "beans",
+      "chicken",
+      "braiser",
+      "soup",
+      "tex-mex"
+    ],
+    "https://smittenkitchen.com/2021/04/quick-easy-salsa/": [
+      "tex-mex",
+      "game day",
+      "tomatoes"
+    ],
+    "https://smittenkitchen.com/2019/07/zucchini-quesadillas/": [
+      "tex-mex",
+      "summer squash",
+      "zucchini"
+    ],
+    "https://smittenkitchen.com/2018/05/chilaquiles-brunch-casserole/": [
+      "tex-mex"
+    ],
+    "https://smittenkitchen.com/2018/03/sweet-potato-tacos/": [
+      "tex-mex"
+    ],
+    "https://smittenkitchen.com/2017/08/corn-chowder-with-chile-lime-and-cotija/": [
+      "tex-mex"
+    ],
+    "https://smittenkitchen.com/2019/05/braised-ginger-meatballs-in-coconut-broth/": [
+      "thai",
+      "pork",
+      "soup"
+    ],
+    "https://smittenkitchen.com/2018/06/garlic-lime-steak-and-noodle-salad/": [
+      "thai",
+      "green beans",
+      "beef",
+      "cucumber",
+      "tomatoes"
+    ],
+    "https://smittenkitchen.com/2018/04/crispy-tofu-pad-thai/": [
+      "thai",
+      "tofu"
+    ],
+    "https://smittenkitchen.com/2015/01/fried-egg-salad/": [
+      "thai"
+    ],
+    "https://smittenkitchen.com/2012/06/cold-rice-noodles-with-peanut-lime-chicken/": [
+      "thai",
+      "vietnamese"
+    ],
+    "https://smittenkitchen.com/2010/07/thai-style-chicken-legs/": [
+      "thai"
+    ],
+    "https://smittenkitchen.com/2010/07/mango-slaw-with-cashews-and-mint/": [
+      "mango",
+      "thai"
+    ],
+    "https://smittenkitchen.com/2006/07/forgiving-eggplants-tresspasses/": [
+      "thai"
+    ],
+    "https://smittenkitchen.com/2016/06/corn-and-black-bean-weeknight-nachos/": [
+      "sheet pan",
+      "travel",
+      "peppers"
+    ],
+    "https://smittenkitchen.com/2013/06/espresso-granita-with-whipped-cream/": [
+      "travel"
+    ],
+    "https://smittenkitchen.com/2013/06/bowties-with-sugar-snaps-lemon-and-ricotta/": [
+      "peas",
+      "travel"
+    ],
+    "https://smittenkitchen.com/2011/09/peach-butter/": [
+      "travel"
+    ],
+    "https://smittenkitchen.com/2011/08/tomato-salad-with-crushed-croutons/": [
+      "travel"
+    ],
+    "https://smittenkitchen.com/2011/02/spaghetti-with-lemon-and-olive-oil-al-limone/": [
+      "travel"
+    ],
+    "https://smittenkitchen.com/2010/09/linguine-with-tomato-almond-pesto/": [
+      "travel"
+    ],
+    "https://smittenkitchen.com/2010/03/almond-macaroon-torte-with-chocolate-frosting/": [
+      "travel"
+    ],
+    "https://smittenkitchen.com/2009/05/grilled-shrimp-cocktail/": [
+      "seafood",
+      "travel"
+    ],
+    "https://smittenkitchen.com/2009/04/big-crumbs-and-small-pretzels-in-oklahoma/": [
+      "travel"
+    ],
+    "https://smittenkitchen.com/2018/10/candy-pork/": [
+      "coconut",
+      "pork",
+      "vietnamese",
+      "stew"
+    ],
+    "https://smittenkitchen.com/2014/01/chicken-pho/": [
+      "vietnamese"
+    ],
+    "https://smittenkitchen.com/2007/05/cellophane-noodle-salad-roast-pork/": [
+      "vietnamese"
+    ],
+    "https://smittenkitchen.com/2010/10/summer-squash-soup/": [
+      "baby food"
+    ],
+    "https://smittenkitchen.com/2010/09/finger-foods/": [
+      "baby food"
+    ],
+    "https://smittenkitchen.com/2010/08/moroccan-ish-carrots-and-yams/": [
+      "baby food"
+    ],
+    "https://smittenkitchen.com/2010/06/mango-banana-sauce/": [
+      "baby food"
+    ],
+    "https://smittenkitchen.com/2010/06/first-spinach-with-white-yams/": [
+      "baby food"
+    ],
+    "https://smittenkitchen.com/2010/06/peach-sauce-with-nutmeg/": [
+      "baby food"
+    ],
+    "https://smittenkitchen.com/2010/05/first-carrots/": [
+      "baby food"
+    ],
+    "https://smittenkitchen.com/2010/05/vanilla-bean-pear-sauce/": [
+      "baby food"
+    ],
+    "https://smittenkitchen.com/2010/04/first-applesauce/": [
+      "baby food"
+    ],
+    "https://smittenkitchen.com/2024/10/glazed-apple-cider-doughnut-cake/": [
+      "cake",
+      "dairy-free",
+      "egg-free",
+      "fall",
+      "everyday cakes",
+      "vegan"
+    ],
+    "https://smittenkitchen.com/2024/09/easiest-cinnamon-rolls/": [
+      "brunch",
+      "christmas",
+      "breakfast",
+      "dairy-free",
+      "egg-free",
+      "vegan"
+    ],
+    "https://smittenkitchen.com/2023/04/carrot-cake-with-coconut-and-dates/": [
+      "passover",
+      "cake",
+      "dates",
+      "dairy-free",
+      "easter",
+      "everyday cakes",
+      "carrots"
+    ],
+    "https://smittenkitchen.com/2022/01/my-favorite-lentil-salad/": [
+      "avocado",
+      "beans",
+      "dairy-free",
+      "egg-free",
+      "lunch",
+      "vegan",
+      "tomatoes"
+    ],
+    "https://smittenkitchen.com/2021/01/plush-vegan-confetti-cupcakes/": [
+      "dairy-free",
+      "vegan",
+      "celebration cakes"
+    ],
+    "https://smittenkitchen.com/2023/12/brown-butter-brown-sugar-shortbread/": [
+      "egg-free",
+      "cookie",
+      "brown butter"
+    ],
+    "https://smittenkitchen.com/2021/04/classic-shortbread/": [
+      "egg-free",
+      "cookie"
+    ],
+    "https://smittenkitchen.com/2024/08/napa-cabbage-wedge-with-miso-dressing/": [
+      "gluten-free",
+      "salad",
+      "side dish",
+      "cabbage"
+    ],
+    "https://smittenkitchen.com/2024/06/easy-basque-cheesecake/": [
+      "gluten-free",
+      "cake"
+    ],
+    "https://smittenkitchen.com/2024/03/weeknight-tomato-soup/": [
+      "gluten-free",
+      "dinner",
+      "freezer friendly",
+      "soup",
+      "tomatoes"
+    ],
+    "https://smittenkitchen.com/2024/02/chocolate-raspberry-pavlova-stack/": [
+      "passover",
+      "gluten-free",
+      "chocolate",
+      "sweet projects",
+      "raspberries",
+      "celebration cakes"
+    ],
+    "https://smittenkitchen.com/2023/12/rolled-spinach-omelet/": [
+      "brunch",
+      "christmas",
+      "gluten-free",
+      "breakfast",
+      "spinach",
+      "greens",
+      "easter",
+      "eggs",
+      "ramadan"
+    ],
+    "https://smittenkitchen.com/2020/08/corn-coconut-soup/": [
+      "vegan",
+      "coconut",
+      "soup",
+      "corn"
+    ],
+    "https://smittenkitchen.com/2025/06/cucumber-crunch-salad-with-tofu/": [
+      "vegetarian",
+      "cucumber",
+      "peanut butter",
+      "salad",
+      "summer",
+      "lunch",
+      "tofu"
+    ],
+    "https://smittenkitchen.com/2025/05/challah-french-toast/": [
+      "breakfast",
+      "brunch",
+      "vegetarian"
+    ],
+    "https://smittenkitchen.com/2024/11/halloumi-and-fall-vegetable-roast/": [
+      "cheese",
+      "vegetarian",
+      "potatoes",
+      "brussels sprouts",
+      "fall",
+      "sheet pan",
+      "cauliflower",
+      "side dish"
+    ],
+    "https://smittenkitchen.com/2024/10/roasted-carrots-with-lentils-and-yogurt/": [
+      "thanksgiving",
+      "vegetarian",
+      "beans",
+      "sheet pan",
+      "fall",
+      "side dish",
+      "carrots"
+    ],
+    "https://smittenkitchen.com/2022/09/apple-dumplings/": [
+      "apple",
+      "fall",
+      "tarts/pies"
+    ],
+    "https://smittenkitchen.com/2021/10/big-apple-crumb-cake/": [
+      "apple",
+      "fall",
+      "cake",
+      "everyday cakes"
+    ],
+    "https://smittenkitchen.com/2020/10/morning-glory-breakfast-cake/": [
+      "apple",
+      "everyday cakes",
+      "muffin/quick bread",
+      "carrots",
+      "ramadan"
+    ],
+    "https://smittenkitchen.com/2018/10/even-more-perfect-apple-pie/": [
+      "apple"
+    ],
+    "https://smittenkitchen.com/2017/12/dutch-apple-pie/": [
+      "apple"
+    ],
+    "https://smittenkitchen.com/2016/11/brussels-sprouts-apple-and-pomegranate-salad/": [
+      "brussels sprouts",
+      "apple",
+      "onions",
+      "pomegranate"
+    ],
+    "https://smittenkitchen.com/2014/08/apricot-pistachio-squares/": [
+      "apricots"
+    ],
+    "https://smittenkitchen.com/2008/06/breakfast-apricot-crisp/": [
+      "apricots"
+    ],
+    "https://smittenkitchen.com/2007/11/apricot-and-walnut-vareniki/": [
+      "apricots",
+      "dumplings"
+    ],
+    "https://smittenkitchen.com/2023/04/baby-wedge-salad-with-avocado-and-pickled-onions/": [
+      "avocado",
+      "salad",
+      "side dish",
+      "onions"
+    ],
+    "https://smittenkitchen.com/2017/02/guacamole/": [
+      "avocado",
+      "snack"
+    ],
+    "https://smittenkitchen.com/2016/05/roasted-carrots-with-avocado-and-yogurt/": [
+      "avocado",
+      "carrots"
+    ],
+    "https://smittenkitchen.com/2016/03/nolita-style-avocado-toast/": [
+      "avocado",
+      "sandwich"
+    ],
+    "https://smittenkitchen.com/2015/04/obsessively-good-avocado-cucumber-salad/": [
+      "avocado",
+      "cucumber"
+    ],
+    "https://smittenkitchen.com/2014/04/avocado-cup-salads-two-ways/": [
+      "avocado"
+    ],
+    "https://smittenkitchen.com/2010/04/avocado-salad-with-carrot-ginger-dressing/": [
+      "avocado"
+    ],
+    "https://smittenkitchen.com/2022/03/banana-cream-pie/": [
+      "bananas",
+      "tarts/pies"
+    ],
+    "https://smittenkitchen.com/2021/03/hummingbird-cake/": [
+      "pineapple",
+      "bananas",
+      "celebration cakes"
+    ],
+    "https://smittenkitchen.com/2019/12/banana-toffee-cake/": [
+      "bananas"
+    ],
+    "https://smittenkitchen.com/2018/01/banana-oat-weekday-pancakes/": [
+      "bananas",
+      "pancakes"
+    ],
+    "https://smittenkitchen.com/2017/09/marbled-banana-bread/": [
+      "muffin/quick bread",
+      "bananas",
+      "food gifts"
+    ],
+    "https://smittenkitchen.com/2016/01/banana-pudding-with-vanilla-bean-wafers/": [
+      "pudding",
+      "bananas"
+    ],
+    "https://smittenkitchen.com/2014/03/double-chocolate-banana-bread/": [
+      "bananas"
+    ],
+    "https://smittenkitchen.com/2013/07/banana-nutella-and-salted-pistachio-popsicles/": [
+      "bananas"
+    ],
+    "https://smittenkitchen.com/2012/09/crackly-banana-bread/": [
+      "bananas"
+    ],
+    "https://smittenkitchen.com/2017/08/cheesecake-bars-with-all-the-berries/": [
+      "picnics",
+      "and blondies",
+      "blueberries",
+      "raspberries",
+      "strawberries",
+      "blackberries"
+    ],
+    "https://smittenkitchen.com/2017/08/blackberry-blueberry-crumb-pie/": [
+      "blueberries",
+      "blackberries"
+    ],
+    "https://smittenkitchen.com/2017/06/easy-drop-berry-shortcakes/": [
+      "scones/biscuits",
+      "blueberries",
+      "raspberries",
+      "strawberries",
+      "blackberries"
+    ],
+    "https://smittenkitchen.com/2016/07/blackberry-cheesecake-galette/": [
+      "blackberries"
+    ],
+    "https://smittenkitchen.com/2015/08/raspberry-crushed-ice/": [
+      "raspberries",
+      "and popsicles",
+      "blackberries"
+    ],
+    "https://smittenkitchen.com/2015/05/pink-lemonade/": [
+      "raspberries",
+      "citrus",
+      "blackberries"
+    ],
+    "https://smittenkitchen.com/2015/05/swirled-berry-yogurt-popsicles/": [
+      "blackberries"
+    ],
+    "https://smittenkitchen.com/2012/07/blackberry-gin-fizz/": [
+      "blackberries"
+    ],
+    "https://smittenkitchen.com/2012/06/triple-berry-summer-buttermilk-bundt/": [
+      "blackberries"
+    ],
+    "https://smittenkitchen.com/2011/04/blackberry-and-coconut-macaroon-tart/": [
+      "blackberries"
+    ],
+    "https://smittenkitchen.com/2024/05/perfect-blueberry-muffin-loaf/": [
+      "brunch",
+      "food gifts",
+      "blueberries",
+      "everyday cakes",
+      "muffin/quick bread"
+    ],
+    "https://smittenkitchen.com/2016/08/even-more-perfect-blueberry-muffins/": [
+      "muffin/quick bread",
+      "blueberries"
+    ],
+    "https://smittenkitchen.com/2015/07/very-blueberry-scones/": [
+      "scones/biscuits",
+      "blueberries"
+    ],
+    "https://smittenkitchen.com/2014/07/blueberry-crumb-cake/": [
+      "blueberries"
+    ],
+    "https://smittenkitchen.com/2014/07/blue-and-red-berry-ricotta-galette/": [
+      "cherries",
+      "blueberries"
+    ],
+    "https://smittenkitchen.com/2012/08/vanilla-custards-with-roasted-blueberries/": [
+      "pudding",
+      "blueberries"
+    ],
+    "https://smittenkitchen.com/2016/08/chile-lime-melon-salad/": [
+      "watermelon",
+      "cantaloupe",
+      "honeydew"
+    ],
+    "https://smittenkitchen.com/2009/08/melon-agua-fresca/": [
+      "cantaloupe",
+      "honeydew"
+    ],
+    "https://smittenkitchen.com/2009/07/cantaloupe-salsa/": [
+      "cantaloupe"
+    ],
+    "https://smittenkitchen.com/2018/10/sunken-black-forest-cake/": [
+      "cherries",
+      "passover"
+    ],
+    "https://smittenkitchen.com/2014/06/cherry-almond-dutch-baby/": [
+      "cherries"
+    ],
+    "https://smittenkitchen.com/2010/07/sour-cherry-pie-with-almond-crumble/": [
+      "cherries"
+    ],
+    "https://smittenkitchen.com/2010/04/new-york-cheesecake/": [
+      "cherries"
+    ],
+    "https://smittenkitchen.com/2009/07/sour-cherry-slab-pie/": [
+      "cherries"
+    ],
+    "https://smittenkitchen.com/2009/06/cherry-brown-butter-bars/": [
+      "cherries"
+    ],
+    "https://smittenkitchen.com/2008/08/sour-cherry-compote/": [
+      "cherries"
+    ],
+    "https://smittenkitchen.com/2008/06/sweet-cherry-pie/": [
+      "cherries"
+    ],
+    "https://smittenkitchen.com/2021/01/lemon-and-lime-mintade/": [
+      "drinks",
+      "lemon",
+      "citrus",
+      "lime"
+    ],
+    "https://smittenkitchen.com/2017/02/pomegranate-grapefruit-paloma/": [
+      "grapefruit",
+      "citrus",
+      "pomegranate"
+    ],
+    "https://smittenkitchen.com/2016/11/roasted-cauliflower-with-pumpkin-seeds-brown-butter-and-lime/": [
+      "citrus",
+      "cauliflower"
+    ],
+    "https://smittenkitchen.com/2016/03/caramelized-brown-sugar-oranges-with-yogurt/": [
+      "citrus",
+      "orange"
+    ],
+    "https://smittenkitchen.com/2016/01/blood-orange-almond-and-ricotta-cake/": [
+      "citrus",
+      "orange"
+    ],
+    "https://smittenkitchen.com/2015/04/crispy-broccoli-with-lemon-and-garlic/": [
+      "citrus",
+      "broccoli"
+    ],
+    "https://smittenkitchen.com/2015/01/key-lime-pie/": [
+      "citrus",
+      "lime"
+    ],
+    "https://smittenkitchen.com/2014/09/cucumber-lemonade/": [
+      "citrus",
+      "cucumber"
+    ],
+    "https://smittenkitchen.com/2021/11/cranberry-pecan-bread/": [
+      "cake",
+      "food gifts",
+      "cranberries",
+      "fall",
+      "everyday cakes",
+      "orange"
+    ],
+    "https://smittenkitchen.com/2014/11/cranberry-pie-with-thick-pecan-crumble/": [
+      "cranberries"
+    ],
+    "https://smittenkitchen.com/2013/11/cranberry-orange-breakfast-buns/": [
+      "cranberries",
+      "orange"
+    ],
+    "https://smittenkitchen.com/2011/10/pear-cranberry-and-gingersnap-crumble/": [
+      "pear",
+      "cranberries"
+    ],
+    "https://smittenkitchen.com/2010/11/upside-down-cranberry-cake/": [
+      "cranberries"
+    ],
+    "https://smittenkitchen.com/2010/01/cranberry-syrup-and-an-intensely-almond-cake/": [
+      "cranberries"
+    ],
+    "https://smittenkitchen.com/2008/12/cranberry-vanilla-coffee-cake/": [
+      "cranberries"
+    ],
+    "https://smittenkitchen.com/2008/11/cranberry-pecan-frangipane-tart/": [
+      "cranberries"
+    ],
+    "https://smittenkitchen.com/2008/11/meyer-lemon-and-fresh-cranberry-scones/": [
+      "cranberries"
+    ],
+    "https://smittenkitchen.com/2019/12/cider-glazed-bacon-wrapped-dates/": [
+      "pork",
+      "party snacks",
+      "dates"
+    ],
+    "https://smittenkitchen.com/2016/04/palm-springs-date-shake-monkey-flip/": [
+      "and popsicles",
+      "dates"
+    ],
+    "https://smittenkitchen.com/2015/11/date-breakfast-squares/": [
+      "snack",
+      "dates"
+    ],
+    "https://smittenkitchen.com/2015/11/date-feta-and-red-cabbage-salad/": [
+      "cabbage",
+      "dates"
+    ],
+    "https://smittenkitchen.com/2009/09/date-spice-loaf/": [
+      "dates"
+    ],
+    "https://smittenkitchen.com/2012/09/fig-olive-oil-and-sea-salt-challah/": [
+      "figs"
+    ],
+    "https://smittenkitchen.com/2009/01/fig-and-walnut-biscotti/": [
+      "figs"
+    ],
+    "https://smittenkitchen.com/2008/11/winter-fruit-salad/": [
+      "figs",
+      "pear",
+      "pomegranate"
+    ],
+    "https://smittenkitchen.com/2010/01/mixed-citrus-salad-with-feta-and-mint/": [
+      "grapefruit",
+      "herbs",
+      "orange"
+    ],
+    "https://smittenkitchen.com/2007/01/grapefruit-yogurt-cake/": [
+      "grapefruit"
+    ],
+    "https://smittenkitchen.com/2010/09/grape-focaccia-with-rosemary/": [
+      "grapes"
+    ],
+    "https://smittenkitchen.com/2009/04/pickled-grapes-with-cinnamon-and-black-pepper/": [
+      "pickled",
+      "grapes"
+    ],
+    "https://smittenkitchen.com/2023/05/easy-strawberry-lemonade/": [
+      "strawberries",
+      "drinks",
+      "lemon"
+    ],
+    "https://smittenkitchen.com/2022/04/lemon-cream-meringues/": [
+      "passover",
+      "cookie",
+      "spring",
+      "lemon",
+      "sweet projects",
+      "easter"
+    ],
+    "https://smittenkitchen.com/2022/02/lemon-sorbet/": [
+      "lemon",
+      "and popsicles"
+    ],
+    "https://smittenkitchen.com/2020/06/whole-lemon-meringue-pie-bars/": [
+      "and blondies",
+      "lemon",
+      "tarts/pies"
+    ],
+    "https://smittenkitchen.com/2019/06/simplest-spaghetti-al-limone/": [
+      "lemon",
+      "date night"
+    ],
+    "https://smittenkitchen.com/2018/06/ciambellone-an-italian-tea-cake/": [
+      "lemon"
+    ],
+    "https://smittenkitchen.com/2021/02/the-perfect-margarita/": [
+      "drinks",
+      "game day",
+      "lime"
+    ],
+    "https://smittenkitchen.com/2015/03/the-consolation-prize-a-mocktail/": [
+      "pineapple",
+      "coconut",
+      "lime"
+    ],
+    "https://smittenkitchen.com/2014/06/limonada-de-coco/": [
+      "coconut",
+      "lime"
+    ],
+    "https://smittenkitchen.com/2013/08/key-lime-pie-popsicles/": [
+      "lime"
+    ],
+    "https://smittenkitchen.com/2013/08/strawberry-lime-and-black-pepper-popsicles/": [
+      "lime"
+    ],
+    "https://smittenkitchen.com/2010/08/raspberry-limeade-slushies/": [
+      "lime"
+    ],
+    "https://smittenkitchen.com/2010/04/lime-yogurt-cake-with-blackberry-sauce/": [
+      "lime"
+    ],
+    "https://smittenkitchen.com/2009/02/key-lime-coconut-cake/": [
+      "lime"
+    ],
+    "https://smittenkitchen.com/2014/01/coconut-tapioca-pudding-with-mango/": [
+      "pudding",
+      "mango",
+      "coconut"
+    ],
+    "https://smittenkitchen.com/2008/06/project-wedding-cake-mango-curd/": [
+      "mango",
+      "wedding cake"
+    ],
+    "https://smittenkitchen.com/2014/07/bourbon-slush-punch/": [
+      "bourbon",
+      "orange"
+    ],
+    "https://smittenkitchen.com/2014/02/fennel-and-blood-orange-salad/": [
+      "orange",
+      "fennel"
+    ],
+    "https://smittenkitchen.com/2013/02/blood-orange-margaritas/": [
+      "orange"
+    ],
+    "https://smittenkitchen.com/2011/02/blood-orange-olive-oil-cake/": [
+      "orange"
+    ],
+    "https://smittenkitchen.com/2024/08/salted-caramel-peach-crisp/": [
+      "peach / nectarine",
+      "braiser",
+      "crumbles/crisps",
+      "summer"
+    ],
+    "https://smittenkitchen.com/2018/07/bourbon-peach-smash/": [
+      "peach / nectarine",
+      "bourbon"
+    ],
+    "https://smittenkitchen.com/2016/08/peach-melba-popsicles/": [
+      "peach / nectarine",
+      "raspberries",
+      "and popsicles"
+    ],
+    "https://smittenkitchen.com/2016/07/peaches-and-cream-bunny-cake/": [
+      "peach / nectarine"
+    ],
+    "https://smittenkitchen.com/2015/08/crispy-peach-cobbler/": [
+      "peach / nectarine",
+      "crumbles/crisps"
+    ],
+    "https://smittenkitchen.com/2014/07/grilled-peach-splits-news/": [
+      "peach / nectarine"
+    ],
+    "https://smittenkitchen.com/2013/08/almond-crisped-peaches-uk-book-tour/": [
+      "peach / nectarine",
+      "crumbles/crisps"
+    ],
+    "https://smittenkitchen.com/2013/07/peach-and-pecan-sandy-crumble/": [
+      "peach / nectarine",
+      "crumbles/crisps"
+    ],
+    "https://smittenkitchen.com/2012/07/peach-pie/": [
+      "peach / nectarine"
+    ],
+    "https://smittenkitchen.com/2015/02/chocolate-oat-crumble/": [
+      "pear",
+      "raspberries",
+      "crumbles/crisps"
+    ],
+    "https://smittenkitchen.com/2014/01/pear-and-hazelnut-muffins/": [
+      "pear"
+    ],
+    "https://smittenkitchen.com/2012/10/roasted-pear-and-chocolate-chunk-scones/": [
+      "pear",
+      "scones/biscuits"
+    ],
+    "https://smittenkitchen.com/2010/04/radicchio-apple-and-pear-salad/": [
+      "pear",
+      "radicchio"
+    ],
+    "https://smittenkitchen.com/2009/12/pear-bread/": [
+      "pear"
+    ],
+    "https://smittenkitchen.com/2009/12/vanilla-roasted-pears/": [
+      "pear"
+    ],
+    "https://smittenkitchen.com/2009/01/bittersweet-chocolate-and-pear-cake/": [
+      "pear"
+    ],
+    "https://smittenkitchen.com/2008/02/pear-and-almond-tart/": [
+      "pear"
+    ],
+    "https://smittenkitchen.com/2020/03/pina-colada/": [
+      "pineapple",
+      "drinks"
+    ],
+    "https://smittenkitchen.com/2011/02/pina-colada-cake/": [
+      "pineapple"
+    ],
+    "https://smittenkitchen.com/2007/05/pineapple-upside-down-cake/": [
+      "pineapple"
+    ],
+    "https://smittenkitchen.com/2022/07/plum-and-cream-scone-cobbler/": [
+      "plum",
+      "crumbles/crisps"
+    ],
+    "https://smittenkitchen.com/2016/09/plum-squares-with-marzipan-crumble/": [
+      "plum",
+      "crumbles/crisps",
+      "and blondies"
+    ],
+    "https://smittenkitchen.com/2011/08/hazelnut-plum-crumb-tart/": [
+      "plum"
+    ],
+    "https://smittenkitchen.com/2011/08/sugar-plum-crepes-with-ricotta-and-honey/": [
+      "plum"
+    ],
+    "https://smittenkitchen.com/2010/10/single-crust-plum-and-apple-pie/": [
+      "plum"
+    ],
+    "https://smittenkitchen.com/2009/07/plum-kuchen/": [
+      "plum"
+    ],
+    "https://smittenkitchen.com/2008/08/dimply-plum-cake/": [
+      "plum"
+    ],
+    "https://smittenkitchen.com/2012/12/cauliflower-feta-fritters-with-pomegranate/": [
+      "pomegranate"
+    ],
+    "https://smittenkitchen.com/2011/10/cumin-seed-roasted-cauliflower-with-yogurt/": [
+      "pomegranate"
+    ],
+    "https://smittenkitchen.com/2008/11/fennel-prosciutto-and-pomegranate-salad/": [
+      "pomegranate",
+      "fennel"
+    ],
+    "https://smittenkitchen.com/2023/07/raspberry-streusel-muffins/": [
+      "muffin/quick bread",
+      "breakfast",
+      "raspberries"
+    ],
+    "https://smittenkitchen.com/2019/05/raspberry-crumble-tart-bars/": [
+      "picnics",
+      "raspberries",
+      "and blondies",
+      "tarts/pies"
+    ],
+    "https://smittenkitchen.com/2018/08/marbled-raspberry-pound-cake/": [
+      "raspberries"
+    ],
+    "https://smittenkitchen.com/2020/05/any-kind-of-fruit-galette/": [
+      "strawberries",
+      "rhubarb",
+      "tarts/pies"
+    ],
+    "https://smittenkitchen.com/2020/05/rhubarb-cordial/": [
+      "drinks",
+      "spring",
+      "rhubarb"
+    ],
+    "https://smittenkitchen.com/2017/05/rhubarb-upside-down-spice-cake/": [
+      "spring",
+      "rhubarb"
+    ],
+    "https://smittenkitchen.com/2016/05/almond-rhubarb-picnic-bars/": [
+      "spring",
+      "rhubarb"
+    ],
+    "https://smittenkitchen.com/2015/04/strawberry-rhubarb-soda-syrup/": [
+      "rhubarb"
+    ],
+    "https://smittenkitchen.com/2014/05/strawberry-rhubarb-crisp-bars/": [
+      "crumbles/crisps",
+      "rhubarb"
+    ],
+    "https://smittenkitchen.com/2013/06/rhubarb-cream-cheese-hand-pies/": [
+      "rhubarb"
+    ],
+    "https://smittenkitchen.com/2012/05/rhubarb-snacking-cake/": [
+      "rhubarb"
+    ],
+    "https://smittenkitchen.com/2011/05/rhubarb-streusel-muffins/": [
+      "rhubarb"
+    ],
+    "https://smittenkitchen.com/2010/06/strawberry-rhubarb-pie-improved/": [
+      "rhubarb"
+    ],
+    "https://smittenkitchen.com/2022/06/strawberry-brita-cake/": [
+      "strawberries",
+      "cake",
+      "celebration cakes"
+    ],
+    "https://smittenkitchen.com/2021/07/frozen-strawberry-daiquiris/": [
+      "drinks",
+      "strawberries"
+    ],
+    "https://smittenkitchen.com/2019/06/strawberry-summer-sheet-cake/": [
+      "strawberries"
+    ],
+    "https://smittenkitchen.com/2017/05/the-red-and-black/": [
+      "strawberries"
+    ],
+    "https://smittenkitchen.com/2017/05/strawberry-graham-icebox-cake/": [
+      "strawberries"
+    ],
+    "https://smittenkitchen.com/2016/06/strawberry-milk/": [
+      "snack",
+      "strawberries"
+    ],
+    "https://smittenkitchen.com/2019/07/frozen-watermelon-mojitos/": [
+      "watermelon"
+    ],
+    "https://smittenkitchen.com/2018/06/watermelon-cucumber-salad/": [
+      "watermelon",
+      "cucumber"
+    ],
+    "https://smittenkitchen.com/2009/07/watermelon-lemonade/": [
+      "watermelon"
+    ],
+    "https://smittenkitchen.com/2008/07/chopped-vegetable-watermelon-and-feta-salad/": [
+      "watermelon",
+      "radishes"
+    ],
+    "https://smittenkitchen.com/2021/11/fall-bliss-salad/": [
+      "thanksgiving",
+      "fall",
+      "christmas",
+      "winter squash"
+    ],
+    "https://smittenkitchen.com/2021/10/old-school-dinner-rolls/": [
+      "thanksgiving",
+      "bread",
+      "christmas"
+    ],
+    "https://smittenkitchen.com/2020/12/small-batch-eggnog/": [
+      "drinks",
+      "christmas"
+    ],
+    "https://smittenkitchen.com/2020/12/gingerbread-yule-log/": [
+      "christmas",
+      "celebration cakes"
+    ],
+    "https://smittenkitchen.com/2020/11/sour-cream-and-chive-fantails/": [
+      "thanksgiving",
+      "easter",
+      "bread",
+      "christmas"
+    ],
+    "https://smittenkitchen.com/2018/12/baklava-babka/": [
+      "sweet projects",
+      "bread",
+      "christmas"
+    ],
+    "https://smittenkitchen.com/2015/12/gingerbread-layer-cake/": [
+      "christmas"
+    ],
+    "https://smittenkitchen.com/2015/11/pecan-pie/": [
+      "christmas"
+    ],
+    "https://smittenkitchen.com/2022/12/baked-brie-with-garlic-butter-mushrooms/": [
+      "cheese",
+      "appetizers",
+      "party snacks",
+      "date night",
+      "mushrooms"
+    ],
+    "https://smittenkitchen.com/2022/02/sweetheart-sables/": [
+      "sweet projects",
+      "cookie",
+      "date night"
+    ],
+    "https://smittenkitchen.com/2019/06/chocolate-budino/": [
+      "chocolate",
+      "pudding",
+      "date night"
+    ],
+    "https://smittenkitchen.com/2019/02/chocolate-puddle-cakes/": [
+      "chocolate",
+      "passover",
+      "date night"
+    ],
+    "https://smittenkitchen.com/2018/09/foolproof-cacio-e-pepe/": [
+      "date night"
+    ],
+    "https://smittenkitchen.com/2015/03/carrot-graham-layer-cake/": [
+      "easter"
+    ],
+    "https://smittenkitchen.com/2015/03/potatoes-with-soft-eggs-and-bacon-vinaigrette/": [
+      "easter"
+    ],
+    "https://smittenkitchen.com/2014/04/baked-eggs-with-spinach-and-mushrooms/": [
+      "easter"
+    ],
+    "https://smittenkitchen.com/2014/04/asparagus-stuffed-eggs/": [
+      "easter",
+      "asparagus"
+    ],
+    "https://smittenkitchen.com/2012/06/asparagus-with-almonds-and-yogurt-dressing/": [
+      "easter",
+      "asparagus"
+    ],
+    "https://smittenkitchen.com/2012/05/vidalia-onion-soup-with-wild-rice/": [
+      "easter"
+    ],
+    "https://smittenkitchen.com/2019/12/unfussy-sugar-cookies/": [
+      "food gifts",
+      "cookie"
+    ],
+    "https://smittenkitchen.com/2018/02/chocolate-peanut-butter-cup-cookies/": [
+      "peanut butter",
+      "food gifts"
+    ],
+    "https://smittenkitchen.com/2017/12/salted-butter-chocolate-chunk-shortbread/": [
+      "food gifts"
+    ],
+    "https://smittenkitchen.com/2017/04/granola-bark/": [
+      "coconut",
+      "food gifts"
+    ],
+    "https://smittenkitchen.com/2016/12/union-square-cafes-bar-nuts/": [
+      "snack",
+      "food gifts"
+    ],
+    "https://smittenkitchen.com/2016/12/chocolate-caramel-crunch-almonds-new-kitchen-favorites/": [
+      "candy",
+      "food gifts"
+    ],
+    "https://smittenkitchen.com/2023/07/buffalo-chicken-cobb-salad/": [
+      "chicken",
+      "salad",
+      "meat",
+      "game day",
+      "carrots",
+      "celery"
+    ],
+    "https://smittenkitchen.com/2023/05/smashed-chicken-meatball-sliders/": [
+      "game day",
+      "meat",
+      "sandwich",
+      "chicken"
+    ],
+    "https://smittenkitchen.com/2021/05/chickpea-pan-bagnat/": [
+      "game day",
+      "picnics",
+      "sandwich"
+    ],
+    "https://smittenkitchen.com/2019/08/salted-caramel-pretzel-blondies/": [
+      "and blondies",
+      "game day",
+      "cookie"
+    ],
+    "https://smittenkitchen.com/2019/01/baked-buffalo-wings/": [
+      "game day",
+      "party snacks"
+    ],
+    "https://smittenkitchen.com/2021/12/new-york-sour/": [
+      "drinks",
+      "hanukkah"
+    ],
+    "https://smittenkitchen.com/2015/12/potato-kugel/": [
+      "hanukkah"
+    ],
+    "https://smittenkitchen.com/2014/12/jelly-doughnuts/": [
+      "doughnut",
+      "hanukkah"
+    ],
+    "https://smittenkitchen.com/2011/12/parsnip-latkes-with-horseradish-and-dill/": [
+      "hanukkah"
+    ],
+    "https://smittenkitchen.com/2010/11/apple-latkes/": [
+      "hanukkah"
+    ],
+    "https://smittenkitchen.com/2008/12/potato-pancakes-latkes/": [
+      "hanukkah"
+    ],
+    "https://smittenkitchen.com/2006/12/zucchini-latkes/": [
+      "hanukkah"
+    ],
+    "https://smittenkitchen.com/2019/04/toasted-pecan-cake/": [
+      "passover",
+      "brown butter"
+    ],
+    "https://smittenkitchen.com/2017/04/almond-horn-cookies/": [
+      "passover"
+    ],
+    "https://smittenkitchen.com/2016/09/chocolate-pavlova/": [
+      "passover"
+    ],
+    "https://smittenkitchen.com/2020/04/layered-yogurt-flatbreads/": [
+      "bread",
+      "ramadan"
+    ],
+    "https://smittenkitchen.com/2019/01/cozy-cabbage-and-farro-soup/": [
+      "cabbage",
+      "pantry",
+      "winter",
+      "ramadan",
+      "grain/rice"
+    ],
+    "https://smittenkitchen.com/2020/11/corn-pudding/": [
+      "thanksgiving",
+      "corn",
+      "brown butter"
+    ],
+    "https://smittenkitchen.com/2020/11/potato-and-leek-gratin/": [
+      "thanksgiving",
+      "casserole",
+      "potatoes",
+      "leeks"
+    ],
+    "https://smittenkitchen.com/2020/07/collard-greens-with-cornmeal-dumplings/": [
+      "thanksgiving",
+      "grilling"
+    ],
+    "https://smittenkitchen.com/2020/06/smashed-potatoes-with-sweet-corn-relish/": [
+      "thanksgiving",
+      "peas",
+      "potatoes",
+      "corn"
+    ],
+    "https://smittenkitchen.com/2020/04/crispy-crumbled-potatoes/": [
+      "thanksgiving",
+      "brunch"
+    ],
+    "https://smittenkitchen.com/2015/12/fudgy-bourbon-balls/": [
+      "bourbon",
+      "candy"
+    ],
+    "https://smittenkitchen.com/2015/09/the-perfect-manhattan/": [
+      "bourbon"
+    ],
+    "https://smittenkitchen.com/2015/04/not-derby-pie-bars/": [
+      "bourbon"
+    ],
+    "https://smittenkitchen.com/2014/12/fairytale-of-new-york/": [
+      "bourbon"
+    ],
+    "https://smittenkitchen.com/2011/05/vermontucky-lemonade/": [
+      "bourbon"
+    ],
+    "https://smittenkitchen.com/2010/12/milk-punch/": [
+      "bourbon"
+    ],
+    "https://smittenkitchen.com/2008/08/bourbon-peach-hand-pies/": [
+      "bourbon"
+    ],
+    "https://smittenkitchen.com/2008/03/butterscotch-ice-cream/": [
+      "bourbon"
+    ],
+    "https://smittenkitchen.com/2014/06/coconut-brown-butter-cookies/": [
+      "coconut",
+      "brown butter"
+    ],
+    "https://smittenkitchen.com/2013/11/cauliflower-with-brown-butter-crumbs/": [
+      "brown butter"
+    ],
+    "https://smittenkitchen.com/2013/03/coconut-bread/": [
+      "brown butter"
+    ],
+    "https://smittenkitchen.com/2011/12/cinnamon-brown-butter-breakfast-puffs/": [
+      "brown butter"
+    ],
+    "https://smittenkitchen.com/2011/03/sally-lunn-bread-honeyed-brown-butter-spread/": [
+      "brown butter"
+    ],
+    "https://smittenkitchen.com/2010/09/peach-shortbread/": [
+      "brown butter"
+    ],
+    "https://smittenkitchen.com/2010/07/nectarine-brown-butter-buckle/": [
+      "brown butter"
+    ],
+    "https://smittenkitchen.com/2020/12/baked-brie-with-balsamic-red-onions/": [
+      "cheese",
+      "appetizers",
+      "party snacks"
+    ],
+    "https://smittenkitchen.com/2020/09/homemade-cream-cheese/": [
+      "cheese"
+    ],
+    "https://smittenkitchen.com/2019/01/plush-coconut-cake/": [
+      "coconut"
+    ],
+    "https://smittenkitchen.com/2018/04/triple-coconut-cream-pie/": [
+      "coconut"
+    ],
+    "https://smittenkitchen.com/2014/04/dark-chocolate-coconut-macaroons/": [
+      "coconut"
+    ],
+    "https://smittenkitchen.com/2021/07/deviled-eggs/": [
+      "eggs",
+      "appetizers",
+      "party snacks"
+    ],
+    "https://smittenkitchen.com/2019/03/extra-billowy-dutch-baby-pancake/": [
+      "eggs",
+      "pancakes"
+    ],
+    "https://smittenkitchen.com/2019/02/bodega-style-egg-and-cheese-sandwich/": [
+      "eggs",
+      "sandwich"
+    ],
+    "https://smittenkitchen.com/2019/01/crispy-rice-and-egg-bowl-with-ginger-scallion-vinaigrette/": [
+      "pantry",
+      "eggs",
+      "put an egg on it",
+      "grain/rice"
+    ],
+    "https://smittenkitchen.com/2018/09/breakfast-burritos/": [
+      "eggs"
+    ],
+    "https://smittenkitchen.com/2022/08/corn-butter-farro/": [
+      "corn",
+      "put an egg on it",
+      "grain/rice"
+    ],
+    "https://smittenkitchen.com/2017/08/fried-rice-with-zucchini-tomatoes-and-parmesan/": [
+      "summer squash",
+      "tomatoes",
+      "put an egg on it",
+      "grain/rice"
+    ],
+    "https://smittenkitchen.com/2017/05/broccoli-rubble-farro-salad/": [
+      "broccoli",
+      "put an egg on it",
+      "grain/rice"
+    ],
+    "https://smittenkitchen.com/2017/01/crusty-baked-cauliflower-and-farro/": [
+      "cauliflower",
+      "grain/rice"
+    ],
+    "https://smittenkitchen.com/2019/03/perfect-meatballs-and-spaghetti/": [
+      "beef",
+      "pork",
+      "turkey"
+    ],
+    "https://smittenkitchen.com/2018/02/korean-braised-short-ribs/": [
+      "beef",
+      "multi-cooker"
+    ],
+    "https://smittenkitchen.com/2017/02/tomato-glazed-meatloaves-with-brown-butter-mashed-potatoes/": [
+      "beef"
+    ],
+    "https://smittenkitchen.com/2016/02/everyday-meatballs/": [
+      "beef",
+      "pork"
+    ],
+    "https://smittenkitchen.com/2015/05/fake-shack-burger/": [
+      "beef"
+    ],
+    "https://smittenkitchen.com/2017/06/crispy-spiced-lamb-and-lentils/": [
+      "lamb"
+    ],
+    "https://smittenkitchen.com/2010/06/lamb-chops-with-pistachio-tapenade/": [
+      "lamb"
+    ],
+    "https://smittenkitchen.com/2010/02/baked-rigatoni-with-tiny-meatballs/": [
+      "lamb"
+    ],
+    "https://smittenkitchen.com/2008/08/kefta-and-zucchini-kebabs/": [
+      "lamb",
+      "turkey"
+    ],
+    "https://smittenkitchen.com/2016/10/broken-pasta-with-pork-ragu/": [
+      "arugula",
+      "pork"
+    ],
+    "https://smittenkitchen.com/2016/07/corn-bacon-and-parmesan-pasta/": [
+      "pork"
+    ],
+    "https://smittenkitchen.com/2019/11/dry-brined-turkey-with-roasted-onions/": [
+      "turkey"
+    ],
+    "https://smittenkitchen.com/2018/01/sheet-pan-meatballs-with-crispy-turmeric-chickpeas/": [
+      "sheet pan",
+      "turkey"
+    ],
+    "https://smittenkitchen.com/2008/02/greens-orzo-meatball-soup/": [
+      "turkey",
+      "escarole"
+    ],
+    "https://smittenkitchen.com/2007/07/red-bean-chili/": [
+      "turkey"
+    ],
+    "https://smittenkitchen.com/2020/03/carrot-and-white-bean-burgers/": [
+      "pantry",
+      "carrots",
+      "sandwich",
+      "put an egg on it"
+    ],
+    "https://smittenkitchen.com/2019/10/white-bean-soup-with-crispy-kale/": [
+      "pantry",
+      "kale",
+      "soup"
+    ],
+    "https://smittenkitchen.com/2019/04/cannellini-aglio-e-olio/": [
+      "pantry",
+      "artichokes"
+    ],
+    "https://smittenkitchen.com/2017/03/peanut-butter-swirled-brownies/": [
+      "peanut butter",
+      "and blondies"
+    ],
+    "https://smittenkitchen.com/2016/08/chocolate-peanut-butter-icebox-cake/": [
+      "peanut butter"
+    ],
+    "https://smittenkitchen.com/2016/03/chocolate-peanut-butter-tart/": [
+      "peanut butter"
+    ],
+    "https://smittenkitchen.com/2015/10/salted-peanut-butter-cookies/": [
+      "peanut butter"
+    ],
+    "https://smittenkitchen.com/2014/02/chocolate-peanut-butter-cheesecake/": [
+      "peanut butter"
+    ],
+    "https://smittenkitchen.com/2011/01/chocolate-peanut-spread-peanutella/": [
+      "peanut butter"
+    ],
+    "https://smittenkitchen.com/2010/10/buckeyes/": [
+      "peanut butter",
+      "candy"
+    ],
+    "https://smittenkitchen.com/2008/10/peanut-butter-crispy-bars/": [
+      "peanut butter"
+    ],
+    "https://smittenkitchen.com/2018/06/linguine-and-clams/": [
+      "seafood"
+    ],
+    "https://smittenkitchen.com/2014/11/smoked-whitefish-dip-with-horseradish/": [
+      "seafood"
+    ],
+    "https://smittenkitchen.com/2013/07/mama-canales-garcias-avocado-shrimp-salsa/": [
+      "seafood"
+    ],
+    "https://smittenkitchen.com/2013/05/lobster-and-potato-salad/": [
+      "seafood"
+    ],
+    "https://smittenkitchen.com/2010/12/broiled-mussels/": [
+      "seafood"
+    ],
+    "https://smittenkitchen.com/2009/08/lobster-rolls/": [
+      "seafood"
+    ],
+    "https://smittenkitchen.com/2007/06/catch-up-solstice-edition/": [
+      "seafood"
+    ],
+    "https://smittenkitchen.com/2007/04/fish-tacos/": [
+      "seafood"
+    ],
+    "https://smittenkitchen.com/2020/01/roasted-squash-and-tofu-with-ginger/": [
+      "winter squash",
+      "tofu"
+    ],
+    "https://smittenkitchen.com/2019/08/black-pepper-tofu-and-eggplant/": [
+      "eggplant",
+      "tofu"
+    ],
+    "https://smittenkitchen.com/2024/05/grilled-feta-with-asparagus-chimichurri/": [
+      "herbs",
+      "asparagus",
+      "appetizers",
+      "party snacks",
+      "greens",
+      "salad",
+      "onions",
+      "grilling"
+    ],
+    "https://smittenkitchen.com/2021/06/perfect-forever-cornbread/": [
+      "muffin/quick bread",
+      "picnics",
+      "bread",
+      "corn"
+    ],
+    "https://smittenkitchen.com/2018/08/focaccia-sandwiches-for-a-crowd/": [
+      "picnics",
+      "bread",
+      "sandwich"
+    ],
+    "https://smittenkitchen.com/2022/05/double-chocolate-chip-muffins/": [
+      "muffin/quick bread",
+      "breakfast",
+      "chocolate"
+    ],
+    "https://smittenkitchen.com/2021/05/twisty-cinnamon-buns/": [
+      "sweet projects",
+      "brunch"
+    ],
+    "https://smittenkitchen.com/2021/04/spring-asparagus-galette/": [
+      "brunch",
+      "asparagus",
+      "spring",
+      "lunch",
+      "tarts/quiche"
+    ],
+    "https://smittenkitchen.com/2025/06/slushy-paper-plane/": [
+      "drinks",
+      "summer"
+    ],
+    "https://smittenkitchen.com/2020/08/kachumber-cooler/": [
+      "drinks"
+    ],
+    "https://smittenkitchen.com/2013/05/spring-vegetable-potstickers/": [
+      "peas",
+      "asparagus",
+      "dumplings"
+    ],
+    "https://smittenkitchen.com/2008/05/semolina-dumpling-soup/": [
+      "dumplings"
+    ],
+    "https://smittenkitchen.com/2008/02/matzo-ball-soup/": [
+      "dumplings"
+    ],
+    "https://smittenkitchen.com/2007/07/from-insert-your-origin-here-with-love/": [
+      "dumplings"
+    ],
+    "https://smittenkitchen.com/2006/11/best-things-in-small-packages/": [
+      "dumplings"
+    ],
+    "https://smittenkitchen.com/2020/05/beach-bean-salad/": [
+      "picnics",
+      "peppers",
+      "lunch"
+    ],
+    "https://smittenkitchen.com/2016/04/carrot-tahini-muffins/": [
+      "muffin/quick bread",
+      "carrots"
+    ],
+    "https://smittenkitchen.com/2018/07/corn-fritters/": [
+      "snack",
+      "pancakes",
+      "party snacks"
+    ],
+    "https://smittenkitchen.com/2017/05/tall-fluffy-buttermilk-pancakes/": [
+      "pancakes"
+    ],
+    "https://smittenkitchen.com/2017/01/chocolate-dutch-baby/": [
+      "pancakes"
+    ],
+    "https://smittenkitchen.com/2016/10/winter-squash-pancakes-with-crispy-sage-and-brown-butter/": [
+      "pancakes",
+      "winter squash"
+    ],
+    "https://smittenkitchen.com/2016/05/failproof-crepes-a-crepe-party/": [
+      "pancakes"
+    ],
+    "https://smittenkitchen.com/2015/06/strawberry-cornmeal-griddle-cakes/": [
+      "pancakes"
+    ],
+    "https://smittenkitchen.com/2023/08/corn-cacio-e-pepe/": [
+      "corn",
+      "pasta"
+    ],
+    "https://smittenkitchen.com/2021/06/zucchini-butter-spaghetti/": [
+      "zucchini",
+      "pasta"
+    ],
+    "https://smittenkitchen.com/2018/05/pasta-salad-with-roasted-carrots-and-sunflower-seed-dressing/": [
+      "picnics",
+      "carrots"
+    ],
+    "https://smittenkitchen.com/2018/10/crispy-spinach-pizza/": [
+      "spinach",
+      "pizza"
+    ],
+    "https://smittenkitchen.com/2018/01/stromboli/": [
+      "pizza"
+    ],
+    "https://smittenkitchen.com/2017/06/grilled-pizza/": [
+      "pizza"
+    ],
+    "https://smittenkitchen.com/2017/02/broccoli-pizza/": [
+      "broccoli",
+      "pizza"
+    ],
+    "https://smittenkitchen.com/2016/08/summer-squash-pizza/": [
+      "summer squash",
+      "pizza"
+    ],
+    "https://smittenkitchen.com/2016/04/potato-pizza-even-better/": [
+      "pizza"
+    ],
+    "https://smittenkitchen.com/2013/11/spinach-and-egg-pizzettes/": [
+      "pizza"
+    ],
+    "https://smittenkitchen.com/2013/10/lazy-pizza-dough-favorite-margarita-pizza/": [
+      "pizza"
+    ],
+    "https://smittenkitchen.com/2013/04/ramp-pizza/": [
+      "pizza"
+    ],
+    "https://smittenkitchen.com/2017/05/potatoes-anna/": [
+      "put an egg on it"
+    ],
+    "https://smittenkitchen.com/2017/03/mushroom-tartines/": [
+      "mushrooms",
+      "put an egg on it"
+    ],
+    "https://smittenkitchen.com/2017/03/cornbread-waffles/": [
+      "put an egg on it",
+      "waffles"
+    ],
+    "https://smittenkitchen.com/2023/06/summer-pea-salad-with-unexpected-dressing/": [
+      "salad",
+      "peas"
+    ],
+    "https://smittenkitchen.com/2017/06/zucchini-grilled-cheese/": [
+      "summer squash",
+      "sandwich"
+    ],
+    "https://smittenkitchen.com/2016/08/eggplant-parmesan-melts/": [
+      "eggplant",
+      "sandwich"
+    ],
+    "https://smittenkitchen.com/2018/07/minimalist-barbecue-sauce/": [
+      "savory condiments"
+    ],
+    "https://smittenkitchen.com/2011/08/naked-tomato-sauce/": [
+      "savory condiments"
+    ],
+    "https://smittenkitchen.com/2011/06/linguine-with-pea-pesto/": [
+      "savory condiments"
+    ],
+    "https://smittenkitchen.com/2010/08/fresh-tomato-sauce/": [
+      "savory condiments"
+    ],
+    "https://smittenkitchen.com/2010/01/tomato-sauce-with-butter-and-onions/": [
+      "savory condiments"
+    ],
+    "https://smittenkitchen.com/2009/12/walnut-pesto/": [
+      "savory condiments"
+    ],
+    "https://smittenkitchen.com/2008/12/feta-salsa/": [
+      "savory condiments"
+    ],
+    "https://smittenkitchen.com/2007/09/stand-up-eats/": [
+      "savory condiments"
+    ],
+    "https://smittenkitchen.com/2006/08/homemade-barbecue-sauce/": [
+      "savory condiments"
+    ],
+    "https://smittenkitchen.com/2019/09/cinnamon-sugar-scones/": [
+      "scones/biscuits"
+    ],
+    "https://smittenkitchen.com/2018/11/drop-cornbread-biscuits/": [
+      "scones/biscuits"
+    ],
+    "https://smittenkitchen.com/2015/11/parsley-pecorino-biscuits/": [
+      "scones/biscuits",
+      "herbs"
+    ],
+    "https://smittenkitchen.com/2015/01/caramelized-onion-and-gruyere-biscuits/": [
+      "scones/biscuits"
+    ],
+    "https://smittenkitchen.com/2013/03/my-favorite-buttermilk-biscuits/": [
+      "scones/biscuits"
+    ],
+    "https://smittenkitchen.com/2012/06/strawberries-and-cream-biscuits/": [
+      "scones/biscuits"
+    ],
+    "https://smittenkitchen.com/2022/04/snacky-asparagus/": [
+      "side dish",
+      "spring",
+      "asparagus",
+      "snack"
+    ],
+    "https://smittenkitchen.com/2018/09/flapjacks/": [
+      "snack",
+      "and blondies"
+    ],
+    "https://smittenkitchen.com/2016/02/miso-black-sesame-caramel-corn/": [
+      "snack",
+      "candy"
+    ],
+    "https://smittenkitchen.com/2015/06/chocolate-chunk-granola-bars/": [
+      "snack"
+    ],
+    "https://smittenkitchen.com/2014/12/popcorn-party-mix/": [
+      "snack"
+    ],
+    "https://smittenkitchen.com/2016/01/chicken-chili/": [
+      "slow cooker",
+      "multi-cooker",
+      "stew"
+    ],
+    "https://smittenkitchen.com/2014/10/better-chicken-pot-pies/": [
+      "stew"
+    ],
+    "https://smittenkitchen.com/2014/04/three-bean-chili/": [
+      "slow cooker",
+      "stew"
+    ],
+    "https://smittenkitchen.com/2013/01/lentil-soup-with-sausage-chard-and-garlic/": [
+      "multi-cooker",
+      "stew"
+    ],
+    "https://smittenkitchen.com/2011/01/chard-and-white-bean-stew/": [
+      "swiss chard",
+      "stew"
+    ],
+    "https://smittenkitchen.com/2016/11/spinach-sheet-pan-quiche/": [
+      "sheet pan",
+      "spinach",
+      "tarts/quiche"
+    ],
+    "https://smittenkitchen.com/2015/11/roasted-leek-and-white-bean-galettes/": [
+      "tarts/quiche",
+      "leeks"
+    ],
+    "https://smittenkitchen.com/2014/09/herbed-tomato-and-roasted-garlic-tart/": [
+      "tarts/quiche"
+    ],
+    "https://smittenkitchen.com/2013/12/breakfast-slab-pie/": [
+      "tarts/quiche"
+    ],
+    "https://smittenkitchen.com/2013/08/burst-tomato-galette-with-corn-and-zucchini/": [
+      "tarts/quiche"
+    ],
+    "https://smittenkitchen.com/2013/03/french-onion-tart-uk-cookbook-release/": [
+      "tarts/quiche"
+    ],
+    "https://smittenkitchen.com/2015/12/eggnog-waffles-a-few-favorite-kitchen-things/": [
+      "waffles"
+    ],
+    "https://smittenkitchen.com/2015/05/liege-waffles/": [
+      "waffles"
+    ],
+    "https://smittenkitchen.com/2014/12/deep-dark-gingerbread-waffles/": [
+      "waffles"
+    ],
+    "https://smittenkitchen.com/2014/09/latke-waffles/": [
+      "waffles"
+    ],
+    "https://smittenkitchen.com/2013/05/essential-raised-waffles/": [
+      "waffles"
+    ],
+    "https://smittenkitchen.com/2007/03/rich-buttermilk-waffles/": [
+      "waffles"
+    ],
+    "https://smittenkitchen.com/2019/12/unstuffed-mushroom-casserole/": [
+      "casserole",
+      "mushrooms"
+    ],
+    "https://smittenkitchen.com/2021/06/chocolate-ice-cream-sandwiches/": [
+      "freezer friendly",
+      "and popsicles",
+      "cookie"
+    ],
+    "https://smittenkitchen.com/2019/07/corn-salad-with-chile-and-lime/": [
+      "grilling",
+      "corn"
+    ],
+    "https://smittenkitchen.com/2019/06/burrata-with-charred-and-raw-sugar-snap-peas/": [
+      "peas",
+      "grilling"
+    ],
+    "https://smittenkitchen.com/2019/05/exceptional-grilled-chicken/": [
+      "grilling"
+    ],
+    "https://smittenkitchen.com/2018/01/split-pea-soup/": [
+      "leeks",
+      "multi-cooker"
+    ],
+    "https://smittenkitchen.com/2015/02/oven-braised-beef-with-tomatoes-and-garlic/": [
+      "multi-cooker"
+    ],
+    "https://smittenkitchen.com/2013/11/perfect-uncluttered-chicken-stock/": [
+      "slow cooker",
+      "multi-cooker"
+    ],
+    "https://smittenkitchen.com/2011/01/baked-potato-soup/": [
+      "multi-cooker"
+    ],
+    "https://smittenkitchen.com/2010/01/black-bean-soup-toasted-cumin-seed-crema/": [
+      "slow cooker",
+      "multi-cooker"
+    ],
+    "https://smittenkitchen.com/2010/01/southwestern-pulled-brisket/": [
+      "slow cooker",
+      "multi-cooker"
+    ],
+    "https://smittenkitchen.com/2014/11/pickled-cabbage-salad/": [
+      "pickled"
+    ],
+    "https://smittenkitchen.com/2014/07/easiest-fridge-dill-pickles/": [
+      "pickled"
+    ],
+    "https://smittenkitchen.com/2013/06/pickled-vegetable-sandwich-slaw/": [
+      "pickled"
+    ],
+    "https://smittenkitchen.com/2010/06/bread-and-butter-pickles/": [
+      "pickled"
+    ],
+    "https://smittenkitchen.com/2009/06/pickled-sugar-snap-peas/": [
+      "pickled"
+    ],
+    "https://smittenkitchen.com/2009/01/chicken-milanese-an-escarole-salad/": [
+      "pickled",
+      "escarole"
+    ],
+    "https://smittenkitchen.com/2008/01/pickled-carrot-sticks/": [
+      "pickled"
+    ],
+    "https://smittenkitchen.com/2008/01/viennese-cucumber-salad/": [
+      "pickled"
+    ],
+    "https://smittenkitchen.com/2007/06/dilled-potato-and-pickled-cucumber-salad/": [
+      "pickled",
+      "radishes"
+    ],
+    "https://smittenkitchen.com/2017/10/sausage-and-potato-roast-with-arugula/": [
+      "arugula",
+      "sheet pan"
+    ],
+    "https://smittenkitchen.com/2010/04/tangy-spiced-brisket/": [
+      "slow cooker"
+    ],
+    "https://smittenkitchen.com/2018/04/asparagus-and-egg-salad-with-walnuts-and-mint/": [
+      "spring",
+      "asparagus"
+    ],
+    "https://smittenkitchen.com/2025/07/chipwich-ice-cream-cake/": [
+      "cake",
+      "and popsicles",
+      "summer",
+      "celebration cakes"
+    ],
+    "https://smittenkitchen.com/2019/11/roasted-cabbage-with-walnuts-and-parmesan/": [
+      "winter",
+      "cabbage"
+    ],
+    "https://smittenkitchen.com/2019/02/salted-peanut-tart/": [
+      "and blondies",
+      "tarts/pies"
+    ],
+    "https://smittenkitchen.com/2023/07/flaky-chocolate-cake/": [
+      "chocolate",
+      "cake",
+      "everyday cakes",
+      "celebration cakes"
+    ],
+    "https://smittenkitchen.com/2015/10/chocolate-peanut-and-pretzel-brittle/": [
+      "candy"
+    ],
+    "https://smittenkitchen.com/2014/01/homemade-dulce-de-leche/": [
+      "candy"
+    ],
+    "https://smittenkitchen.com/2012/10/apple-cider-caramels/": [
+      "candy"
+    ],
+    "https://smittenkitchen.com/2011/12/peppermint-hot-fudge-sauce/": [
+      "dessert sauces",
+      "candy"
+    ],
+    "https://smittenkitchen.com/2010/03/coconut-milk-fudge/": [
+      "candy"
+    ],
+    "https://smittenkitchen.com/2009/12/spicy-caramel-popcorn/": [
+      "candy"
+    ],
+    "https://smittenkitchen.com/2020/07/dulce-de-leche-chocoflan/": [
+      "chocolate",
+      "sweet projects",
+      "celebration cakes"
+    ],
+    "https://smittenkitchen.com/2020/02/new-classic-wedding-cake-how-to/": [
+      "sweet projects",
+      "wedding cake",
+      "celebration cakes"
+    ],
+    "https://smittenkitchen.com/2020/09/whole-wheat-chocolate-oat-cookies/": [
+      "chocolate",
+      "cookie"
+    ],
+    "https://smittenkitchen.com/2018/12/chocolate-caramel-tart/": [
+      "chocolate",
+      "sweet projects",
+      "tarts/pies"
+    ],
+    "https://smittenkitchen.com/2021/12/checkerboard-cookies/": [
+      "sweet projects",
+      "cookie"
+    ],
+    "https://smittenkitchen.com/2014/08/strawberries-and-cream-with-graham-crumbles/": [
+      "crumbles/crisps"
+    ],
+    "https://smittenkitchen.com/2017/06/best-hot-fudge-sauce/": [
+      "dessert sauces",
+      "and popsicles"
+    ],
+    "https://smittenkitchen.com/2009/12/ridiculously-easy-butterscotch-sauce/": [
+      "dessert sauces"
+    ],
+    "https://smittenkitchen.com/2008/10/paris-a-deep-dark-salted-butter-caramel-sauce/": [
+      "dessert sauces"
+    ],
+    "https://smittenkitchen.com/2016/06/funnel-cake/": [
+      "doughnut"
+    ],
+    "https://smittenkitchen.com/2010/06/chocolate-doughnut-holes/": [
+      "doughnut"
+    ],
+    "https://smittenkitchen.com/2009/10/apple-cider-doughnuts/": [
+      "doughnut"
+    ],
+    "https://smittenkitchen.com/2018/05/ice-cream-cake-roll/": [
+      "and popsicles"
+    ],
+    "https://smittenkitchen.com/2016/09/baked-alaska-smitten-kitchen-turns-10/": [
+      "and popsicles"
+    ],
+    "https://smittenkitchen.com/2015/08/frozen-hot-chocolate/": [
+      "and popsicles"
+    ],
+    "https://smittenkitchen.com/2018/03/luxe-butterscotch-pudding/": [
+      "pudding"
+    ],
+    "https://smittenkitchen.com/2017/02/small-batch-tiramisu/": [
+      "pudding"
+    ],
+    "https://smittenkitchen.com/2015/01/butterscotch-pudding/": [
+      "pudding"
+    ],
+    "https://smittenkitchen.com/2013/04/yogurt-panna-cotta-with-walnuts-and-honey/": [
+      "pudding"
+    ],
+    "https://smittenkitchen.com/2011/11/baked-pumpkin-and-sour-cream-puddings/": [
+      "pudding",
+      "pumpkin"
+    ],
+    "https://smittenkitchen.com/2011/01/vanilla-bean-pudding/": [
+      "pudding"
+    ],
+    "https://smittenkitchen.com/2019/03/extra-flaky-pie-crust/": [
+      "tarts/pies"
+    ],
+    "https://smittenkitchen.com/2017/08/german-chocolate-cake-a-wedding-cake/": [
+      "wedding cake"
+    ],
+    "https://smittenkitchen.com/2008/07/project-wedding-cake-ta-da/": [
+      "wedding cake"
+    ],
+    "https://smittenkitchen.com/2008/07/project-wedding-cake-swiss-buttercream/": [
+      "wedding cake"
+    ],
+    "https://smittenkitchen.com/2008/07/project-wedding-cake-the-cake-is-baked/": [
+      "wedding cake"
+    ],
+    "https://smittenkitchen.com/2008/06/project-wedding-cake-an-introduction/": [
+      "wedding cake"
+    ],
+    "https://smittenkitchen.com/2015/06/crispy-frizzled-artichokes/": [
+      "artichokes"
+    ],
+    "https://smittenkitchen.com/2015/04/artichoke-gratin-toasts/": [
+      "artichokes"
+    ],
+    "https://smittenkitchen.com/2009/12/mushroom-marsala-pasta-with-artichokes/": [
+      "artichokes"
+    ],
+    "https://smittenkitchen.com/2009/04/artichoke-olive-crostini/": [
+      "artichokes"
+    ],
+    "https://smittenkitchen.com/2009/03/artichokes-braised-in-lemon-and-olive-oil/": [
+      "artichokes"
+    ],
+    "https://smittenkitchen.com/2008/02/pasta-puttanesca-broken-artichoke-hearts-salad/": [
+      "artichokes"
+    ],
+    "https://smittenkitchen.com/2007/06/box-one-of-two/": [
+      "artichokes"
+    ],
+    "https://smittenkitchen.com/2016/04/shaved-asparagus-frittata/": [
+      "asparagus"
+    ],
+    "https://smittenkitchen.com/2011/05/spring-salad-with-new-potatoes/": [
+      "radishes",
+      "asparagus"
+    ],
+    "https://smittenkitchen.com/2011/05/ribboned-asparagus-salad-with-lemon/": [
+      "asparagus"
+    ],
+    "https://smittenkitchen.com/2016/02/broccoli-melts/": [
+      "broccoli"
+    ],
+    "https://smittenkitchen.com/2015/10/the-broccoli-roast/": [
+      "broccoli"
+    ],
+    "https://smittenkitchen.com/2015/09/broccoli-cheddar-soup/": [
+      "broccoli"
+    ],
+    "https://smittenkitchen.com/2014/03/broccoli-cheddar-and-wild-rice-casserole/": [
+      "broccoli"
+    ],
+    "https://smittenkitchen.com/2013/10/potato-and-broccolini-frittata/": [
+      "broccoli"
+    ],
+    "https://smittenkitchen.com/2011/11/dijon-braised-brussels-sprouts/": [
+      "brussels sprouts"
+    ],
+    "https://smittenkitchen.com/2009/12/balsamic-braised-brussels-with-pancetta/": [
+      "brussels sprouts"
+    ],
+    "https://smittenkitchen.com/2007/11/brussel-sprouts-and-chestnuts-in-brown-butter/": [
+      "brussels sprouts"
+    ],
+    "https://smittenkitchen.com/2007/01/take-my-wife/": [
+      "brussels sprouts"
+    ],
+    "https://smittenkitchen.com/2006/12/chicken-skewers-with-dukkah-crust/": [
+      "brussels sprouts"
+    ],
+    "https://smittenkitchen.com/2006/12/holding-the-gray-salt/": [
+      "brussels sprouts"
+    ],
+    "https://smittenkitchen.com/2015/02/charred-cauliflower-quesadillas/": [
+      "peppers",
+      "cauliflower"
+    ],
+    "https://smittenkitchen.com/2016/03/spring-chicken-salad-toasts/": [
+      "radishes",
+      "cucumber",
+      "celery"
+    ],
+    "https://smittenkitchen.com/2015/09/caponata/": [
+      "eggplant",
+      "celery"
+    ],
+    "https://smittenkitchen.com/2013/11/apple-and-herb-stuffing-for-all-seasons/": [
+      "celery"
+    ],
+    "https://smittenkitchen.com/2013/02/egg-salad-with-pickled-celery-and-coarse-dijon/": [
+      "celery"
+    ],
+    "https://smittenkitchen.com/2009/05/endive-and-celery-salad-with-fennel-vinaigrette/": [
+      "endive",
+      "celery"
+    ],
+    "https://smittenkitchen.com/2016/06/charred-eggplant-and-walnut-pesto-pasta-salad/": [
+      "eggplant"
+    ],
+    "https://smittenkitchen.com/2012/09/baked-orzo-with-eggplant-and-mozzarella/": [
+      "eggplant"
+    ],
+    "https://smittenkitchen.com/2020/08/shaved-fennel-and-crushed-olive-salad/": [
+      "fennel"
+    ],
+    "https://smittenkitchen.com/2016/11/root-vegetable-gratin/": [
+      "onions",
+      "fennel"
+    ],
+    "https://smittenkitchen.com/2011/02/green-bean-salad-with-pickled-red-onions-and-fried-almonds/": [
+      "green beans",
+      "fennel"
+    ],
+    "https://smittenkitchen.com/2015/07/green-beans-with-almond-pesto/": [
+      "green beans"
+    ],
+    "https://smittenkitchen.com/2013/11/green-bean-casserole-with-crispy-onions/": [
+      "green beans"
+    ],
+    "https://smittenkitchen.com/2009/07/arugula-potato-and-green-bean-salad/": [
+      "arugula",
+      "green beans"
+    ],
+    "https://smittenkitchen.com/2009/06/pesto-potato-salad-with-green-beans/": [
+      "green beans"
+    ],
+    "https://smittenkitchen.com/2008/09/braised-romano-beans/": [
+      "green beans"
+    ],
+    "https://smittenkitchen.com/2008/05/haricot-vert-with-shallots/": [
+      "green beans"
+    ],
+    "https://smittenkitchen.com/2008/05/green-bean-and-cherry-tomato-salad/": [
+      "green beans"
+    ],
+    "https://smittenkitchen.com/2007/08/bean-symphony/": [
+      "green beans"
+    ],
+    "https://smittenkitchen.com/2013/07/grilled-bacon-salad-with-arugula-and-balsamic/": [
+      "arugula"
+    ],
+    "https://smittenkitchen.com/2010/07/summer-succotash-with-bacon-and-croutons/": [
+      "arugula"
+    ],
+    "https://smittenkitchen.com/2009/09/corn-bread-salad/": [
+      "arugula",
+      "herbs"
+    ],
+    "https://smittenkitchen.com/2009/03/penne-with-potatoes-and-rocket/": [
+      "arugula"
+    ],
+    "https://smittenkitchen.com/2007/04/gulping-beanfuls/": [
+      "arugula"
+    ],
+    "https://smittenkitchen.com/2007/03/little-wraps/": [
+      "arugula"
+    ],
+    "https://smittenkitchen.com/2013/09/baked-pasta-with-broccoli-rabe-and-sausage/": [
+      "broccoli rabe"
+    ],
+    "https://smittenkitchen.com/2012/04/pasta-with-garlicky-broccoli-rabe/": [
+      "broccoli rabe"
+    ],
+    "https://smittenkitchen.com/2008/12/pizza-with-broccoli-rabe-and-roasted-onions/": [
+      "broccoli rabe"
+    ],
+    "https://smittenkitchen.com/2010/01/barley-risotto-with-beans-and-greens/": [
+      "escarole"
+    ],
+    "https://smittenkitchen.com/2013/11/parsley-leaf-potatoes/": [
+      "herbs"
+    ],
+    "https://smittenkitchen.com/2009/12/creamed-mushrooms-on-chive-butter-toast/": [
+      "herbs"
+    ],
+    "https://smittenkitchen.com/2009/09/roasted-tomatoes-and-cipollini/": [
+      "herbs"
+    ],
+    "https://smittenkitchen.com/2015/11/kale-and-caramelized-onion-stuffing/": [
+      "kale"
+    ],
+    "https://smittenkitchen.com/2015/05/mushrooms-and-greens-with-toast/": [
+      "mushrooms",
+      "kale"
+    ],
+    "https://smittenkitchen.com/2015/04/potato-scallion-and-kale-cakes/": [
+      "kale"
+    ],
+    "https://smittenkitchen.com/2014/12/twice-baked-potatoes-with-kale/": [
+      "kale"
+    ],
+    "https://smittenkitchen.com/2014/03/kale-and-quinoa-salad-with-ricotta-salata/": [
+      "kale"
+    ],
+    "https://smittenkitchen.com/2014/01/parmesan-broth-with-kale-and-white-beans/": [
+      "kale"
+    ],
+    "https://smittenkitchen.com/2013/08/kale-salad-with-pecorino-and-walnuts/": [
+      "kale"
+    ],
+    "https://smittenkitchen.com/2014/06/nancys-chopped-salad/": [
+      "radicchio"
+    ],
+    "https://smittenkitchen.com/2019/10/skillet-ravioli-with-spinach/": [
+      "spinach"
+    ],
+    "https://smittenkitchen.com/2014/05/fresh-spinach-pasta/": [
+      "spinach"
+    ],
+    "https://smittenkitchen.com/2012/10/pancetta-white-bean-and-swiss-chard-pot-pies/": [
+      "swiss chard"
+    ],
+    "https://smittenkitchen.com/2012/08/leek-chard-and-corn-flatbread/": [
+      "swiss chard",
+      "leeks"
+    ],
+    "https://smittenkitchen.com/2010/04/creamed-chard-and-spring-onions/": [
+      "swiss chard"
+    ],
+    "https://smittenkitchen.com/2009/11/swiss-chard-and-sweet-potato-gratin/": [
+      "swiss chard"
+    ],
+    "https://smittenkitchen.com/2008/10/spaghetti-with-swiss-chard-and-garlic-chips/": [
+      "swiss chard"
+    ],
+    "https://smittenkitchen.com/2008/01/leek-and-swiss-chard-tart/": [
+      "swiss chard"
+    ],
+    "https://smittenkitchen.com/2012/03/potato-knish-two-ways/": [
+      "leeks"
+    ],
+    "https://smittenkitchen.com/2011/05/leeks-toasts-with-blue-cheese/": [
+      "leeks"
+    ],
+    "https://smittenkitchen.com/2010/04/leek-bread-pudding/": [
+      "leeks"
+    ],
+    "https://smittenkitchen.com/2009/10/quiche-lorraine/": [
+      "leeks"
+    ],
+    "https://smittenkitchen.com/2015/10/baked-potatoes-with-wild-mushroom-ragu/": [
+      "mushrooms"
+    ],
+    "https://smittenkitchen.com/2016/05/crispy-tortellini-with-peas-and-prosciutto/": [
+      "peas"
+    ],
+    "https://smittenkitchen.com/2014/06/pasta-and-fried-zucchini-salad/": [
+      "peas"
+    ],
+    "https://smittenkitchen.com/2017/06/grilled-pepper-and-torn-mozzarella-panzanella/": [
+      "peppers"
+    ],
+    "https://smittenkitchen.com/2015/08/corn-chowder-salad/": [
+      "peppers"
+    ],
+    "https://smittenkitchen.com/2012/08/charred-pepper-steak-sauce/": [
+      "peppers"
+    ],
+    "https://smittenkitchen.com/2011/06/roasted-peppers-with-capers-and-mozzarella/": [
+      "peppers"
+    ],
+    "https://smittenkitchen.com/2012/06/chopped-salad-with-feta-lime-and-mint/": [
+      "radishes"
+    ],
+    "https://smittenkitchen.com/2011/07/charred-corn-tacos-with-zucchini-radish-slaw/": [
+      "radishes"
+    ],
+    "https://smittenkitchen.com/2008/07/napa-cabbage-salad-with-buttermilk-dressing/": [
+      "radishes"
+    ],
+    "https://smittenkitchen.com/2008/07/sauteed-radishes-and-sugar-snaps-with-dill/": [
+      "radishes"
+    ],
+    "https://smittenkitchen.com/2018/07/grilled-zucchini-ribbons-with-pesto-and-white-beans/": [
+      "summer squash",
+      "zucchini"
+    ],
+    "https://smittenkitchen.com/2016/08/burrata-with-lentils-and-basil-vinaigrette/": [
+      "summer squash"
+    ],
+    "https://smittenkitchen.com/2015/06/herbed-summer-squash-pasta-bake/": [
+      "summer squash"
+    ],
+    "https://smittenkitchen.com/2016/11/cheesecake-marbled-pumpkin-slab-pie/": [
+      "winter squash",
+      "pumpkin"
+    ],
+    "https://smittenkitchen.com/2014/11/classic-pumpkin-pie-with-pecan-praline-sauce/": [
+      "winter squash",
+      "pumpkin"
+    ],
+    "https://smittenkitchen.com/2014/10/squash-toasts-with-ricotta-and-cider-vinegar/": [
+      "winter squash"
+    ],
+    "https://smittenkitchen.com/2012/10/butternut-squash-salad-with-farro-and-pepitas/": [
+      "winter squash"
+    ],
+    "https://smittenkitchen.com/2012/10/pumpkin-cinnamon-rolls/": [
+      "pumpkin"
+    ],
+    "https://smittenkitchen.com/2008/11/pumpkin-cupcakes/": [
+      "pumpkin"
+    ],
+    "https://smittenkitchen.com/2008/11/silky-smooth-pumpkin-pie/": [
+      "pumpkin"
+    ],
+    "https://smittenkitchen.com/2008/10/pumpkin-swirl-brownies/": [
+      "pumpkin"
+    ],
+    "https://smittenkitchen.com/2007/11/pumpkin-waffles/": [
+      "pumpkin"
+    ],
+    "https://smittenkitchen.com/2007/11/black-bean-pumkin-soup/": [
+      "pumpkin"
+    ]
+  },
+  "cached_at": "2025-09-13T17:06:52.533874"
+}

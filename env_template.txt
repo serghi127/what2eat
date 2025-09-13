@@ -1,0 +1,14 @@
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=what2eat
+DB_USER=leah-t
+DB_PASSWORD=outward-deviate-nanometer
+
+# Optional: API Keys for LLM integration
+OPENAI_API_KEY=your_openai_api_key_here
+ANTHROPIC_API_KEY=
+
+# Optional: Other services
+PINECONE_API_KEY=your_pinecone_api_key_here
+PINECONE_ENVIRONMENT=your_pinecone_environment
