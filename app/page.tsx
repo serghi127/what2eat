@@ -1,6 +1,6 @@
-"use client"; 
+"use client";   // ← add this at the very top
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from "react";
 
 type User = {
   id: number;
@@ -12,17 +12,17 @@ const Home: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
-    fetch('/api/users')
-      .then(res => res.json())
+    fetch("/api/users")
+      .then((res) => res.json())
       .then((data: User[]) => setUsers(data))
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   }, []);
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h1>Users in when2eat</h1>
+    <div>
+      <h1>Users</h1>
       <ul>
-        {users.map(u => (
+        {users.map((u) => (
           <li key={u.id}>
             {u.name} ({u.email})
           </li>
