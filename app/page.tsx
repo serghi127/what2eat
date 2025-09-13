@@ -1,6 +1,10 @@
-"use client";   // ← add this at the very top
+"use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import "./styles/userpage.css";
+import RedirectButton from "./components/Button";
+import { Routes, Route } from 'react-router-dom';
+
 
 type User = {
   id: number;
@@ -8,23 +12,72 @@ type User = {
   email: string;
 };
 
-const Home: React.FC = () => {
+const UsersPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+  
+  // Form state
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     fetch("/api/users")
       .then((res) => res.json())
       .then((data: User[]) => setUsers(data))
-      .catch((err) => console.error(err));
+      .finally(() => setLoading(false));
   }, []);
 
+  const handleAddUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !email) return;
+
+    // POST request to API
+    const res = await fetch("/api/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email }),
+    });
+
+    if (res.ok) {
+      const newUser: User = await res.json();
+      setUsers([...users, newUser]);
+      setName("");
+      setEmail("");
+    }
+  };
+
+  if (loading) {
+    return <p className="loading-text">Loading users...</p>;
+  }
+
   return (
-    <div>
-      <h1>Users</h1>
-      <ul>
-        {users.map((u) => (
-          <li key={u.id}>
-            {u.name} ({u.email})
+    <div className="container">
+      <h1 className="title">Users</h1>
+
+      <form className="user-form" onSubmit={handleAddUser}>
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <button type="submit">Add User</button>
+        <RedirectButton title="Login" target = "/homepage/page"/>
+
+
+      </form>
+
+      <ul className="user-list">
+        {users.map((user) => (
+          <li key={user.id} className="user-item">
+            <p className="user-name">{user.name}</p>
+            <p className="user-email">{user.email}</p>
           </li>
         ))}
       </ul>
@@ -32,4 +85,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default UsersPage;
