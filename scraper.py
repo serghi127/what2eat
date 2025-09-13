@@ -381,6 +381,7 @@ class ImprovedSmittenKitchenScraper:
                 'url': recipe_url,
                 'title': self._extract_title(soup),
                 'description': self._extract_description(soup),
+                'image': self._extract_recipe_image(soup),
                 'metadata': self._extract_recipe_metadata(soup),
                 'notes': self._extract_recipe_notes(soup),
                 'ingredients': self._extract_ingredients(soup),
@@ -393,6 +394,7 @@ class ImprovedSmittenKitchenScraper:
                 print(f"[DEBUG] Extracted recipe data:")
                 print(f"[DEBUG]   Title: {recipe_data['title']}")
                 print(f"[DEBUG]   Description length: {len(recipe_data['description'])}")
+                print(f"[DEBUG]   Image: {recipe_data['image']}")
                 print(f"[DEBUG]   Metadata: {recipe_data['metadata']}")
                 print(f"[DEBUG]   Notes length: {len(recipe_data['notes'])}")
                 print(f"[DEBUG]   Ingredients count: {len(recipe_data['ingredients'])}")
@@ -449,30 +451,66 @@ class ImprovedSmittenKitchenScraper:
                 return title
         return "Unknown Title"
     
-    def _extract_description(self, soup):
-        """Extract recipe description - everything before the recipe notes"""
-        # Find the recipe notes div (this comes before ingredients)
-        notes_div = soup.find('div', class_='jetpack-recipe-notes')
+    def _extract_recipe_image(self, soup):
+        """Extract recipe image from post-thumbnail-container div"""
+        # Look for the post-thumbnail-container div
+        thumbnail_div = soup.find('div', class_='post-thumbnail-container')
         
-        if notes_div:
-            # Get all content before the notes div
+        if thumbnail_div:
+            # Look for img tag within the thumbnail container
+            img_tag = thumbnail_div.find('img')
+            if img_tag:
+                # Get the src attribute
+                img_src = img_tag.get('src')
+                if img_src:
+                    # Convert relative URLs to absolute URLs
+                    if img_src.startswith('//'):
+                        img_src = 'https:' + img_src
+                    elif img_src.startswith('/'):
+                        img_src = self.base_url + img_src
+                    return img_src
+        
+        return None
+    
+    def _extract_description(self, soup):
+        """Extract recipe description - all text before the hrecipe div"""
+        # Find the main recipe div
+        recipe_div = soup.find('div', class_='hrecipe h-recipe jetpack-recipe')
+        
+        if recipe_div:
             description_parts = []
             
-            # Get all elements before the notes div
+            # Get all elements before the recipe div
             all_elements = soup.find_all()
-            notes_index = -1
+            recipe_index = -1
             
             for i, element in enumerate(all_elements):
-                if element == notes_div:
-                    notes_index = i
+                if element == recipe_div:
+                    recipe_index = i
                     break
             
-            if notes_index != -1:
-                # Get elements before the notes div
-                elements_before = all_elements[:notes_index]
+            if recipe_index != -1:
+                # Get elements before the recipe div
+                elements_before = all_elements[:recipe_index]
                 
-                # Extract text from paragraphs before notes
+                # Track if we're in a "Previously" section to skip
+                in_previously_section = False
+                
+                # Extract text from paragraphs before recipe
                 for element in elements_before:
+                    # Check if this is a "Previously" h5 tag
+                    if element.name == 'h5' and 'previously' in element.get_text().lower():
+                        in_previously_section = True
+                        continue
+                    
+                    # Check if we're exiting a "Previously" section (new h5 or other major element)
+                    if in_previously_section and element.name in ['h1', 'h2', 'h3', 'h4', 'h5']:
+                        in_previously_section = False
+                    
+                    # Skip all content while in "Previously" section
+                    if in_previously_section:
+                        continue
+                    
                     if element.name == 'p':
                         text = element.get_text().strip()
                         if len(text) > 50:  # Substantial text
@@ -486,7 +524,7 @@ class ImprovedSmittenKitchenScraper:
             if description_parts:
                 return '\n\n'.join(description_parts)
         
-        # Fallback to old method if jetpack structure not found
+        # Fallback to old method if hrecipe structure not found
         paragraphs = soup.find_all('p')
         for p in paragraphs[:3]:
             text = p.get_text().strip()
@@ -495,48 +533,71 @@ class ImprovedSmittenKitchenScraper:
         return ""
     
     def _extract_recipe_metadata(self, soup):
-        """Extract recipe metadata (servings, time, source)"""
+        """Extract recipe metadata (servings, time, source) from jetpack-recipe-meta or blog post text"""
         metadata = {
             'servings': None,
             'time': None,
             'source': None
         }
         
-        # Look for the recipe meta div
-        meta_div = soup.find('ul', class_='jetpack-recipe-meta')
+        # Look for the recipe meta ul
+        meta_ul = soup.find('ul', class_='jetpack-recipe-meta')
         
-        if meta_div:
-            # Extract servings
-            servings_elem = meta_div.find('li', class_='jetpack-recipe-servings')
-            if servings_elem:
-                servings_text = servings_elem.get_text().strip()
-                # Extract number from "Servings: 4"
-                servings_match = re.search(r'(\d+)', servings_text)
-                if servings_match:
-                    metadata['servings'] = int(servings_match.group(1))
+        if meta_ul:
+            # Extract all metadata items
+            meta_items = meta_ul.find_all('li')
             
-            # Extract time
-            time_elem = meta_div.find('li', class_='jetpack-recipe-time')
-            if time_elem:
-                time_text = time_elem.get_text().strip()
-                # Extract time from "Time: 20 minutes"
-                time_match = re.search(r'Time:\s*(.+)', time_text, re.I)
-                if time_match:
-                    metadata['time'] = time_match.group(1).strip()
-            
-            # Extract source
-            source_elem = meta_div.find('li', class_='jetpack-recipe-source')
-            if source_elem:
-                source_text = source_elem.get_text().strip()
-                # Extract source from "Source: Smitten Kitchen"
-                source_match = re.search(r'Source:\s*(.+)', source_text, re.I)
-                if source_match:
-                    metadata['source'] = source_match.group(1).strip()
+            for item in meta_items:
+                text = item.get_text().strip()
+                
+                # Extract servings
+                if 'serving' in text.lower():
+                    servings_match = re.search(r'(\d+)', text)
+                    if servings_match:
+                        metadata['servings'] = int(servings_match.group(1))
+                
+                # Extract time
+                elif 'time' in text.lower():
+                    time_match = re.search(r'Time:\s*(.+)', text, re.I)
+                    if time_match:
+                        metadata['time'] = time_match.group(1).strip()
+                
+                # Extract source
+                elif 'source' in text.lower():
+                    source_match = re.search(r'Source:\s*(.+)', text, re.I)
+                    if source_match:
+                        metadata['source'] = source_match.group(1).strip()
+        
+        # If no structured metadata found, try to extract from blog post text
+        if not any(metadata.values()):
+            # Get main content area
+            main_content = soup.find('div', class_='entry-content') or soup.find('article') or soup.find('main')
+            if main_content:
+                text_content = main_content.get_text()
+                lines = text_content.split('\n')
+                
+                for line in lines:
+                    line = line.strip()
+                    
+                    # Look for servings information
+                    if 'serves' in line.lower() or 'serving' in line.lower():
+                        servings_match = re.search(r'serves?\s*(\d+)', line, re.I)
+                        if servings_match:
+                            metadata['servings'] = int(servings_match.group(1))
+                    
+                    # Look for time information
+                    elif any(time_word in line.lower() for time_word in ['minutes', 'hours', 'time:', 'prep', 'cook']):
+                        if re.search(r'\d+\s*(minute|hour|min|hr)', line, re.I):
+                            metadata['time'] = line.strip()
+                    
+                    # Look for source information
+                    elif 'adapted from' in line.lower() or 'source:' in line.lower():
+                        metadata['source'] = line.strip()
         
         return metadata
     
     def _extract_recipe_notes(self, soup):
-        """Extract recipe notes from jetpack-recipe-notes"""
+        """Extract recipe notes from jetpack-recipe-notes div"""
         notes_div = soup.find('div', class_='jetpack-recipe-notes')
         
         if notes_div:
@@ -548,7 +609,7 @@ class ImprovedSmittenKitchenScraper:
         return ""
     
     def _extract_ingredients(self, soup):
-        """Extract ingredients list from jetpack-recipe-ingredients"""
+        """Extract ingredients list from jetpack-recipe-ingredients div or blog post text"""
         ingredients = []
         
         # Look for the jetpack-recipe-ingredients div
@@ -576,30 +637,73 @@ class ImprovedSmittenKitchenScraper:
                         if text and len(text) > 3:
                             ingredients.append(text)
             
-            # If still no ingredients found, try text-based extraction
+            # If still no ingredients found, try text-based extraction from blog post
             if not ingredients:
-                text_content = soup.get_text()
-                lines = text_content.split('\n')
-                
-                ingredient_section = False
-                for line in lines:
-                    line = line.strip()
+                # Get main content area
+                main_content = soup.find('div', class_='entry-content') or soup.find('article') or soup.find('main')
+                if main_content:
+                    text_content = main_content.get_text()
+                    lines = text_content.split('\n')
                     
-                    if any(keyword in line.lower() for keyword in ['ingredients:', 'what you need:', 'ingredient list']):
-                        ingredient_section = True
-                        continue
+                    # Find recipe boundaries - look for common recipe section markers
+                    recipe_start = -1
+                    recipe_end = -1
                     
-                    if any(keyword in line.lower() for keyword in ['instructions:', 'directions:', 'method:', 'how to make']):
-                        break
+                    for i, line in enumerate(lines):
+                        line_lower = line.strip().lower()
+                        # Look for recipe start markers
+                        if any(marker in line_lower for marker in ['serves', 'makes', 'ingredients:', 'directions:', 'instructions:', 'method:']):
+                            recipe_start = i
+                            break
                     
-                    if ingredient_section and line:
-                        # More flexible ingredient pattern matching
-                        if (re.match(r'^[-•]\s*\d+.*', line) or 
-                            re.match(r'^\d+.*', line) or
-                            re.match(r'^([\d/\s]+\s*(cup|cups|tsp|tbsp|pound|lb|oz|grams?|kg|ml|liter)\s+)', line) or
-                            re.match(r'^[A-Za-z].*', line)):  # Any line starting with a letter
-                            if len(line) > 3:  # Avoid very short lines
-                                ingredients.append(line)
+                    # If no clear start found, look for measurement patterns
+                    if recipe_start == -1:
+                        for i, line in enumerate(lines):
+                            if re.search(r'\d+\s*(cup|cups|tbsp|tsp|pound|lb|oz|grams?|kg|ml|liter|ounce|teaspoon|tablespoon)', line, re.I):
+                                recipe_start = i
+                                break
+                    
+                    # Look for recipe end markers
+                    if recipe_start != -1:
+                        for i in range(recipe_start + 1, len(lines)):
+                            line_lower = lines[i].strip().lower()
+                            if any(end_marker in line_lower for end_marker in ['your email', 'required fields', 'comment', 'reply', 'posted', 'says:', 'wrote:']):
+                                recipe_end = i
+                                break
+                    
+                    # Extract ingredients from recipe section
+                    start_idx = max(0, recipe_start) if recipe_start != -1 else 0
+                    end_idx = recipe_end if recipe_end != -1 else len(lines)
+                    
+                    for i in range(start_idx, end_idx):
+                        line = lines[i].strip()
+                        
+                        # Skip empty lines and very short lines
+                        if len(line) < 5:
+                            continue
+                        
+                        # Skip blog content markers
+                        if any(skip_word in line.lower() for skip_word in [
+                            'years ago:', 'months ago:', 'one year ago:', 'two years ago:', 'three years ago:',
+                            'eight years ago:', 'and i did', 'despite dire warnings', 'farmer\'s almanac',
+                            'this summer', 'i\'ve taken', 'cookbooks down', 'left with so many',
+                            'your email', 'required fields', 'will not be published', 'comment', 'reply', 'posted', 'says:', 'wrote:', 'thanks', 'thank you',
+                            'i made', 'i used', 'i added', 'i think', 'i agree', 'i disagree', 'i love this', 'this was', 'delicious!', 'fantastic!', 'amazing!', 'perfect!', 'great recipe'
+                        ]):
+                            continue
+                        
+                        # Look for lines that contain measurements and food items
+                        if re.search(r'\d+\s*(cup|cups|tbsp|tsp|pound|lb|oz|grams?|kg|ml|liter|ounce|teaspoon|tablespoon|bundle|clove|head|piece|slice)', line, re.I):
+                            # Skip if it looks like instructions (contains cooking verbs)
+                            cooking_verbs = ['heat', 'mix', 'add', 'bake', 'cook', 'stir', 'combine', 'whisk', 'fold', 'pour', 'place', 'put', 'set', 'let', 'allow', 'remove', 'serve', 'bring', 'simmer', 'boil', 'sauté', 'fry', 'roast', 'grill']
+                            if not any(verb in line.lower() for verb in cooking_verbs):
+                                # Skip if it's clearly blog narrative
+                                if not any(narrative_word in line.lower() for narrative_word in [
+                                    'was grey', 'flat', 'dull', 'mushy', 'jumped from undercooked', 'compass and a jewelers loupe',
+                                    'mother-in-law', 'eggplant caviar', 'shot of espresso', 'tastebuds', 'copious amounts',
+                                    'hangs out in the background', 'keeping it real', 'nutty and neutral'
+                                ]):
+                                    ingredients.append(line)
         
         if self.debug:
             print(f"[DEBUG] Extracted {len(ingredients)} ingredients")
@@ -609,11 +713,11 @@ class ImprovedSmittenKitchenScraper:
         return ingredients
     
     def _extract_instructions(self, soup):
-        """Extract cooking instructions from jetpack-recipe-directions"""
+        """Extract cooking instructions from jetpack-recipe-directions e-instructions div or blog post text"""
         instructions = []
         
-        # Look for the jetpack-recipe-directions div
-        directions_div = soup.find('div', class_='jetpack-recipe-directions')
+        # Look for the jetpack-recipe-directions div with e-instructions class
+        directions_div = soup.find('div', class_='jetpack-recipe-directions e-instructions')
         
         if directions_div:
             # Extract instructions from the structured directions div
@@ -624,116 +728,103 @@ class ImprovedSmittenKitchenScraper:
                 if text and len(text) > 20:  # Substantial text
                     instructions.append(text)
         
-        # Fallback: if no structured directions found, use the old method
+        # If no structured directions found, extract from blog post text
         if not instructions:
-            # Find the ingredients div
-            ingredients_div = soup.find('div', class_='jetpack-recipe-ingredients')
-            
-            if ingredients_div:
-                # Get all content after the ingredients div
-                all_elements = soup.find_all()
-                ingredients_index = -1
+            # Get main content area
+            main_content = soup.find('div', class_='entry-content') or soup.find('article') or soup.find('main')
+            if main_content:
+                text_content = main_content.get_text()
+                lines = text_content.split('\n')
                 
-                for i, element in enumerate(all_elements):
-                    if element == ingredients_div:
-                        ingredients_index = i
+                # Find recipe boundaries - look for common recipe section markers
+                recipe_start = -1
+                recipe_end = -1
+                
+                for i, line in enumerate(lines):
+                    line_lower = line.strip().lower()
+                    # Look for recipe start markers
+                    if any(marker in line_lower for marker in ['serves', 'makes', 'ingredients:', 'directions:', 'instructions:', 'method:']):
+                        recipe_start = i
                         break
                 
-                if ingredients_index != -1:
-                    # Get elements after the ingredients div
-                    elements_after = all_elements[ingredients_index + 1:]
-                    
-                    # Extract text from paragraphs after ingredients
-                    for element in elements_after:
-                        if element.name == 'p':
-                            text = element.get_text().strip()
-                            
-                            # Skip very short text
-                            if len(text) < 50:
-                                continue
-                            
-                            # Skip text that looks like navigation, ads, or footer content
-                            if any(skip_word in text.lower() for skip_word in [
-                                'search', 'subscribe', 'newsletter', 'follow', 'social', 'copyright', 'privacy', 'terms', 
-                                'advertisement', 'sponsored', 'affiliate', 'shop', 'buy now', 'click here',
-                                'months ago:', 'years ago:', 'your email', 'required fields', 'will not be published',
-                                'comment', 'reply', 'posted', 'says:', 'wrote:', 'thanks', 'thank you', 'deb!', 'deb,', 'hi deb', 'hey deb'
-                            ]):
-                                continue
-                            
-                            # Skip text that looks like comments or personal notes
-                            if any(comment_word in text.lower() for comment_word in [
-                                'i made', 'i used', 'i added', 'i think', 'i agree', 'i disagree', 'i love this', 'this was', 
-                                'delicious!', 'fantastic!', 'amazing!', 'perfect!', 'great recipe', 'will definitely', 
-                                'going to make', 'next time', 'made this', 'i live', 'i have', 'i am', 'i was',
-                                'what would be', 'any chance', 'not me', 'silk makes', 'this looks', 'i\'m curious',
-                                'i find', 'i blend', 'vitamix', 'so i can', 'it\'s amazing', 'would kill me',
-                                'you can really', 'might even be', 'worth trying', 'celiac here'
-                            ]):
-                                continue
-                            
-                            # This looks like an instruction paragraph
-                            instructions.append(text)
-        
-        # Fallback to old method if jetpack structure not found
-        if not instructions:
-            # First, try to find instructions in structured HTML
-            instruction_divs = soup.find_all('div', class_=re.compile(r'instruction|direction|method', re.I))
-            if instruction_divs:
-                for div in instruction_divs:
-                    # Look for paragraphs or list items within instruction divs
-                    items = div.find_all(['p', 'li'])
-                    for item in items:
-                        text = item.get_text().strip()
-                        if text and len(text) > 20:
-                            instructions.append(text)
-            
-            # If still no instructions found, use the old approach
-            if not instructions:
-                # Find all paragraphs in the main content area
-                paragraphs = soup.find_all('p')
+                # If no clear start found, look for measurement patterns
+                if recipe_start == -1:
+                    for i, line in enumerate(lines):
+                        if re.search(r'\d+\s*(cup|cups|tbsp|tsp|pound|lb|oz|grams?|kg|ml|liter|ounce|teaspoon|tablespoon)', line, re.I):
+                            recipe_start = i
+                            break
                 
-                # Look for substantial text blocks that contain cooking verbs
+                # Look for recipe end markers
+                if recipe_start != -1:
+                    for i in range(recipe_start + 1, len(lines)):
+                        line_lower = lines[i].strip().lower()
+                        if any(end_marker in line_lower for end_marker in ['your email', 'required fields', 'comment', 'reply', 'posted', 'says:', 'wrote:']):
+                            recipe_end = i
+                            break
+                
+                # Extract instructions from recipe section
+                start_idx = max(0, recipe_start) if recipe_start != -1 else 0
+                end_idx = recipe_end if recipe_end != -1 else len(lines)
+                
+                # Look for instruction patterns in the text
                 cooking_verbs = ['heat', 'mix', 'add', 'bake', 'cook', 'stir', 'combine', 'whisk', 'fold', 'pour', 'place', 'put', 'set', 'let', 'allow', 'remove', 'serve', 'bring', 'simmer', 'boil', 'sauté', 'fry', 'roast', 'grill', 'blend', 'chop', 'slice', 'dice', 'mince', 'grate', 'season', 'taste', 'adjust', 'cover', 'uncover', 'drain', 'rinse', 'pat', 'dry', 'melt', 'cool', 'warm', 'preheat', 'reduce', 'increase', 'turn', 'flip', 'toss', 'garnish', 'sprinkle', 'drizzle', 'brush', 'spread', 'layer', 'arrange', 'divide', 'transfer', 'return', 'continue', 'finish', 'complete']
                 
-                # Look for paragraphs that are substantial and contain cooking verbs
-                for p in paragraphs:
-                    text = p.get_text().strip()
+                for i in range(start_idx, end_idx):
+                    line = lines[i].strip()
                     
-                    # Skip very short text or text that looks like navigation/footer
-                    if len(text) < 50:
+                    # Skip empty lines and very short lines
+                    if len(line) < 30:
                         continue
                     
-                    # Skip text that looks like navigation, ads, or footer content
-                    if any(skip_word in text.lower() for skip_word in ['search', 'subscribe', 'newsletter', 'follow', 'social', 'copyright', 'privacy', 'terms', 'advertisement', 'sponsored', 'affiliate', 'shop', 'buy now', 'click here']):
-                        continue
-                    
-                    # Skip text that's clearly not instructions
-                    if any(skip_word in text.lower() for skip_word in [
-                        'ingredients:', 'what you need:', 'serves', 'makes', 'prep time', 'cook time', 'total time', 'difficulty',
-                        'until recently', 'i was', 'i find', 'i hope', 'i love', 'i think', 'i can', 'i have', 'i am', 'i will', 'i would', 'i should', 'i could', 'i might', 'i may', 'i must', 'i need', 'i want', 'i like', 'i prefer', 'i recommend', 'i suggest', 'i believe', 'i feel', 'i know', 'i understand', 'i realize', 'i notice', 'i see', 'i hear', 'i smell', 'i taste', 'i touch', 'i feel',
-                        'months ago:', 'years ago:', 'your email', 'required fields', 'will not be published', 'made this', 'i made', 'i used', 'i added', 'i think', 'i agree', 'i disagree', 'i love this', 'this was', 'delicious!', 'fantastic!', 'amazing!', 'perfect!', 'great recipe', 'will definitely', 'going to make', 'next time', 'i will', 'i would', 'i should', 'i could', 'i might', 'i may', 'i must', 'i need', 'i want', 'i like', 'i prefer', 'i recommend', 'i suggest', 'i believe', 'i feel', 'i know', 'i understand', 'i realize', 'i notice', 'i see', 'i hear', 'i smell', 'i taste', 'i touch', 'i feel',
-                        'comment', 'reply', 'posted', 'says:', 'wrote:', 'thanks', 'thank you', 'deb!', 'deb,', 'hi deb', 'hey deb'
+                    # Skip blog content markers
+                    if any(skip_word in line.lower() for skip_word in [
+                        'years ago:', 'months ago:', 'one year ago:', 'two years ago:', 'three years ago:',
+                        'eight years ago:', 'and i did', 'despite dire warnings', 'farmer\'s almanac',
+                        'this summer', 'i\'ve taken', 'cookbooks down', 'left with so many',
+                        'your email', 'required fields', 'will not be published', 'comment', 'reply', 'posted', 'says:', 'wrote:', 'thanks', 'thank you',
+                        'i made', 'i used', 'i added', 'i think', 'i agree', 'i disagree', 'i love this', 'this was', 'delicious!', 'fantastic!', 'amazing!', 'perfect!', 'great recipe',
+                        'will definitely', 'going to make', 'next time', 'i will', 'i would', 'i should', 'i could', 'i might', 'i may', 'i must', 'i need', 'i want', 'i like', 'i prefer',
+                        'i recommend', 'i suggest', 'i believe', 'i feel', 'i know', 'i understand', 'i realize', 'i notice', 'i see', 'i hear', 'i smell', 'i taste', 'i touch', 'i feel',
+                        'search', 'subscribe', 'newsletter', 'follow', 'social', 'copyright', 'privacy', 'terms', 'advertisement', 'sponsored', 'affiliate', 'shop', 'buy now', 'click here',
+                        'deb!', 'deb,', 'hi deb', 'hey deb', 'i live', 'i have', 'i am', 'i was',
+                        'this thursday', 'food52 holiday market', 'signed smitten kitchen cookbooks',
+                        'and for the other side of the world', 'by sunday night', 'the inspiration came from',
+                        'was grey', 'flat', 'dull', 'mushy', 'jumped from undercooked', 'compass and a jewelers loupe',
+                        'mother-in-law', 'eggplant caviar', 'shot of espresso', 'tastebuds', 'copious amounts',
+                        'hangs out in the background', 'keeping it real', 'nutty and neutral'
                     ]):
                         continue
                     
-                    # Skip text that looks like ingredient lists (contains measurements)
-                    if re.search(r'\d+\s*(cup|cups|tbsp|tsp|pound|lb|oz|grams?|ml|liter|ounce)', text.lower()):
-                        continue
-                    
-                    # Check if this paragraph contains cooking verbs
-                    text_lower = text.lower()
-                    if any(verb in text_lower for verb in cooking_verbs):
-                        # Additional check: skip if it looks like a comment or personal note
-                        if any(comment_word in text_lower for comment_word in [
-                            'i made', 'i used', 'i added', 'i think', 'i agree', 'i disagree', 'i love this', 'this was', 'delicious!', 'fantastic!', 'amazing!', 'perfect!', 'great recipe', 'will definitely', 'going to make', 'next time', 'i will', 'i would', 'i should', 'i could', 'i might', 'i may', 'i must', 'i need', 'i want', 'i like', 'i prefer', 'i recommend', 'i suggest', 'i believe', 'i feel', 'i know', 'i understand', 'i realize', 'i notice', 'i see', 'i hear', 'i smell', 'i taste', 'i touch', 'i feel',
-                            'made this', 'i made', 'i used', 'i added', 'i think', 'i agree', 'i disagree', 'i love this', 'this was', 'delicious!', 'fantastic!', 'amazing!', 'perfect!', 'great recipe', 'will definitely', 'going to make', 'next time', 'i will', 'i would', 'i should', 'i could', 'i might', 'i may', 'i must', 'i need', 'i want', 'i like', 'i prefer', 'i recommend', 'i suggest', 'i believe', 'i feel', 'i know', 'i understand', 'i realize', 'i notice', 'i see', 'i hear', 'i smell', 'i taste', 'i touch', 'i feel',
-                            'comment', 'reply', 'posted', 'says:', 'wrote:', 'thanks', 'thank you', 'deb!', 'deb,', 'hi deb', 'hey deb', 'i live', 'i have', 'i am', 'i was', 'i will', 'i would', 'i should', 'i could', 'i might', 'i may', 'i must', 'i need', 'i want', 'i like', 'i prefer', 'i recommend', 'i suggest', 'i believe', 'i feel', 'i know', 'i understand', 'i realize', 'i notice', 'i see', 'i hear', 'i smell', 'i taste', 'i touch', 'i feel'
+                    # Look for lines that contain cooking verbs and look like instructions
+                    if any(verb in line.lower() for verb in cooking_verbs):
+                        # Skip if it looks like ingredient lists (contains measurements but no cooking verbs in context)
+                        if re.search(r'\d+\s*(cup|cups|tbsp|tsp|pound|lb|oz|grams?|kg|ml|liter|ounce|teaspoon|tablespoon)', line, re.I):
+                            # Only include if it contains cooking verbs in the same line (indicating it's an instruction)
+                            if not any(verb in line.lower() for verb in cooking_verbs):
+                                continue
+                            # Also skip if it looks like a pure ingredient list (no action words)
+                            if not any(action_word in line.lower() for action_word in cooking_verbs):
+                                continue
+                        
+                        # Skip if it looks like a recipe title or header
+                        if any(header_word in line.lower() for header_word in [
+                            'twice-baked potatoes with kale', 'adapted from', 'serves', 'ingredients:', 'directions:', 'instructions:'
                         ]):
                             continue
                         
-                        # This looks like an instruction paragraph
-                        instructions.append(text)
+                        # Skip if it looks like a pure ingredient line (starts with measurement and food item)
+                        if re.match(r'^\d+\s*(cup|cups|tbsp|tsp|pound|lb|oz|grams?|kg|ml|liter|ounce|teaspoon|tablespoon|bundle|clove|head|piece|slice)', line, re.I):
+                            # Only skip if it doesn't contain cooking verbs
+                            if not any(verb in line.lower() for verb in cooking_verbs):
+                                continue
+                        
+                        # Skip if it's just a list of ingredients without cooking actions
+                        if re.match(r'^[^a-z]*\d+\s*(cup|cups|tbsp|tsp|pound|lb|oz|grams?|kg|ml|liter|ounce|teaspoon|tablespoon|bundle|clove|head|piece|slice)', line, re.I):
+                            # Check if it contains any cooking verbs
+                            if not any(verb in line.lower() for verb in cooking_verbs):
+                                continue
+                        
+                        instructions.append(line)
         
         if self.debug:
             print(f"[DEBUG] Extracted {len(instructions)} instructions")
@@ -779,6 +870,341 @@ class ImprovedSmittenKitchenScraper:
             json.dump(cache_data, f, indent=2, ensure_ascii=False)
         
         print(f"Saved {len(self.recipe_cache)} cached recipes to {filename}")
+    
+    def save_recipes_to_typescript(self, recipes, filename=None, category="dinner"):
+        """Save scraped recipes directly to TypeScript format"""
+        if not filename:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"scraped_recipes_{timestamp}.ts"
+        
+        # Convert recipes to TypeScript format
+        ts_recipes = []
+        recipe_id_counter = 1
+        
+        for recipe in recipes:
+            ts_recipe = self._convert_recipe_to_typescript(recipe, recipe_id_counter)
+            if ts_recipe:
+                ts_recipes.append(ts_recipe)
+                recipe_id_counter += 1
+        
+        # Generate TypeScript file content
+        ts_content = self._generate_typescript_content(ts_recipes, category)
+        
+        # Write TypeScript file
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write(ts_content)
+        
+        print(f"✅ Saved {len(ts_recipes)} recipes to TypeScript format")
+        print(f"📁 Output saved to: {filename}")
+        
+        return filename
+    
+    def _convert_recipe_to_typescript(self, recipe, recipe_id):
+        """Convert a single recipe from scraped format to TypeScript format"""
+        
+        # Extract basic info
+        name = recipe.get('title', 'Unknown Recipe')
+        ingredients = recipe.get('ingredients', [])
+        instructions = recipe.get('instructions', [])
+        metadata = recipe.get('metadata', {})
+        tags = recipe.get('detected_tags', [])
+        image = recipe.get('image', None)
+        
+        # Convert time to minutes (extract number from time string)
+        time_str = metadata.get('time', '30 minutes')
+        time_minutes = self._extract_time_minutes(time_str)
+        
+        # Get servings
+        servings = metadata.get('servings', 4)
+        if servings is None:
+            servings = 1
+        
+        # Estimate macros using fallback method
+        macros = self._estimate_macros_fallback(ingredients, servings)
+        
+        # Convert tags to website format
+        website_tags = self._convert_tags(tags)
+        
+        # Clean and format ingredients
+        clean_ingredients = self._clean_ingredients(ingredients)
+        
+        # Clean and format instructions
+        clean_instructions = self._clean_instructions(instructions)
+        
+        # Determine recipe source and credits
+        source_info = self._get_recipe_source(recipe)
+        
+        # Create TypeScript recipe object
+        ts_recipe = {
+            'id': recipe_id,
+            'name': self._clean_recipe_name(name),
+            'time': time_minutes,
+            'servings': servings,
+            'calories': macros['calories'],
+            'protein': macros['protein'],
+            'carbs': macros['carbs'],
+            'fat': macros['fat'],
+            'sugar': macros['sugar'],
+            'cholesterol': macros['cholesterol'],
+            'fiber': macros['fiber'],
+            'tags': website_tags,
+            'ingredients': clean_ingredients,
+            'steps': clean_instructions,
+            'image': image,
+            'source': source_info['source'],
+            'credits': source_info['credits']
+        }
+        
+        return ts_recipe
+    
+    def _extract_time_minutes(self, time_str):
+        """Extract time in minutes from time string"""
+        if not time_str:
+            return 30
+        
+        # Look for numbers in the time string
+        numbers = re.findall(r'\d+', time_str)
+        if not numbers:
+            return 30
+        
+        # Convert to minutes
+        total_minutes = 0
+        time_lower = time_str.lower()
+        
+        if 'hour' in time_lower:
+            # Find hour numbers
+            hour_matches = re.findall(r'(\d+)\s*hour', time_lower)
+            for hour in hour_matches:
+                total_minutes += int(hour) * 60
+        
+        if 'minute' in time_lower:
+            # Find minute numbers
+            minute_matches = re.findall(r'(\d+)\s*minute', time_lower)
+            for minute in minute_matches:
+                total_minutes += int(minute)
+        
+        # If no specific time units found, assume the first number is minutes
+        if total_minutes == 0 and numbers:
+            total_minutes = int(numbers[0])
+        
+        return max(total_minutes, 5)  # Minimum 5 minutes
+    
+    def _estimate_macros_fallback(self, ingredients, servings):
+        """Fallback method for macro estimation"""
+        
+        total_calories = 0
+        total_protein = 0
+        total_carbs = 0
+        total_fat = 0
+        total_sugar = 0
+        total_cholesterol = 0
+        total_fiber = 0
+        
+        for ingredient in ingredients:
+            ingredient_lower = ingredient.lower()
+            
+            # High calorie ingredients
+            if any(word in ingredient_lower for word in ['oil', 'butter', 'cream', 'cheese']):
+                total_calories += 120
+                total_fat += 12
+                total_cholesterol += 15
+            elif any(word in ingredient_lower for word in ['pasta', 'rice', 'bread', 'flour']):
+                total_calories += 80
+                total_carbs += 18
+                total_fiber += 2
+            elif any(word in ingredient_lower for word in ['meat', 'chicken', 'beef', 'pork', 'fish']):
+                total_calories += 100
+                total_protein += 20
+                total_cholesterol += 25
+            elif any(word in ingredient_lower for word in ['sugar', 'honey', 'syrup', 'jam']):
+                total_calories += 60
+                total_sugar += 15
+            elif any(word in ingredient_lower for word in ['vegetable', 'onion', 'garlic', 'herb']):
+                total_calories += 15
+                total_carbs += 3
+                total_fiber += 2
+            elif any(word in ingredient_lower for word in ['fruit', 'berry', 'apple', 'banana']):
+                total_calories += 30
+                total_carbs += 8
+                total_fiber += 3
+            elif any(word in ingredient_lower for word in ['bean', 'lentil', 'chickpea', 'legume']):
+                total_calories += 50
+                total_protein += 8
+                total_carbs += 12
+                total_fiber += 6
+            elif any(word in ingredient_lower for word in ['egg']):
+                total_calories += 70
+                total_protein += 6
+                total_fat += 5
+                total_cholesterol += 185
+            else:
+                total_calories += 40
+                total_protein += 2
+                total_carbs += 5
+                total_fat += 1
+                total_fiber += 1
+        
+        # Calculate per serving
+        return {
+            'calories': max(total_calories // servings, 100),
+            'protein': max(total_protein // servings, 5),
+            'carbs': max(total_carbs // servings, 5),
+            'fat': max(total_fat // servings, 2),
+            'sugar': max(total_sugar // servings, 0),
+            'cholesterol': max(total_cholesterol // servings, 0),
+            'fiber': max(total_fiber // servings, 1)
+        }
+    
+    def _get_recipe_source(self, recipe):
+        """Determine recipe source and create appropriate credits"""
+        
+        # This is a scraped recipe
+        url = recipe.get('url', '')
+        metadata = recipe.get('metadata', {})
+        source = metadata.get('source', 'Unknown Source')
+        
+        # Extract domain from URL for better source identification
+        if url:
+            domain = url.split('/')[2] if len(url.split('/')) > 2 else url
+        else:
+            domain = source
+        
+        return {
+            'source': domain,
+            'credits': f"Original recipe from: {source}" + (f" ({url})" if url else "")
+        }
+    
+    def _convert_tags(self, tags):
+        """Convert detected tags to website tag format"""
+        website_tags = []
+        
+        # Map detected tags to website tags
+        tag_mapping = {
+            'vegetarian': 'vegetarian',
+            'vegan': 'vegan',
+            'gluten-free': 'gluten-free',
+            'quick': 'quick',
+            'breakfast': 'breakfast',
+            'lunch': 'lunch',
+            'dinner': 'dinner',
+            'healthy': 'healthy',
+            'high-protein': 'high-protein',
+            'low-carb': 'low-carb',
+            'dairy-free': 'dairy-free'
+        }
+        
+        for tag in tags:
+            tag_lower = tag.lower()
+            if tag_lower in tag_mapping:
+                website_tags.append(tag_mapping[tag_lower])
+        
+        # Add default tags if none found
+        if not website_tags:
+            website_tags = ['dinner']
+        
+        return website_tags
+    
+    def _clean_ingredients(self, ingredients):
+        """Clean and format ingredients for website display"""
+        clean_ingredients = []
+        
+        for ingredient in ingredients:
+            # Remove extra whitespace and clean up
+            clean_ingredient = ' '.join(ingredient.split())
+            
+            # Skip very short ingredients
+            if len(clean_ingredient) > 3:
+                clean_ingredients.append(clean_ingredient)
+        
+        return clean_ingredients[:15]  # Limit to 15 ingredients max
+    
+    def _clean_instructions(self, instructions):
+        """Clean and format instructions for website display"""
+        clean_instructions = []
+        
+        for instruction in instructions:
+            # Remove extra whitespace and clean up
+            clean_instruction = ' '.join(instruction.split())
+            
+            # Skip very short instructions
+            if len(clean_instruction) > 10:
+                clean_instructions.append(clean_instruction)
+        
+        return clean_instructions[:10]  # Limit to 10 steps max
+    
+    def _clean_recipe_name(self, name):
+        """Clean recipe name for website display"""
+        # Remove extra whitespace
+        clean_name = ' '.join(name.split())
+        
+        # Capitalize first letter of each word
+        clean_name = ' '.join(word.capitalize() for word in clean_name.split())
+        
+        # Limit length
+        if len(clean_name) > 50:
+            clean_name = clean_name[:47] + "..."
+        
+        return clean_name
+    
+    def _generate_typescript_content(self, recipes, category):
+        """Generate TypeScript file content"""
+        
+        # Create TypeScript content
+        ts_content = f"""// Auto-generated recipe data from scraper
+// Generated on: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+// Total recipes: {len(recipes)}
+
+import {{ Recipe }} from '../types';
+
+export const {category.upper()}_RECIPES: Recipe[] = [
+"""
+        
+        # Add each recipe
+        for i, recipe in enumerate(recipes):
+            ts_content += "  {\n"
+            ts_content += f"    id: {recipe['id']},\n"
+            ts_content += f"    name: \"{recipe['name']}\",\n"
+            ts_content += f"    time: {recipe['time']},\n"
+            ts_content += f"    servings: {recipe['servings']},\n"
+            ts_content += f"    calories: {recipe['calories']},\n"
+            ts_content += f"    protein: {recipe['protein']},\n"
+            ts_content += f"    carbs: {recipe['carbs']},\n"
+            ts_content += f"    fat: {recipe['fat']},\n"
+            ts_content += f"    sugar: {recipe['sugar']},\n"
+            ts_content += f"    cholesterol: {recipe['cholesterol']},\n"
+            ts_content += f"    fiber: {recipe['fiber']},\n"
+            
+            # Format tags array
+            tags_str = ', '.join(f'"{tag}"' for tag in recipe['tags'])
+            ts_content += f"    tags: [{tags_str}],\n"
+            
+            # Format ingredients array
+            ingredients_str = ',\n      '.join(f'"{ing}"' for ing in recipe['ingredients'])
+            ts_content += f"    ingredients: [\n      {ingredients_str}\n    ],\n"
+            
+            # Format steps array
+            steps_str = ',\n      '.join(f'"{step}"' for step in recipe['steps'])
+            ts_content += f"    steps: [\n      {steps_str}\n    ],\n"
+            
+            # Add image if available
+            if recipe['image']:
+                ts_content += f"    image: \"{recipe['image']}\",\n"
+            else:
+                ts_content += f"    image: null,\n"
+            
+            # Add source and credits
+            ts_content += f"    source: \"{recipe['source']}\",\n"
+            ts_content += f"    credits: \"{recipe['credits']}\"\n"
+            
+            # Add comma if not last recipe
+            if i < len(recipes) - 1:
+                ts_content += "  },\n"
+            else:
+                ts_content += "  }\n"
+        
+        ts_content += "];\n"
+        
+        return ts_content
     
     def load_recipe_cache(self, filename="recipe_cache.json"):
         """Load previously cached recipes from a file"""
@@ -882,3 +1308,17 @@ if __name__ == "__main__":
     for recipe in recipes3:
         print(f"  • {recipe['title']}")
         print(f"    Categories: {recipe['matched_categories']}")
+    
+    # Test TypeScript output
+    print("\n" + "="*60)
+    print("=== TESTING TYPESCRIPT OUTPUT ===")
+    
+    # Combine all recipes for TypeScript output
+    all_recipes = recipes1 + recipes2 + recipes3
+    
+    if all_recipes:
+        print(f"\nSaving {len(all_recipes)} recipes to TypeScript format...")
+        ts_filename = scraper.save_recipes_to_typescript(all_recipes, category="dinner")
+        print(f"✅ TypeScript file created: {ts_filename}")
+    else:
+        print("No recipes found to save to TypeScript format")
