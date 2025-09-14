@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import MacroTracking from './MacroTracking';
 import ShoppingCartComponent from './ShoppingCart';
 import { useAuth } from '../contexts/AuthContext';
-import { Calendar, Users, ChevronLeft, ChevronRight, X, ChefHat, Clock as ClockIcon, FileText, Plus, Star, Ticket, ShoppingCart, Heart } from 'lucide-react';
-import { CartItem, Recipe } from '../types';
+import { Calendar, Users, ChevronLeft, ChevronRight, X, ChefHat, Clock as ClockIcon, FileText, Plus, Star, Ticket, ShoppingCart, Heart, Sparkles } from 'lucide-react';
+import { CartItem, Recipe, WeeklyMealPlan } from '../types';
 
 interface WeeklyMeal {
   id: string;
@@ -14,6 +14,11 @@ interface WeeklyMeal {
     breakfast: string;
     lunch: string;
     dinner: string;
+  };
+  mealIds?: {
+    breakfast: number | null;
+    lunch: number | null;
+    dinner: number | null;
   };
 }
 
@@ -64,6 +69,8 @@ export default function Dashboard({ onHideNavbar, cart, setCart, addToCart }: Da
   const [showCart, setShowCart] = useState(false); // Show/hide cart
   const [favoriteMeals, setFavoriteMeals] = useState<Set<string>>(new Set()); // Track favorite meals
   const [checkedMeals, setCheckedMeals] = useState<Set<string>>(new Set()); // Track checked meals
+  const [isGeneratingMealPlan, setIsGeneratingMealPlan] = useState(false); // Track meal plan generation
+  const [generatedMealPlan, setGeneratedMealPlan] = useState<WeeklyMealPlan | null>(null); // Store generated meal plan
 
   // Detailed meal information
   const mealDetails: { [key: string]: MealDetail } = {
@@ -511,71 +518,6 @@ export default function Dashboard({ onHideNavbar, cart, setCart, addToCart }: Da
     }
   };
 
-  const weeklyMeals: WeeklyMeal[] = [
-    {
-      id: '1',
-      day: 'Monday',
-      meals: {
-        breakfast: 'Oatmeal with berries',
-        lunch: 'Grilled chicken salad',
-        dinner: 'Salmon with quinoa'
-      }
-    },
-    {
-      id: '2',
-      day: 'Tuesday',
-      meals: {
-        breakfast: 'Greek yogurt parfait',
-        lunch: 'Turkey wrap',
-        dinner: 'Vegetable stir-fry'
-      }
-    },
-    {
-      id: '3',
-      day: 'Wednesday',
-      meals: {
-        breakfast: 'Avocado toast',
-        lunch: 'Lentil soup',
-        dinner: 'Grilled fish with vegetables'
-      }
-    },
-    {
-      id: '4',
-      day: 'Thursday',
-      meals: {
-        breakfast: 'Smoothie bowl',
-        lunch: 'Chicken Caesar salad',
-        dinner: 'Pasta with marinara'
-      }
-    },
-    {
-      id: '5',
-      day: 'Friday',
-      meals: {
-        breakfast: 'Scrambled eggs',
-        lunch: 'Quinoa bowl',
-        dinner: 'BBQ chicken'
-      }
-    },
-    {
-      id: '6',
-      day: 'Saturday',
-      meals: {
-        breakfast: 'Pancakes',
-        lunch: 'Burger',
-        dinner: 'Pizza'
-      }
-    },
-    {
-      id: '7',
-      day: 'Sunday',
-      meals: {
-        breakfast: 'French toast',
-        lunch: 'Sandwich',
-        dinner: 'Roast dinner'
-      }
-    }
-  ];
 
   // Helper function to get meal detail by name
   const getMealDetail = (mealName: string): MealDetail | null => {
@@ -584,7 +526,31 @@ export default function Dashboard({ onHideNavbar, cart, setCart, addToCart }: Da
   };
 
   // Click handler for meals
-  const handleMealClick = (mealName: string) => {
+  const handleMealClick = (mealName: string, mealId?: number | null) => {
+    // If we have a mealId and generated meal plan, use the actual recipe data
+    if (mealId && generatedMealPlan?.recipes) {
+      const recipe = generatedMealPlan.recipes[mealId.toString()];
+      if (recipe) {
+        // Convert recipe data to the format expected by the modal
+        const mealDetail: MealDetail = {
+          id: recipe.id.toString(),
+          name: recipe.name,
+          description: `${recipe.name} - ${recipe.source || 'Recipe'}`,
+          prepTime: Math.floor(recipe.time * 0.3), // Estimate prep time as 30% of total time
+          cookTime: Math.floor(recipe.time * 0.7), // Estimate cook time as 70% of total time
+          servings: 4, // Default servings since Recipe doesn't have this field
+          calories: recipe.calories,
+          ingredients: recipe.ingredients,
+          instructions: recipe.steps,
+          tags: [] // Default empty tags since Recipe doesn't have this field
+        };
+        setSelectedMeal(mealDetail);
+        onHideNavbar?.(true);
+        return;
+      }
+    }
+    
+    // Fallback to hardcoded meal details for snacks/desserts
     const mealDetail = getMealDetail(mealName);
     if (mealDetail) {
       setSelectedMeal(mealDetail);
@@ -628,6 +594,201 @@ export default function Dashboard({ onHideNavbar, cart, setCart, addToCart }: Da
     });
   };
 
+  // Map user data to preferences format for meal plan generation
+  const mapUserToPreferences = (user: any) => {
+    return {
+      user_id: user.id,
+      dietary_restrictions: user.dietary_restrictions || [],
+      disliked_foods: user.disliked_foods || [],
+      preferred_ingredients: user.preferred_cuisines || [],
+      daily_calories: user.daily_calories_goal || 2000,
+      daily_protein: user.protein_goal_g || 150,
+      servings_per_meal: user.meals_per_day || 1,
+      kitchen_tools: ['oven', 'stovetop', 'blender'], // Default kitchen tools
+      specific_cravings: ['pasta', 'pizza', 'soup', 'salad', 'stir-fry', 'sandwich', 'curry'] // Default cravings
+    };
+  };
+
+  // Generate meal plan function
+  const generateMealPlan = async () => {
+    if (!user) {
+      alert('Please log in to generate a meal plan');
+      return;
+    }
+
+    setIsGeneratingMealPlan(true);
+    try {
+      const preferences = mapUserToPreferences(user);
+      const response = await fetch('/api/meal-plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(preferences),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate meal plan');
+      }
+
+      const data = await response.json();
+      setGeneratedMealPlan(data.mealPlan);
+      console.log('Meal plan generated successfully:', data.mealPlan);
+    } catch (error) {
+      console.error('Error generating meal plan:', error);
+      alert('Error generating meal plan. Please try again.');
+    } finally {
+      setIsGeneratingMealPlan(false);
+    }
+  };
+
+  // Get today's meals from generated meal plan or use defaults
+  const getTodaysMeals = () => {
+    if (generatedMealPlan && generatedMealPlan.meal_ids) {
+      const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+      const dayIndex = generatedMealPlan.days.indexOf(today);
+      
+      console.log('Today:', today, 'Day index:', dayIndex);
+      console.log('Generated meal plan:', generatedMealPlan);
+      
+      if (dayIndex !== -1 && generatedMealPlan.meal_ids[dayIndex]) {
+        const mealIds = generatedMealPlan.meal_ids[dayIndex];
+        const meals = generatedMealPlan.meals || ['Breakfast', 'Lunch', 'Dinner'];
+        
+        console.log('Today\'s meal IDs:', mealIds);
+        
+        return mealIds.map((mealId: number, index: number) => {
+          const recipe = generatedMealPlan.recipes[mealId.toString()];
+          return {
+            id: `${mealId}-${index}`, // Create unique key by combining mealId and index
+            name: recipe?.name || `Recipe ${mealId}`, // Use actual recipe name or fallback
+            image: '/api/placeholder/150/150',
+            calories: recipe?.calories || 300, // Use actual recipe calories or fallback
+            time: meals[index] || 'Meal'
+          };
+        });
+      }
+    }
+    
+    // Fallback to default meals if no generated meal plan
+    return [
+      {
+        id: '1',
+        name: 'Oatmeal with Berries',
+        image: '/api/placeholder/150/150',
+        calories: 350,
+        time: 'Breakfast'
+      },
+      {
+        id: '2',
+        name: 'Grilled Chicken Salad',
+        image: '/api/placeholder/150/150',
+        calories: 450,
+        time: 'Lunch'
+      },
+      {
+        id: '3',
+        name: 'Salmon with Quinoa',
+        image: '/api/placeholder/150/150',
+        calories: 600,
+        time: 'Dinner'
+      }
+    ];
+  };
+
+  // Generate weekly meals from the generated meal plan or use defaults
+  const getWeeklyMeals = (): WeeklyMeal[] => {
+    if (generatedMealPlan && generatedMealPlan.meal_ids && generatedMealPlan.recipes) {
+      return generatedMealPlan.days.map((day: string, dayIndex: number) => {
+        const mealIds = generatedMealPlan.meal_ids[dayIndex];
+        const mealTypes = generatedMealPlan.meals || ['Breakfast', 'Lunch', 'Dinner'];
+        
+        return {
+          id: (dayIndex + 1).toString(),
+          day: day,
+          meals: {
+            breakfast: mealIds[0] ? generatedMealPlan.recipes[mealIds[0].toString()]?.name || `Recipe ${mealIds[0]}` : 'No meal planned',
+            lunch: mealIds[1] ? generatedMealPlan.recipes[mealIds[1].toString()]?.name || `Recipe ${mealIds[1]}` : 'No meal planned',
+            dinner: mealIds[2] ? generatedMealPlan.recipes[mealIds[2].toString()]?.name || `Recipe ${mealIds[2]}` : 'No meal planned'
+          },
+          mealIds: {
+            breakfast: mealIds[0] || null,
+            lunch: mealIds[1] || null,
+            dinner: mealIds[2] || null
+          }
+        };
+      });
+    }
+    
+    // Fallback to default meals if no generated meal plan
+    return [
+      {
+        id: '1',
+        day: 'Monday',
+        meals: {
+          breakfast: 'Oatmeal with berries',
+          lunch: 'Grilled chicken salad',
+          dinner: 'Salmon with quinoa'
+        }
+      },
+      {
+        id: '2',
+        day: 'Tuesday',
+        meals: {
+          breakfast: 'Greek yogurt parfait',
+          lunch: 'Turkey wrap',
+          dinner: 'Vegetable stir-fry'
+        }
+      },
+      {
+        id: '3',
+        day: 'Wednesday',
+        meals: {
+          breakfast: 'Avocado toast',
+          lunch: 'Lentil soup',
+          dinner: 'Grilled fish with vegetables'
+        }
+      },
+      {
+        id: '4',
+        day: 'Thursday',
+        meals: {
+          breakfast: 'Smoothie bowl',
+          lunch: 'Chicken Caesar salad',
+          dinner: 'Pasta with marinara'
+        }
+      },
+      {
+        id: '5',
+        day: 'Friday',
+        meals: {
+          breakfast: 'Scrambled eggs',
+          lunch: 'Quinoa bowl',
+          dinner: 'BBQ chicken'
+        }
+      },
+      {
+        id: '6',
+        day: 'Saturday',
+        meals: {
+          breakfast: 'Pancakes',
+          lunch: 'Burger',
+          dinner: 'Pizza'
+        }
+      },
+      {
+        id: '7',
+        day: 'Sunday',
+        meals: {
+          breakfast: 'French toast',
+          lunch: 'Sandwich',
+          dinner: 'Roast dinner'
+        }
+      }
+    ];
+  };
+
+  const weeklyMeals = getWeeklyMeals();
+  const todaysMeals = getTodaysMeals();
+
   // Toggle checkbox handler
   const toggleCheckbox = (mealId: string) => {
     setCheckedMeals(prev => {
@@ -641,30 +802,6 @@ export default function Dashboard({ onHideNavbar, cart, setCart, addToCart }: Da
     });
   };
 
-  // Today's meals (using Wednesday as example)
-  const todaysMeals = [
-    {
-      id: '1',
-      name: 'Avocado Toast',
-      image: '/api/placeholder/150/150',
-      calories: 320,
-      time: 'Breakfast'
-    },
-    {
-      id: '2',
-      name: 'Lentil Soup',
-      image: '/api/placeholder/150/150',
-      calories: 280,
-      time: 'Lunch'
-    },
-    {
-      id: '3',
-      name: 'Grilled Fish',
-      image: '/api/placeholder/150/150',
-      calories: 350,
-      time: 'Dinner'
-    }
-  ];
 
   // Snacks/Desserts slider data
   const snacksDesserts = [
@@ -907,9 +1044,19 @@ export default function Dashboard({ onHideNavbar, cart, setCart, addToCart }: Da
           <div className="lg:col-span-2 space-y-6">
             {/* Today's Meals Box */}
             <div className="bg-white rounded-lg shadow-sm border p-4">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">Today's Meals</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-gray-800">Today's Meals</h2>
+                <button
+                  onClick={generateMealPlan}
+                  disabled={isGeneratingMealPlan}
+                  className="flex items-center gap-2 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  {isGeneratingMealPlan ? 'Generating...' : 'Generate Meal Plan'}
+                </button>
+              </div>
               <div className="grid grid-cols-3 gap-4 mb-4">
-                {todaysMeals.map((meal) => (
+                {todaysMeals.map((meal: any) => (
                   <div 
                     key={meal.id} 
                     className={`text-center hover:bg-gray-50 p-2 rounded-lg transition-all duration-300 relative ${
@@ -917,7 +1064,7 @@ export default function Dashboard({ onHideNavbar, cart, setCart, addToCart }: Da
                     }`}
                   >
                     <button
-                      onClick={() => handleMealClick(meal.name)}
+                      onClick={() => handleMealClick(meal.name, meal.id)}
                       className="w-full"
                     >
                       <div className="w-full h-40 bg-gray-200 rounded-lg mb-2 flex items-center justify-center">
@@ -1055,7 +1202,7 @@ export default function Dashboard({ onHideNavbar, cart, setCart, addToCart }: Da
                     <div className="space-y-1">
                       <div className="relative">
                         <button
-                          onClick={() => handleMealClick(day.meals.breakfast)}
+                          onClick={() => handleMealClick(day.meals.breakfast, day.mealIds?.breakfast || undefined)}
                           className="w-full text-xs text-gray-600 bg-sky-50 p-2 rounded hover:bg-sky-100 transition-colors text-left"
                         >
                           <div className="font-medium">Breakfast</div>
@@ -1077,7 +1224,7 @@ export default function Dashboard({ onHideNavbar, cart, setCart, addToCart }: Da
                       </div>
                       <div className="relative">
                         <button
-                          onClick={() => handleMealClick(day.meals.lunch)}
+                          onClick={() => handleMealClick(day.meals.lunch, day.mealIds?.lunch || undefined)}
                           className="w-full text-xs text-gray-600 bg-sky-50 p-2 rounded hover:bg-sky-100 transition-colors text-left"
                         >
                           <div className="font-medium">Lunch</div>
@@ -1099,7 +1246,7 @@ export default function Dashboard({ onHideNavbar, cart, setCart, addToCart }: Da
                       </div>
                       <div className="relative">
                         <button
-                          onClick={() => handleMealClick(day.meals.dinner)}
+                          onClick={() => handleMealClick(day.meals.dinner, day.mealIds?.dinner || undefined)}
                           className="w-full text-xs text-gray-600 bg-sky-50 p-2 rounded hover:bg-sky-100 transition-colors text-left"
                         >
                           <div className="font-medium">Dinner</div>

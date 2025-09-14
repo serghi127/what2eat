@@ -141,3 +141,10 @@ export interface UserProfileUpdate {
   timezone?: string;
   language?: string;
 }
+
+export interface WeeklyMealPlan {
+  days: string[];
+  meals: string[];
+  meal_ids: number[][];
+  recipes: { [key: string]: Recipe };
+}
