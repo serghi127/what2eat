@@ -2,8 +2,10 @@
 
 import React, { useState } from 'react';
 import MacroTracking from './MacroTracking';
+import ShoppingCartComponent from './ShoppingCart';
 import { useAuth } from '../contexts/AuthContext';
 import { Calendar, Clock, Users, ChevronLeft, ChevronRight, X, ChefHat, Clock as ClockIcon, FileText, Plus, Star, Ticket, ShoppingCart, Heart } from 'lucide-react';
+import { CartItem, Recipe } from '../types';
 
 interface WeeklyMeal {
   id: string;
@@ -39,9 +41,12 @@ interface MealDetail {
 
 interface DashboardProps {
   onHideNavbar?: (hide: boolean) => void;
+  cart: CartItem[];
+  setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
+  addToCart: (recipe: Recipe) => void;
 }
 
-export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
+export default function Dashboard({ onHideNavbar, cart, setCart, addToCart }: DashboardProps) {
   const { user } = useAuth();
   const [macros, setMacros] = useState<Macro[]>([
     { id: 'calories', name: 'Calories', current: 1200, goal: 2000, unit: 'kcal', color: 'bg-blue-500' },
@@ -56,7 +61,7 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
   const [currentSnackIndex, setCurrentSnackIndex] = useState(0);
   const [selectedMeal, setSelectedMeal] = useState<MealDetail | null>(null);
   const [userNotes, setUserNotes] = useState<{ [key: string]: string }>({});
-  const [cartItems, setCartItems] = useState<number>(0); // Cart item count
+  const [showCart, setShowCart] = useState(false); // Show/hide cart
   const [favoriteMeals, setFavoriteMeals] = useState<Set<string>>(new Set()); // Track favorite meals
   const [checkedMeals, setCheckedMeals] = useState<Set<string>>(new Set()); // Track checked meals
 
@@ -594,10 +599,20 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
   };
 
   // Add to cart handler
-  const handleAddToCart = () => {
-    setCartItems(prev => prev + 1);
-    // In a real app, this would add the meal's ingredients to the shopping cart
-    console.log('Added meal ingredients to cart');
+  const handleAddToCart = (mealDetail: MealDetail) => {
+    // Convert MealDetail to Recipe format
+    const recipe: Recipe = {
+      id: mealDetail.id,
+      name: mealDetail.name,
+      time: mealDetail.prepTime + mealDetail.cookTime,
+      servings: mealDetail.servings,
+      calories: mealDetail.calories,
+      protein: 0, // Default value since MealDetail doesn't have protein
+      tags: mealDetail.tags,
+      ingredients: mealDetail.ingredients,
+      steps: mealDetail.instructions
+    };
+    addToCart(recipe);
   };
 
   // Toggle favorite handler
@@ -825,7 +840,7 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
               {/* Action Buttons */}
               <div className="flex gap-4">
                 <button 
-                  onClick={handleAddToCart}
+                  onClick={() => handleAddToCart(selectedMeal)}
                   className="flex-1 bg-teal-600 text-white py-4 px-6 rounded-lg hover:bg-teal-700 transition-colors font-medium text-lg"
                 >
                   Add to Cart
@@ -873,11 +888,14 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
               </button>
 
               {/* Cart Icon */}
-              <button className="flex items-center gap-2 bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors">
+              <button 
+                onClick={() => setShowCart(true)}
+                className="flex items-center gap-2 bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors cursor-pointer"
+              >
                 <ShoppingCart className="w-5 h-5" />
                 <div>
                   <div className="text-sm font-medium">Cart</div>
-                  <div className="text-lg font-bold">{cartItems}</div>
+                  <div className="text-lg font-bold">{cart.length}</div>
                 </div>
               </button>
             </div>
@@ -1156,6 +1174,44 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
           </div>
         </div>
       </div>
+
+      {/* Cart Component - Overlay */}
+      {showCart && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowCart(false)}
+        >
+          <div 
+            className="bg-white rounded-lg shadow-lg max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex-shrink-0 bg-white border-b p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <button
+                    onClick={() => setShowCart(false)}
+                    className="p-2 hover:bg-gray-100 rounded-full"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <div>
+                    <h1 className="text-2xl font-bold text-gray-900">Shopping Cart</h1>
+                    <p className="text-gray-600">{cart.length} items from your meal plan</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-6">
+              <ShoppingCartComponent 
+                cart={cart}
+                setCart={setCart}
+                onNavigateToMealPlan={() => setShowCart(false)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

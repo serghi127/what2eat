@@ -3,46 +3,22 @@
 import React, { useState } from 'react';
 import { Search, Filter, Heart, Clock, Users, Star, X, ChefHat, Clock as ClockIcon, FileText } from 'lucide-react';
 import { BREAKFAST_RECIPES, LUNCH_RECIPES, DINNER_RECIPES } from '../constants';
+import { Recipe } from '../types';
 
-interface Recipe {
-  id: string | number;
-  name: string;
-  image: string;
-  time: number; // Changed from prepTime to time to match constants
-  servings: number;
-  rating: number;
-  calories: number;
-  tags: string[];
-  isFavorite: boolean;
-  ingredients: string[];
-  steps: string[];
+interface RecipeSearchProps {
+  onAddToCart: (recipe: Recipe) => void;
 }
 
-export default function RecipeSearch() {
+export default function RecipeSearch({ onAddToCart }: RecipeSearchProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   
-  // Combine all recipes from constants and add UI-specific properties
-  const allRecipes = [
-    ...BREAKFAST_RECIPES.map(recipe => ({
-      ...recipe,
-      image: '/api/placeholder/300/200',
-      rating: 4.5 + Math.random() * 0.5, // Random rating between 4.5-5.0
-      isFavorite: Math.random() > 0.7 // Random favorite status
-    })),
-    ...LUNCH_RECIPES.map(recipe => ({
-      ...recipe,
-      image: '/api/placeholder/300/200',
-      rating: 4.5 + Math.random() * 0.5,
-      isFavorite: Math.random() > 0.7
-    })),
-    ...DINNER_RECIPES.map(recipe => ({
-      ...recipe,
-      image: '/api/placeholder/300/200',
-      rating: 4.5 + Math.random() * 0.5,
-      isFavorite: Math.random() > 0.7
-    }))
+  // Combine all recipes from constants
+  const allRecipes: Recipe[] = [
+    ...BREAKFAST_RECIPES,
+    ...LUNCH_RECIPES,
+    ...DINNER_RECIPES
   ];
   
   const [recipes] = useState<Recipe[]>(allRecipes);
@@ -129,13 +105,9 @@ export default function RecipeSearch() {
                 <div className="absolute top-2 right-2">
                   <button
                     onClick={() => toggleFavorite(recipe.id)}
-                    className={`p-2 rounded-full transition-colors ${
-                      recipe.isFavorite 
-                        ? 'bg-red-500 text-white' 
-                        : 'bg-white text-gray-400 hover:text-red-500'
-                    }`}
+                    className="p-2 rounded-full transition-colors bg-white text-gray-400 hover:text-red-500"
                   >
-                    <Heart size={16} fill={recipe.isFavorite ? 'currentColor' : 'none'} />
+                    <Heart size={16} fill="none" />
                   </button>
                 </div>
                 <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
@@ -159,7 +131,7 @@ export default function RecipeSearch() {
                   </div>
                   <div className="flex items-center gap-1">
                     <Star size={14} className="text-yellow-500" fill="currentColor" />
-                    <span>{recipe.rating.toFixed(1)}</span>
+                    <span>4.8</span>
                   </div>
                 </div>
 
@@ -315,7 +287,13 @@ export default function RecipeSearch() {
 
               {/* Action Buttons */}
               <div className="flex gap-4">
-                <button className="flex-1 bg-teal-600 text-white py-4 px-6 rounded-lg hover:bg-teal-700 transition-colors font-medium text-lg">
+                <button 
+                  onClick={() => {
+                    onAddToCart(selectedRecipe);
+                    handleCloseModal();
+                  }}
+                  className="flex-1 bg-teal-600 text-white py-4 px-6 rounded-lg hover:bg-teal-700 transition-colors font-medium text-lg"
+                >
                   Add to Cart
                 </button>
                 <button className="flex-1 bg-sky-200 text-sky-700 py-4 px-6 rounded-lg hover:bg-sky-300 transition-colors font-medium text-lg">

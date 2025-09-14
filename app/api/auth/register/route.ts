@@ -40,8 +40,8 @@ export async function POST(req: NextRequest) {
       `INSERT INTO users (
         name, email, password, age, gender, height_cm, weight_kg, activity_level,
         meals_per_day, snacks_per_day, cooking_skill_level, cooking_time_preference,
-        budget_preference, notifications_enabled, timezone, language
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        budget_preference, notifications_enabled, timezone, language, profile_completed
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         name, email, hashedPassword, age || null, gender || null, 
         height_cm || null, weight_kg || null, activity_level || null,
@@ -52,7 +52,8 @@ export async function POST(req: NextRequest) {
         'medium', // Default budget preference
         true, // Default notifications enabled
         'UTC', // Default timezone
-        'en' // Default language
+        'en', // Default language
+        false // Profile not completed yet - needs onboarding
       ]
     );
 

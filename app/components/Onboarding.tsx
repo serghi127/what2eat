@@ -13,7 +13,7 @@ interface OnboardingWizardProps {
 
 export default function OnboardingWizard({ preferences, setPreferences, onComplete }: OnboardingWizardProps) {
   const [step, setStep] = useState(1);
-  const totalSteps = 6;
+  const totalSteps = 2;
 
   const handleNext = () => {
     if (step < totalSteps) {
@@ -96,127 +96,11 @@ export default function OnboardingWizard({ preferences, setPreferences, onComple
           </div>
         )}
 
+
+
+
+
         {step === 2 && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-semibold">Meal Types</h2>
-            <p className="text-gray-600">What types of meals do you enjoy?</p>
-            
-            <div>
-              <label className="block text-sm font-medium mb-2">Meal Types</label>
-              <div className="flex flex-wrap gap-2">
-                {getPreferenceOptions('meal_type').map(meal => (
-                  <button
-                    key={meal}
-                    className={`px-4 py-2 rounded-full text-sm ${
-                      preferences.mealType.includes(meal)
-                        ? 'bg-blue-500 text-white' 
-                        : 'bg-gray-200 hover:bg-gray-300'
-                    }`}
-                    onClick={() => updateArrayField('mealType', meal)}
-                  >
-                    {meal}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {step === 3 && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-semibold">Cooking Time</h2>
-            <p className="text-gray-600">How much time do you have for cooking?</p>
-            
-            <div>
-              <label className="block text-sm font-medium mb-2">Cooking Time Preferences</label>
-              <div className="flex flex-wrap gap-2">
-                {getPreferenceOptions('cooking_time').map(time => (
-                  <button
-                    key={time}
-                    className={`px-4 py-2 rounded-full text-sm ${
-                      preferences.cookingTime.includes(time)
-                        ? 'bg-orange-500 text-white' 
-                        : 'bg-gray-200 hover:bg-gray-300'
-                    }`}
-                    onClick={() => updateArrayField('cookingTime', time)}
-                  >
-                    {time}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2">Time per day for cooking</label>
-              <div className="flex items-center space-x-2">
-                <Clock className="w-5 h-5 text-gray-400" />
-                <input
-                  type="range"
-                  min="15"
-                  max="90"
-                  value={preferences.timePerDay}
-                  onChange={(e) => updateField('timePerDay', parseInt(e.target.value))}
-                  className="flex-1"
-                />
-                <span className="w-20 text-right">{preferences.timePerDay} min</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {step === 4 && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-semibold">Course Types</h2>
-            <p className="text-gray-600">What types of dishes do you enjoy?</p>
-            
-            <div>
-              <label className="block text-sm font-medium mb-2">Course Types</label>
-              <div className="flex flex-wrap gap-2">
-                {getPreferenceOptions('course').map(course => (
-                  <button
-                    key={course}
-                    className={`px-4 py-2 rounded-full text-sm ${
-                      preferences.course.includes(course)
-                        ? 'bg-purple-500 text-white' 
-                        : 'bg-gray-200 hover:bg-gray-300'
-                    }`}
-                    onClick={() => updateArrayField('course', course)}
-                  >
-                    {course}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {step === 5 && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-semibold">Cuisine Preferences</h2>
-            <p className="text-gray-600">What cuisines do you enjoy?</p>
-            
-            <div>
-              <label className="block text-sm font-medium mb-2">Cuisines</label>
-              <div className="flex flex-wrap gap-2">
-                {getPreferenceOptions('cuisine').map(cuisine => (
-                  <button
-                    key={cuisine}
-                    className={`px-4 py-2 rounded-full text-sm ${
-                      preferences.cuisine.includes(cuisine)
-                        ? 'bg-red-500 text-white' 
-                        : 'bg-gray-200 hover:bg-gray-300'
-                    }`}
-                    onClick={() => updateArrayField('cuisine', cuisine)}
-                  >
-                    {cuisine}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {step === 6 && (
           <div className="space-y-6">
             <h2 className="text-2xl font-semibold">Ingredients & Final Details</h2>
             <p className="text-gray-600">What ingredients do you prefer and final preferences</p>
@@ -347,7 +231,7 @@ export default function OnboardingWizard({ preferences, setPreferences, onComple
             onClick={handleNext}
             className="flex items-center px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
           >
-            {step === totalSteps ? 'Generate Plan' : 'Next'}
+            {step === totalSteps ? 'Complete Setup' : 'Next'}
             {step !== totalSteps && <ChevronRight className="w-4 h-4 ml-1" />}
           </button>
         </div>

@@ -7,12 +7,15 @@ import RecipeSearch from './RecipeSearch';
 import AddMeal from './AddMeal';
 import NutritionConsultant from './NutritionConsultant';
 import ProfilePage from './ProfilePage';
+import ShoppingCartComponent from './ShoppingCart';
 import { useAuth } from '../contexts/AuthContext';
+import { useCart } from '../hooks/useCart';
 
 export default function MainApp() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [hideNavbar, setHideNavbar] = useState(false);
   const { user, logout } = useAuth();
+  const { cart, setCart, addToCart } = useCart();
 
   const handleUpdateUser = (updatedUser: any) => {
     // In a real app, this would update the user in the auth context
@@ -22,9 +25,9 @@ export default function MainApp() {
   const renderActiveTab = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <Dashboard onHideNavbar={setHideNavbar} />;
+        return <Dashboard onHideNavbar={setHideNavbar} cart={cart} setCart={setCart} addToCart={addToCart} />;
       case 'recipes':
-        return <RecipeSearch />;
+        return <RecipeSearch onAddToCart={addToCart} />;
       case 'add-meal':
         return <AddMeal />;
       case 'nutrition':
@@ -38,7 +41,7 @@ export default function MainApp() {
           />
         );
       default:
-        return <Dashboard />;
+        return <Dashboard onHideNavbar={setHideNavbar} cart={cart} setCart={setCart} addToCart={addToCart} />;
     }
   };
 
@@ -50,7 +53,12 @@ export default function MainApp() {
       </div>
 
       {/* Bottom Navigation */}
-      {!hideNavbar && <BottomNavbar activeTab={activeTab} onTabChange={setActiveTab} />}
+      {!hideNavbar && (
+        <BottomNavbar 
+          activeTab={activeTab} 
+          onTabChange={setActiveTab}
+        />
+      )}
     </div>
   );
 }

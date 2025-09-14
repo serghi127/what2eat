@@ -334,7 +334,7 @@ export default function ProfilePage({ user, onUpdateUser, onLogout }: ProfilePag
                 </div>
               </div>
               <div className="p-4">
-                <UserProfile user={user} onUpdate={onUpdateUser} />
+                <UserProfile user={user} onUpdate={onUpdateUser} onClose={() => setShowProfileEditor(false)} />
               </div>
             </div>
           </div>

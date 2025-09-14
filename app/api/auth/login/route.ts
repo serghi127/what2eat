@@ -49,6 +49,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // For existing users without profile_completed field, set it to true (1 in MySQL)
+    if (user.profile_completed === null || user.profile_completed === undefined) {
+      await db.query(
+        "UPDATE users SET profile_completed = 1 WHERE id = ?",
+        [user.id]
+      );
+      user.profile_completed = 1;
+    }
+
     // Return user data (without password)
     const { password: _, ...userWithoutPassword } = user;
     return NextResponse.json({ 

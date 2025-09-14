@@ -44,29 +44,8 @@ export default function ShoppingCartComponent({ cart, setCart, onNavigateToMealP
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={onNavigateToMealPlan}
-                className="p-2 hover:bg-gray-100 rounded-full"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Shopping Cart</h1>
-                <p className="text-gray-600">{totalItems} items from your meal plan</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-4xl mx-auto p-4">
-        <div className="bg-white rounded-lg shadow-sm">
-          <div className="p-6">
+    <div className="bg-white rounded-lg shadow-sm">
+      <div className="p-6">
             {cartItems.length === 0 ? (
               <div className="text-center py-12">
                 <ShoppingCart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
@@ -133,8 +112,6 @@ export default function ShoppingCartComponent({ cart, setCart, onNavigateToMealP
               </>
             )}
           </div>
-        </div>
-      </div>
     </div>
   );
 }
