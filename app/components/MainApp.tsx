@@ -14,11 +14,11 @@ import { useCart } from '../hooks/useCart';
 export default function MainApp() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [hideNavbar, setHideNavbar] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logout, updateUser } = useAuth();
   const { cart, setCart, addToCart } = useCart();
 
   const handleUpdateUser = (updatedUser: any) => {
-    // In a real app, this would update the user in the auth context
+    updateUser(updatedUser);
     console.log('User updated:', updatedUser);
   };
 

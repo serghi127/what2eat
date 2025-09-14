@@ -17,6 +17,11 @@ export async function POST(req: NextRequest) {
     // Update user preferences and mark profile as completed
     await db.query(
       `UPDATE users SET 
+        age = ?,
+        gender = ?,
+        height_cm = ?,
+        weight_kg = ?,
+        activity_level = ?,
         dietary_restrictions = ?,
         disliked_foods = ?,
         preferred_cuisines = ?,
@@ -26,6 +31,11 @@ export async function POST(req: NextRequest) {
         updated_at = NOW()
       WHERE id = ?`,
       [
+        preferences.age || null,
+        preferences.gender || null,
+        preferences.height_cm || null,
+        preferences.weight_kg || null,
+        preferences.activity_level || null,
         JSON.stringify(preferences.dietaryRestrictions),
         JSON.stringify([preferences.dislikes]), // Convert string to JSON array
         JSON.stringify(preferences.cuisine),

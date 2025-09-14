@@ -24,6 +24,14 @@ export interface CartItem {
 }
 
 export interface Preferences {
+  // Personal Information
+  age?: number;
+  gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say';
+  height_cm?: number;
+  weight_kg?: number;
+  activity_level?: 'sedentary' | 'lightly_active' | 'moderately_active' | 'very_active' | 'extremely_active';
+  
+  // Dietary Preferences
   dietaryRestrictions: string[];
   mealType: string[];
   cookingTime: string[];

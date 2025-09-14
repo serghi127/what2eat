@@ -13,6 +13,14 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { user, isLoading, login, updateUser } = useAuth();
   const [preferences, setPreferences] = useState<Preferences>({
+    // Personal Information
+    age: undefined,
+    gender: undefined,
+    height_cm: undefined,
+    weight_kg: undefined,
+    activity_level: undefined,
+    
+    // Dietary Preferences
     dietaryRestrictions: [],
     mealType: [],
     cookingTime: [],
@@ -68,7 +76,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   // Check if user needs to complete onboarding
   // Only show onboarding for new users who have profile_completed: 0 (false in MySQL)
-  if (user && user.profile_completed === 0) {
+  if (user && user.profile_completed === false) {
     return (
       <OnboardingWizard 
         preferences={preferences}

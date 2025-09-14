@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import MacroTracking from './MacroTracking';
 import ShoppingCartComponent from './ShoppingCart';
 import { useAuth } from '../contexts/AuthContext';
-import { Calendar, Clock, Users, ChevronLeft, ChevronRight, X, ChefHat, Clock as ClockIcon, FileText, Plus, Star, Ticket, ShoppingCart, Heart } from 'lucide-react';
+import { Calendar, Users, ChevronLeft, ChevronRight, X, ChefHat, Clock as ClockIcon, FileText, Plus, Star, Ticket, ShoppingCart, Heart } from 'lucide-react';
 import { CartItem, Recipe } from '../types';
 
 interface WeeklyMeal {
@@ -1135,44 +1135,6 @@ export default function Dashboard({ onHideNavbar, cart, setCart, addToCart }: Da
           </div>
         </div>
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white rounded-lg shadow-sm border p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-sky-100 rounded-lg">
-                <Calendar className="text-sky-600" size={20} />
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Meals This Week</p>
-                <p className="text-xl font-bold text-gray-900">21</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm border p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <Clock className="text-emerald-600" size={20} />
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Avg Prep Time</p>
-                <p className="text-xl font-bold text-gray-900">25 min</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm border p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-teal-100 rounded-lg">
-                <Users className="text-teal-600" size={20} />
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Recipes Saved</p>
-                <p className="text-xl font-bold text-gray-900">47</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Cart Component - Overlay */}
