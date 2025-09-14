@@ -211,7 +211,7 @@ export default function RecipeSearch() {
       await addMealToHistory(
         new Date().toISOString().split('T')[0], // date: YYYY-MM-DD format
         'lunch', // mealType: default to lunch
-        recipe.id, // recipeId
+        Number(recipe.id), // recipeId
         recipe.name, // recipeName
         true, // completed
         undefined, // rating
