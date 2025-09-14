@@ -40,13 +40,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(false);
   }, []);
 
-  const login = (userData: UserWithoutPassword) => {
+  const login = async (userData: UserWithoutPassword) => {
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
-    // For new users, assume they haven't completed onboarding
-    // This will be updated when they complete onboarding
-    if (!localStorage.getItem('hasCompletedOnboarding')) {
-      setHasCompletedOnboarding(false);
+    
+    // Check if user has completed onboarding by looking at their profile data
+    // If they have demographic info (age, gender, etc.), they've completed onboarding
+    const hasDemographicInfo = userData.age !== null && userData.age !== undefined;
+    
+    if (hasDemographicInfo) {
+      setHasCompletedOnboarding(true);
+      localStorage.setItem('hasCompletedOnboarding', 'true');
+    } else {
+      // Check if they previously completed onboarding
+      const savedOnboarding = localStorage.getItem('hasCompletedOnboarding');
+      if (savedOnboarding === 'true') {
+        setHasCompletedOnboarding(true);
+      } else {
+        setHasCompletedOnboarding(false);
+      }
     }
   };
 

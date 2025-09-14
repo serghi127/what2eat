@@ -23,6 +23,7 @@ export async function GET(req: NextRequest) {
     }
 
     // Get meal plan from meal_table
+    console.log('Fetching meal plan for user ID:', userData.id);
     const { data: mealTableData, error: mealTableError } = await supabase
       .from('meal_table')
       .select('weekly_plan')
@@ -33,6 +34,9 @@ export async function GET(req: NextRequest) {
       console.error('Supabase error:', mealTableError);
       return NextResponse.json({ error: 'Failed to fetch meal plan' }, { status: 500 });
     }
+
+    console.log('Raw meal table data:', mealTableData);
+    console.log('Weekly plan from database:', mealTableData?.weekly_plan);
 
     return NextResponse.json({ mealPlan: mealTableData?.weekly_plan || {} });
   } catch (error) {

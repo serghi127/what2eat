@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import LoginPage from '../components/LoginPage';
+import LoginPage from './LoginPage';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -20,7 +20,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   }
 
   if (!user) {
-    return <LoginPage onLoginSuccess={login} />;
+      return <LoginPage onLoginSuccess={async (user) => await login(user)} />;
   }
 
   return <>{children}</>;

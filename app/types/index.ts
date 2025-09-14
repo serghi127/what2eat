@@ -63,6 +63,11 @@ export interface UserWithoutPassword {
   id: string;
   email: string;
   name?: string;
+  age?: number;
+  gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say';
+  height_cm?: number;
+  weight_kg?: number;
+  activity_level?: 'sedentary' | 'lightly_active' | 'moderately_active' | 'very_active' | 'extremely_active';
 }
 
 export interface DailyProgress {
@@ -124,4 +129,9 @@ export interface UserRegistrationData {
 // User profile update data
 export interface UserProfileUpdate {
   name?: string;
+  age?: number;
+  gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say';
+  height_cm?: number;
+  weight_kg?: number;
+  activity_level?: 'sedentary' | 'lightly_active' | 'moderately_active' | 'very_active' | 'extremely_active';
 }

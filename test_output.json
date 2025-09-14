@@ -1,0 +1,2 @@
+Warning: LLM recipe generator not available. Will use fallback recipe generation.
+{"Monday": {"breakfast": 80, "lunch": 200, "dinner": 173}, "Tuesday": {"breakfast": 37, "lunch": 160, "dinner": 130}, "Wednesday": {"breakfast": 43, "lunch": 39, "dinner": 170}, "Thursday": {"breakfast": 193, "lunch": 152, "dinner": 136}, "Friday": {"breakfast": 108, "lunch": 79, "dinner": 7}, "Saturday": {"breakfast": 123, "lunch": 71, "dinner": 87}, "Sunday": {"breakfast": 179, "lunch": 44, "dinner": 25}}

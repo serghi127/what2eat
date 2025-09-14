@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { UserWithoutPassword } from '../types';
 
 interface LoginPageProps {
-  onLoginSuccess: (user: UserWithoutPassword) => void;
+  onLoginSuccess: (user: UserWithoutPassword) => Promise<void>;
 }
 
 export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
@@ -50,7 +50,7 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
         const data = await response.json();
 
         if (response.ok) {
-          onLoginSuccess(data.user);
+          await onLoginSuccess(data.user);
           // Don't navigate - the ProtectedRoute will automatically show the main app
         } else {
           setError(data.error || 'Login failed');
@@ -78,7 +78,7 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
         const data = await response.json();
 
         if (response.ok) {
-          onLoginSuccess(data.user);
+          await onLoginSuccess(data.user);
           // Don't navigate - the ProtectedRoute will automatically show the main app
         } else {
           setError(data.error || 'Registration failed');

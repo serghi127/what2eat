@@ -1,8 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
-import { User, Camera, Settings, Globe, Palette, HelpCircle, LogOut } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { User, Camera, Settings, Globe, Palette, HelpCircle, LogOut, Edit3, Save, X } from 'lucide-react';
 import UserProfile from './UserProfile';
+import { useUserProfile } from '../hooks/useUserProfile';
+import { useDietaryPrefs } from '../hooks/useDietaryPrefs';
 
 interface ProfilePageProps {
   user: any;
@@ -13,6 +15,153 @@ interface ProfilePageProps {
 export default function ProfilePage({ user, onUpdateUser, onLogout }: ProfilePageProps) {
   const [activeSection, setActiveSection] = useState<'profile' | 'settings' | 'preferences'>('profile');
   const [showProfileEditor, setShowProfileEditor] = useState(false);
+  
+  // Editing states
+  const [isEditingBasicInfo, setIsEditingBasicInfo] = useState(false);
+  const [isEditingDietaryPrefs, setIsEditingDietaryPrefs] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  
+  // Form data for basic info
+  const [formData, setFormData] = useState({
+    name: user?.name || '',
+    age: user?.age || undefined,
+    gender: user?.gender || undefined,
+    height_cm: user?.height_cm || undefined,
+    weight_kg: user?.weight_kg || undefined,
+    activity_level: user?.activity_level || undefined
+  });
+  
+  // Form data for dietary preferences
+  const [dietaryData, setDietaryData] = useState({
+    restrictions: [] as string[],
+    allergies: [] as string[],
+    tools: [] as string[]
+  });
+
+  // Hooks
+  const { updateProfile, loading: profileLoading } = useUserProfile();
+  const { dietaryPrefs, saveDietaryPrefs, loading: dietaryLoading } = useDietaryPrefs();
+
+  // Sync form data with user prop when it changes
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || '',
+        age: user.age || undefined,
+        gender: user.gender || undefined,
+        height_cm: user.height_cm || undefined,
+        weight_kg: user.weight_kg || undefined,
+        activity_level: user.activity_level || undefined
+      });
+    }
+  }, [user]);
+
+  // Sync dietary preferences when they load
+  useEffect(() => {
+    if (dietaryPrefs) {
+      setDietaryData({
+        restrictions: dietaryPrefs.restrictions || [],
+        allergies: dietaryPrefs.allergies || [],
+        tools: dietaryPrefs.tools || []
+      });
+    }
+  }, [dietaryPrefs]);
+
+  // Handler functions
+  const handleInputChange = (field: keyof typeof formData, value: string | number | undefined) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleDietaryChange = (field: keyof typeof dietaryData, value: string[]) => {
+    setDietaryData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleSaveBasicInfo = async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      const profileUpdate = {
+        name: formData.name,
+        age: formData.age ? Number(formData.age) : undefined,
+        gender: formData.gender as 'male' | 'female' | 'other' | 'prefer_not_to_say' | undefined,
+        height_cm: formData.height_cm ? Number(formData.height_cm) : undefined,
+        weight_kg: formData.weight_kg ? Number(formData.weight_kg) : undefined,
+        activity_level: formData.activity_level as 'sedentary' | 'lightly_active' | 'moderately_active' | 'very_active' | 'extremely_active' | undefined
+      };
+
+      await updateProfile(profileUpdate);
+
+      // Refresh user data
+      const response = await fetch('/api/auth/profile', {
+        headers: {
+          'User-Id': user.id,
+        },
+      });
+      
+      if (response.ok) {
+        const { user: updatedUser } = await response.json();
+        onUpdateUser(updatedUser);
+      }
+
+      setIsEditingBasicInfo(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSaveDietaryPrefs = async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      await saveDietaryPrefs({
+        restrictions: dietaryData.restrictions,
+        allergies: dietaryData.allergies,
+        tools: dietaryData.tools
+      });
+
+      setIsEditingDietaryPrefs(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancelBasicInfo = () => {
+    setFormData({
+      name: user?.name || '',
+      age: user?.age || undefined,
+      gender: user?.gender || undefined,
+      height_cm: user?.height_cm || undefined,
+      weight_kg: user?.weight_kg || undefined,
+      activity_level: user?.activity_level || undefined
+    });
+    setIsEditingBasicInfo(false);
+    setError('');
+  };
+
+  const handleCancelDietaryPrefs = () => {
+    if (dietaryPrefs) {
+      setDietaryData({
+        restrictions: dietaryPrefs.restrictions || [],
+        allergies: dietaryPrefs.allergies || [],
+        tools: dietaryPrefs.tools || []
+      });
+    }
+    setIsEditingDietaryPrefs(false);
+    setError('');
+  };
 
   const settingsOptions = [
     {
@@ -115,31 +264,147 @@ export default function ProfilePage({ user, onUpdateUser, onLogout }: ProfilePag
           <div className="space-y-4">
             {/* Basic Info */}
             <div className="bg-white rounded-lg shadow-sm border p-4">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Basic Information</h3>
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold text-gray-800">Basic Information</h3>
+                {!isEditingBasicInfo ? (
+                  <button
+                    onClick={() => setIsEditingBasicInfo(true)}
+                    className="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 transition-colors"
+                  >
+                    <Edit3 size={16} />
+                    Edit
+                  </button>
+                ) : (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleCancelBasicInfo}
+                      className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
+                    >
+                      <X size={16} />
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSaveBasicInfo}
+                      disabled={loading || profileLoading}
+                      className="flex items-center gap-2 bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50"
+                    >
+                      <Save size={16} />
+                      {loading || profileLoading ? 'Saving...' : 'Save'}
+                    </button>
+                  </div>
+                )}
+              </div>
+              
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+                  {error}
+                </div>
+              )}
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                  <p className="text-gray-900">{user?.name || 'Not set'}</p>
+                  {isEditingBasicInfo ? (
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      placeholder="Enter your name"
+                    />
+                  ) : (
+                    <p className="text-gray-900">{user?.name || 'Not set'}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                   <p className="text-gray-900">{user?.email || 'Not set'}</p>
+                  <p className="text-xs text-gray-500">Email cannot be changed</p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Age</label>
-                  <p className="text-gray-900">{user?.age || 'Not set'}</p>
+                  {isEditingBasicInfo ? (
+                    <input
+                      type="number"
+                      value={formData.age || ''}
+                      onChange={(e) => handleInputChange('age', e.target.value ? Number(e.target.value) : undefined)}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      placeholder="Enter your age"
+                      min="1"
+                      max="120"
+                    />
+                  ) : (
+                    <p className="text-gray-900">{user?.age || 'Not set'}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                  <p className="text-gray-900">{user?.gender || 'Not set'}</p>
+                  {isEditingBasicInfo ? (
+                    <select
+                      value={formData.gender || ''}
+                      onChange={(e) => handleInputChange('gender', e.target.value || undefined)}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    >
+                      <option value="">Select gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                      <option value="prefer_not_to_say">Prefer not to say</option>
+                    </select>
+                  ) : (
+                    <p className="text-gray-900">{user?.gender || 'Not set'}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Height</label>
-                  <p className="text-gray-900">{user?.height_cm ? `${user.height_cm} cm` : 'Not set'}</p>
+                  {isEditingBasicInfo ? (
+                    <input
+                      type="number"
+                      value={formData.height_cm || ''}
+                      onChange={(e) => handleInputChange('height_cm', e.target.value ? Number(e.target.value) : undefined)}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      placeholder="Enter height in cm"
+                      min="100"
+                      max="250"
+                    />
+                  ) : (
+                    <p className="text-gray-900">{user?.height_cm ? `${user.height_cm} cm` : 'Not set'}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Weight</label>
-                  <p className="text-gray-900">{user?.weight_kg ? `${user.weight_kg} kg` : 'Not set'}</p>
+                  {isEditingBasicInfo ? (
+                    <input
+                      type="number"
+                      value={formData.weight_kg || ''}
+                      onChange={(e) => handleInputChange('weight_kg', e.target.value ? Number(e.target.value) : undefined)}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      placeholder="Enter weight in kg"
+                      min="20"
+                      max="300"
+                    />
+                  ) : (
+                    <p className="text-gray-900">{user?.weight_kg ? `${user.weight_kg} kg` : 'Not set'}</p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Activity Level</label>
+                  {isEditingBasicInfo ? (
+                    <select
+                      value={formData.activity_level || ''}
+                      onChange={(e) => handleInputChange('activity_level', e.target.value || undefined)}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    >
+                      <option value="">Select activity level</option>
+                      <option value="sedentary">Sedentary</option>
+                      <option value="lightly_active">Lightly Active</option>
+                      <option value="moderately_active">Moderately Active</option>
+                      <option value="very_active">Very Active</option>
+                      <option value="extremely_active">Extremely Active</option>
+                    </select>
+                  ) : (
+                    <p className="text-gray-900">{user?.activity_level || 'Not set'}</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -234,48 +499,147 @@ export default function ProfilePage({ user, onUpdateUser, onLogout }: ProfilePag
         {activeSection === 'preferences' && (
           <div className="space-y-4">
             <div className="bg-white rounded-lg shadow-sm border p-4">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Dietary Preferences</h3>
-              <div className="space-y-3">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold text-gray-800">Dietary Preferences</h3>
+                {!isEditingDietaryPrefs ? (
+                  <button
+                    onClick={() => setIsEditingDietaryPrefs(true)}
+                    className="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 transition-colors"
+                  >
+                    <Edit3 size={16} />
+                    Edit
+                  </button>
+                ) : (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleCancelDietaryPrefs}
+                      className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
+                    >
+                      <X size={16} />
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSaveDietaryPrefs}
+                      disabled={loading || dietaryLoading}
+                      className="flex items-center gap-2 bg-indigo-600 text-white px-3 py-1 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50"
+                    >
+                      <Save size={16} />
+                      {loading || dietaryLoading ? 'Saving...' : 'Save'}
+                    </button>
+                  </div>
+                )}
+              </div>
+              
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+                  {error}
+                </div>
+              )}
+              
+              <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Dietary Restrictions</label>
-                  <div className="flex flex-wrap gap-2">
-                    {(user?.dietary_restrictions || []).map((restriction: string) => (
-                      <span key={restriction} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
-                        {restriction}
-                      </span>
-                    ))}
-                    {(!user?.dietary_restrictions || user.dietary_restrictions.length === 0) && (
-                      <span className="text-gray-500 text-sm">None set</span>
-                    )}
-                  </div>
+                  {isEditingDietaryPrefs ? (
+                    <div className="flex flex-wrap gap-2">
+                      {['vegetarian', 'vegan', 'gluten-free', 'dairy-free', 'low-carb', 'keto', 'paleo'].map((restriction) => (
+                        <label key={restriction} className="flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            checked={dietaryData.restrictions.includes(restriction)}
+                            onChange={(e) => {
+                              const newRestrictions = e.target.checked
+                                ? [...dietaryData.restrictions, restriction]
+                                : dietaryData.restrictions.filter(r => r !== restriction);
+                              handleDietaryChange('restrictions', newRestrictions);
+                            }}
+                            className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                          />
+                          <span className="text-sm text-gray-700 capitalize">{restriction}</span>
+                        </label>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      {dietaryData.restrictions.map((restriction) => (
+                        <span key={restriction} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm capitalize">
+                          {restriction}
+                        </span>
+                      ))}
+                      {dietaryData.restrictions.length === 0 && (
+                        <span className="text-gray-500 text-sm">None set</span>
+                      )}
+                    </div>
+                  )}
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Allergies</label>
-                  <div className="flex flex-wrap gap-2">
-                    {(user?.allergies || []).map((allergy: string) => (
-                      <span key={allergy} className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm">
-                        {allergy}
-                      </span>
-                    ))}
-                    {(!user?.allergies || user.allergies.length === 0) && (
-                      <span className="text-gray-500 text-sm">None set</span>
-                    )}
-                  </div>
+                  {isEditingDietaryPrefs ? (
+                    <div className="flex flex-wrap gap-2">
+                      {['nuts', 'dairy', 'eggs', 'shellfish', 'soy', 'wheat', 'fish', 'sesame'].map((allergy) => (
+                        <label key={allergy} className="flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            checked={dietaryData.allergies.includes(allergy)}
+                            onChange={(e) => {
+                              const newAllergies = e.target.checked
+                                ? [...dietaryData.allergies, allergy]
+                                : dietaryData.allergies.filter(a => a !== allergy);
+                              handleDietaryChange('allergies', newAllergies);
+                            }}
+                            className="rounded border-gray-300 text-red-600 focus:ring-red-500"
+                          />
+                          <span className="text-sm text-gray-700 capitalize">{allergy}</span>
+                        </label>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      {dietaryData.allergies.map((allergy) => (
+                        <span key={allergy} className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm capitalize">
+                          {allergy}
+                        </span>
+                      ))}
+                      {dietaryData.allergies.length === 0 && (
+                        <span className="text-gray-500 text-sm">None set</span>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Preferred Cuisines</label>
-                  <div className="flex flex-wrap gap-2">
-                    {(user?.preferred_cuisines || []).map((cuisine: string) => (
-                      <span key={cuisine} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
-                        {cuisine}
-                      </span>
-                    ))}
-                    {(!user?.preferred_cuisines || user.preferred_cuisines.length === 0) && (
-                      <span className="text-gray-500 text-sm">None set</span>
-                    )}
-                  </div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Available Cooking Tools</label>
+                  {isEditingDietaryPrefs ? (
+                    <div className="flex flex-wrap gap-2">
+                      {['oven', 'stovetop', 'microwave', 'blender', 'food_processor', 'slow_cooker', 'air_fryer', 'grill'].map((tool) => (
+                        <label key={tool} className="flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            checked={dietaryData.tools.includes(tool)}
+                            onChange={(e) => {
+                              const newTools = e.target.checked
+                                ? [...dietaryData.tools, tool]
+                                : dietaryData.tools.filter(t => t !== tool);
+                              handleDietaryChange('tools', newTools);
+                            }}
+                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          />
+                          <span className="text-sm text-gray-700 capitalize">{tool.replace('_', ' ')}</span>
+                        </label>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      {dietaryData.tools.map((tool) => (
+                        <span key={tool} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm capitalize">
+                          {tool.replace('_', ' ')}
+                        </span>
+                      ))}
+                      {dietaryData.tools.length === 0 && (
+                        <span className="text-gray-500 text-sm">None set</span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

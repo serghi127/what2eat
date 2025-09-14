@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, Clock, Users, DollarSign } from 'lucide-reac
 import { Preferences } from '../types';
 import { PREFERENCE_MAPPINGS, getPreferenceOptions } from '../constants/preferences';
 import { useDietaryPrefs } from '../hooks/useDietaryPrefs';
+import { useUserProfile } from '../hooks/useUserProfile';
 
 interface OnboardingWizardProps {
   preferences: Preferences;
@@ -16,6 +17,7 @@ export default function OnboardingWizard({ preferences, setPreferences, onComple
   const [step, setStep] = useState(1);
   const totalSteps = 3;
   const { dietaryPrefs, saveDietaryPrefs, loading: dietaryPrefsLoading } = useDietaryPrefs();
+  const { updateProfile, loading: profileLoading } = useUserProfile();
   const [saving, setSaving] = useState(false);
 
   const handleNext = async () => {
@@ -31,6 +33,15 @@ export default function OnboardingWizard({ preferences, setPreferences, onComple
     try {
       setSaving(true);
       
+      // Save user profile information (demographics) to users table
+      await updateProfile({
+        age: preferences.age,
+        gender: preferences.gender,
+        height_cm: preferences.height_cm,
+        weight_kg: preferences.weight_kg,
+        activity_level: preferences.activity_level
+      });
+      
       // Save dietary preferences to Supabase
       await saveDietaryPrefs({
         restrictions: preferences.dietaryRestrictions,
@@ -40,7 +51,7 @@ export default function OnboardingWizard({ preferences, setPreferences, onComple
       
       onComplete();
     } catch (error) {
-      console.error('Error saving dietary preferences:', error);
+      console.error('Error saving onboarding data:', error);
       // Still complete onboarding even if saving fails
       onComplete();
     } finally {
@@ -357,7 +368,7 @@ export default function OnboardingWizard({ preferences, setPreferences, onComple
           </button>
           <button
             onClick={handleNext}
-            disabled={saving || dietaryPrefsLoading}
+            disabled={saving || dietaryPrefsLoading || profileLoading}
             className="flex items-center px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {saving ? 'Saving...' : step === totalSteps ? 'Complete Setup' : 'Next'}

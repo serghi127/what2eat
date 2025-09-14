@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { Calendar, Clock, Users, Star, X, ChefHat, FileText, Heart } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Calendar, Clock, Users, Star, X, ChefHat, FileText, Heart, Wand2 } from 'lucide-react';
 import { Recipe } from '../types';
 import { ALL_RECIPES } from '../constants';
 import MealHistoryCalendar from './MealHistoryCalendar';
-import { useMealPlan } from '../hooks/useMealPlan';
 
 interface WeeklyMeal {
   id: string;
@@ -36,6 +35,9 @@ interface MealPlanProps {
   onHideNavbar?: (hide: boolean) => void;
   onDeleteMeal?: (mealId: string) => void;
   userEmail?: string | null;
+  onRefreshMealPlans?: () => Promise<void>;
+  onRemoveFromMealPlan?: (day: string, mealType: string) => Promise<void>;
+  mealPlansLoading?: boolean;
 }
 
 export default function MealPlan({ 
@@ -45,15 +47,97 @@ export default function MealPlan({
   onMealClick, 
   onHideNavbar,
   onDeleteMeal,
-  userEmail
+  userEmail,
+  onRefreshMealPlans,
+  onRemoveFromMealPlan,
+  mealPlansLoading = false
 }: MealPlanProps) {
   const [selectedMeal, setSelectedMeal] = useState<Recipe | null>(null);
   const [activeTab, setActiveTab] = useState<'plan' | 'history'>('plan');
+  const [isGenerating, setIsGenerating] = useState(false);
   const [showRemoveConfirm, setShowRemoveConfirm] = useState(false);
+
+  // Debug: Log when mealPlans prop changes
+  useEffect(() => {
+    console.log('MealPlan: mealPlans prop changed:', mealPlans);
+    console.log('MealPlan: Number of days with meals:', Object.keys(mealPlans).length);
+    Object.entries(mealPlans).forEach(([day, meals]) => {
+      console.log(`MealPlan: ${day}:`, meals);
+    });
+  }, [mealPlans]);
+
+  // Generate meal plan function
+  const handleGenerateMealPlan = async () => {
+    if (!userEmail) {
+      alert('Please log in to generate a meal plan');
+      return;
+    }
+
+    setIsGenerating(true);
+    try {
+      const response = await fetch('/api/user/generate-meal-plan', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Id': userEmail, // Using email as user identifier
+        },
+        body: JSON.stringify({
+          preferences: {
+            dietary_restrictions: [],
+            disliked_foods: [],
+            preferred_ingredients: [],
+            daily_calories: 2000,
+            daily_protein: 150,
+            servings_per_meal: 1,
+            kitchen_tools: [],
+            specific_cravings: []
+          }
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Meal plan generated successfully:', result);
+        // Refresh the meal plans to show the new data
+        if (onRefreshMealPlans) {
+          console.log('Calling onRefreshMealPlans...');
+          await onRefreshMealPlans();
+          console.log('onRefreshMealPlans completed');
+        } else {
+          console.log('onRefreshMealPlans is not available');
+        }
+        
+        // Also try a direct refresh as a fallback
+        try {
+          const refreshResponse = await fetch('/api/user/meal-plans', {
+            headers: {
+              'Authorization': `Bearer ${userEmail}`,
+            },
+          });
+          if (refreshResponse.ok) {
+            const refreshData = await refreshResponse.json();
+            console.log('Direct refresh successful:', refreshData);
+            // Force a page refresh to ensure UI updates
+            window.location.reload();
+          }
+        } catch (refreshError) {
+          console.error('Direct refresh failed:', refreshError);
+        }
+        
+        // Show success message
+        alert('🎉 Weekly meal plan generated successfully! Check your meal calendar below.');
+      } else {
+        const error = await response.json();
+        alert(`Failed to generate meal plan: ${error.error}`);
+      }
+    } catch (error) {
+      console.error('Error generating meal plan:', error);
+      alert('Failed to generate meal plan. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
   const [recipeToRemove, setRecipeToRemove] = useState<{day: string, mealType: string, recipe: Recipe} | null>(null);
-  
-  // Use the meal plan hook for remove functionality
-  const { removeFromMealPlan, loading: mealPlansLoading } = useMealPlan(userEmail || null);
 
   // Helper function to get recipe data from recipe ID
   const getRecipeFromId = (recipeId: number): Recipe | null => {
@@ -75,9 +159,23 @@ export default function MealPlan({
 
   return (
     <div className="bg-white rounded-lg shadow-sm border p-4">
-      <div className="flex items-center gap-2 mb-4">
-        <Calendar className="text-teal-600" size={20} />
-        <h2 className="text-lg font-semibold text-gray-800">Weekly Meal Plan</h2>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <Calendar className="text-teal-600" size={20} />
+          <h2 className="text-lg font-semibold text-gray-800">Weekly Meal Plan</h2>
+        </div>
+        <button
+          onClick={handleGenerateMealPlan}
+          disabled={isGenerating}
+          className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+            isGenerating
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : 'bg-teal-100 text-teal-700 hover:bg-teal-200'
+          }`}
+        >
+          <Wand2 size={16} />
+          {isGenerating ? 'Generating...' : 'Generate Plan'}
+        </button>
       </div>
 
       <div className="space-y-4">
@@ -378,7 +476,9 @@ export default function MealPlan({
                 <button
                   onClick={async () => {
                     try {
-                      await removeFromMealPlan(recipeToRemove.day, recipeToRemove.mealType);
+                      if (onRemoveFromMealPlan) {
+                        await onRemoveFromMealPlan(recipeToRemove.day, recipeToRemove.mealType);
+                      }
                       setShowRemoveConfirm(false);
                       setRecipeToRemove(null);
                       setSelectedMeal(null); // Close the main modal

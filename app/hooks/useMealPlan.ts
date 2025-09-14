@@ -15,6 +15,7 @@ export function useMealPlan(userEmail: string | null): UseMealPlanReturn {
   const [mealPlans, setMealPlans] = useState<Record<string, Record<string, Recipe>>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const loadMealPlans = useCallback(async () => {
     if (!userEmail) return;
@@ -58,7 +59,9 @@ export function useMealPlan(userEmail: string | null): UseMealPlanReturn {
       });
 
       console.log('useMealPlan: Final transformed meal plans:', transformedMealPlans);
+      console.log('useMealPlan: Setting mealPlans state...');
       setMealPlans(transformedMealPlans);
+      console.log('useMealPlan: mealPlans state updated');
     } catch (err) {
       console.error('Error loading meal plans:', err);
       setError(err instanceof Error ? err.message : 'Failed to load meal plans');
@@ -125,7 +128,10 @@ export function useMealPlan(userEmail: string | null): UseMealPlanReturn {
   }, [userEmail, loadMealPlans]);
 
   const refreshMealPlans = useCallback(async () => {
+    console.log('useMealPlan: refreshMealPlans called');
+    setRefreshTrigger(prev => prev + 1); // Force refresh
     await loadMealPlans();
+    console.log('useMealPlan: refreshMealPlans completed');
   }, [loadMealPlans]);
 
   useEffect(() => {

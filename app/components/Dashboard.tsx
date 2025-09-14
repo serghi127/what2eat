@@ -44,7 +44,7 @@ interface DashboardProps {
 export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
   const { user } = useAuth();
   const { stats, updatePoints, addToCart } = useUserStats(user);
-  const { mealPlans, loading: mealPlansLoading, error: mealPlansError, removeFromMealPlan } = useMealPlan(user?.email || null);
+  const { mealPlans, loading: mealPlansLoading, error: mealPlansError, removeFromMealPlan, refreshMealPlans } = useMealPlan(user?.email || null);
   const { mealHistory, addMealToHistory, deleteMealHistory } = useMealHistory();
   const { progress, addMealToProgress, refreshProgress } = useDailyProgress(user?.id || null);
   // Remove local macros state - MacroTracking now handles this internally
@@ -62,6 +62,10 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
     console.log('Dashboard: Component mounted or mealPlans changed');
     console.log('Dashboard: mealPlansLoading:', mealPlansLoading);
     console.log('Dashboard: mealPlans:', mealPlans);
+    console.log('Dashboard: Number of days with meals:', Object.keys(mealPlans).length);
+    Object.entries(mealPlans).forEach(([day, meals]) => {
+      console.log(`Dashboard: ${day}:`, meals);
+    });
   }, [mealPlans, mealPlansLoading]);
 
   // Get today's date
@@ -1376,6 +1380,9 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
               onHideNavbar={onHideNavbar}
               onDeleteMeal={(id: string) => deleteMealHistory(id, refreshProgress)}
               userEmail={user?.email || null}
+              onRefreshMealPlans={refreshMealPlans}
+              onRemoveFromMealPlan={removeFromMealPlan}
+              mealPlansLoading={mealPlansLoading}
             />
           </div>
 
