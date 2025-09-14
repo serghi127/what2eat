@@ -2,8 +2,10 @@
 
 import React, { useState } from 'react';
 
+import { UserWithoutPassword } from '../types';
+
 interface LoginPageProps {
-  onLoginSuccess: (user: { id: number; name: string; email: string }) => void;
+  onLoginSuccess: (user: UserWithoutPassword) => void;
 }
 
 export default function LoginPage({ onLoginSuccess }: LoginPageProps) {

@@ -1,13 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
-import db from "../../../../lib/db";
 import bcrypt from 'bcryptjs';
 import { UserRegistrationData } from '../../../types';
+
+// Temporary in-memory user storage for demo purposes
+let demoUsers = [
+  {
+    id: "1",
+    email: "demo@example.com",
+    password: "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi", // password
+    name: "Demo User"
+  },
+  {
+    id: "2", 
+    email: "john@example.com",
+    password: "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi", // password
+    name: "John Doe"
+  }
+];
 
 // Registration endpoint
 export async function POST(req: NextRequest) {
   try {
     const userData: UserRegistrationData = await req.json();
-    const { name, email, password, age, gender, height_cm, weight_kg, activity_level } = userData;
+    const { name, email, password } = userData;
 
     if (!name || !email || !password) {
       return NextResponse.json(
@@ -16,15 +31,57 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check if user already exists
-    const [existingUsers] = await db.query(
-      "SELECT id FROM users WHERE email = ?",
-      [email]
-    );
-
-    const users = existingUsers as any[];
+    // Check if Supabase is configured
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     
-    if (users.length > 0) {
+    if (!supabaseUrl) {
+      // Use demo users if Supabase is not configured
+      console.log('Supabase not configured, using demo registration');
+      
+      // Check if user already exists
+      const existingUser = demoUsers.find(u => u.email === email);
+      
+      if (existingUser) {
+        return NextResponse.json(
+          { error: "User with this email already exists" },
+          { status: 409 }
+        );
+      }
+
+      // Hash password
+      const saltRounds = 12;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+      // Create new user
+      const newUser = {
+        id: (demoUsers.length + 1).toString(),
+        name,
+        email,
+        password: hashedPassword
+      };
+
+      demoUsers.push(newUser);
+
+      // Return user data without password
+      const { password: _, ...userWithoutPassword } = newUser;
+
+      return NextResponse.json({ 
+        user: userWithoutPassword,
+        message: "Registration successful (demo mode)" 
+      });
+    }
+
+    // Use Supabase if configured
+    const { supabase } = await import("../../../../lib/supabase");
+    
+    // Check if user already exists
+    const { data: existingUser } = await supabase
+      .from('users')
+      .select('id')
+      .eq('email', email)
+      .single();
+
+    if (existingUser) {
       return NextResponse.json(
         { error: "User with this email already exists" },
         { status: 409 }
@@ -35,47 +92,32 @@ export async function POST(req: NextRequest) {
     const saltRounds = 12;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Insert new user with extended fields
-    const [result] = await db.query(
-      `INSERT INTO users (
-        name, email, password, age, gender, height_cm, weight_kg, activity_level,
-        meals_per_day, snacks_per_day, cooking_skill_level, cooking_time_preference,
-        budget_preference, notifications_enabled, timezone, language
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        name, email, hashedPassword, age || null, gender || null, 
-        height_cm || null, weight_kg || null, activity_level || null,
-        3, // Default meals per day
-        2, // Default snacks per day
-        'beginner', // Default cooking skill
-        'moderate', // Default cooking time preference
-        'medium', // Default budget preference
-        true, // Default notifications enabled
-        'UTC', // Default timezone
-        'en' // Default language
-      ]
-    );
+    // Insert new user into Supabase
+    const { data: newUser, error } = await supabase
+      .from('users')
+      .insert([
+        {
+          name,
+          email,
+          password: hashedPassword
+        }
+      ])
+      .select()
+      .single();
 
-    const insertedId = (result as any).insertId;
+    if (error) {
+      console.error('Supabase insert error:', error);
+      return NextResponse.json(
+        { error: "Registration failed" },
+        { status: 500 }
+      );
+    }
 
     // Return user data without password
-    const [newUser] = await db.query(
-      `SELECT id, name, email, age, gender, height_cm, weight_kg, activity_level,
-              daily_calories_goal, protein_goal_g, carbs_goal_g, fat_goal_g,
-              fiber_goal_g, sugar_goal_g, sodium_goal_mg, dietary_restrictions,
-              allergies, disliked_foods, preferred_cuisines, meals_per_day,
-              snacks_per_day, cooking_skill_level, cooking_time_preference,
-              budget_preference, current_meal_plan, meal_plan_history,
-              favorite_recipes, created_at, updated_at, last_login,
-              profile_completed, notifications_enabled, timezone, language
-       FROM users WHERE id = ?`,
-      [insertedId]
-    );
-
-    const user = (newUser as any[])[0];
+    const { password: _, ...userWithoutPassword } = newUser;
 
     return NextResponse.json({ 
-      user,
+      user: userWithoutPassword,
       message: "Registration successful" 
     });
 

@@ -1,51 +1,116 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Search, Filter, Heart, Clock, Users, Star, X, ChefHat, Clock as ClockIcon, FileText } from 'lucide-react';
-import { BREAKFAST_RECIPES, LUNCH_RECIPES, DINNER_RECIPES } from '../constants';
-
-interface Recipe {
-  id: string | number;
-  name: string;
-  image: string;
-  time: number; // Changed from prepTime to time to match constants
-  servings: number;
-  rating: number;
-  calories: number;
-  tags: string[];
-  isFavorite: boolean;
-  ingredients: string[];
-  steps: string[];
-}
+import React, { useState, useEffect } from 'react';
+import { Search, Filter, Heart, Clock, Users, Star, X, ChefHat, Clock as ClockIcon, FileText, Plus, FolderOpen, Sparkles } from 'lucide-react';
+import { ALL_RECIPES } from '../constants';
+import { useAuth } from '../contexts/AuthContext';
+import AddToPlanModal from './AddToPlanModal';
+import { useMealPlan } from '../hooks/useMealPlan';
+import { useMealHistory } from '../hooks/useMealHistory';
+import { useDailyProgress } from '../hooks/useDailyProgress';
+import { Recipe } from '../types';
 
 export default function RecipeSearch() {
+  const { user } = useAuth();
+  const { addToMealPlan } = useMealPlan(user?.email || null);
+  const { addMealToHistory } = useMealHistory();
+  const { addMealToProgress } = useDailyProgress(user?.id || null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [customCategories, setCustomCategories] = useState<string[]>(['Quick Meals', 'Healthy Options', 'Comfort Food']);
+  const [showAddCategory, setShowAddCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [favoriteRecipeIds, setFavoriteRecipeIds] = useState<Set<string | number>>(new Set());
+  const [showAddToPlanModal, setShowAddToPlanModal] = useState(false);
+  const [recipeToAddToPlan, setRecipeToAddToPlan] = useState<Recipe | null>(null);
   
   // Combine all recipes from constants and add UI-specific properties
-  const allRecipes = [
-    ...BREAKFAST_RECIPES.map(recipe => ({
-      ...recipe,
-      image: '/api/placeholder/300/200',
-      rating: 4.5 + Math.random() * 0.5, // Random rating between 4.5-5.0
-      isFavorite: Math.random() > 0.7 // Random favorite status
-    })),
-    ...LUNCH_RECIPES.map(recipe => ({
-      ...recipe,
-      image: '/api/placeholder/300/200',
-      rating: 4.5 + Math.random() * 0.5,
-      isFavorite: Math.random() > 0.7
-    })),
-    ...DINNER_RECIPES.map(recipe => ({
-      ...recipe,
-      image: '/api/placeholder/300/200',
-      rating: 4.5 + Math.random() * 0.5,
-      isFavorite: Math.random() > 0.7
-    }))
-  ];
+  const allRecipes = ALL_RECIPES.map((recipe, index) => ({
+    ...recipe,
+    image: recipe.image || '/api/placeholder/300/200',
+    rating: 4.5 + (index % 5) * 0.1, // Stable rating based on index
+    isFavorite: false // Start with no favorites
+  }));
   
-  const [recipes] = useState<Recipe[]>(allRecipes);
+  const [recipes, setRecipes] = useState<Recipe[]>(allRecipes);
+
+  // Load favorites from Supabase
+  const loadFavorites = async () => {
+    if (!user?.email) return;
+    
+    try {
+      console.log('Fetching favorites from API...');
+      const response = await fetch('/api/user/favorites', {
+        headers: {
+          'Authorization': `Bearer ${user.email}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Favorites loaded:', data.favoriteRecipes);
+        const favoritesSet = new Set(data.favoriteRecipes || []) as Set<string | number>;
+        setFavoriteRecipeIds(favoritesSet);
+        
+        // Update recipes state to reflect loaded favorites
+        setRecipes(prev => prev.map(recipe => ({
+          ...recipe,
+          isFavorite: favoritesSet.has(recipe.id)
+        })));
+      } else {
+        console.error('Failed to load favorites, status:', response.status);
+      }
+    } catch (error) {
+      console.error('Failed to load favorites:', error);
+    }
+  };
+
+  // Save favorites to Supabase
+  const saveFavorites = async (favorites: (string | number)[]) => {
+    if (!user?.email) return;
+    
+    try {
+      console.log('Saving favorites to API:', favorites);
+      const response = await fetch('/api/user/favorites', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.email}`
+        },
+        body: JSON.stringify({ favoriteRecipes: favorites })
+      });
+      
+      if (response.ok) {
+        console.log('Favorites saved successfully');
+      } else {
+        console.error('Failed to save favorites, status:', response.status);
+      }
+    } catch (error) {
+      console.error('Failed to save favorites:', error);
+    }
+  };
+
+  // Load favorites on component mount and when user changes
+  useEffect(() => {
+    if (user?.email) {
+      console.log('Loading favorites for user:', user.email);
+      loadFavorites();
+    }
+  }, [user?.email]);
+
+  // Also load favorites when component becomes visible (in case of tab switching)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden && user?.email) {
+        console.log('Component visible, reloading favorites');
+        loadFavorites();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [user?.email]);
 
   // Generate filter options from all unique tags in recipes
   const allTags = Array.from(new Set(allRecipes.flatMap(recipe => recipe.tags)));
@@ -59,20 +124,141 @@ export default function RecipeSearch() {
     );
   };
 
-  const toggleFavorite = (recipeId: string | number) => {
-    // In a real app, this would update the database
-    console.log('Toggle favorite for recipe:', recipeId);
+  const toggleFavorite = async (recipeId: string | number) => {
+    const newFavorites = new Set(favoriteRecipeIds);
+    
+    if (newFavorites.has(recipeId)) {
+      newFavorites.delete(recipeId);
+    } else {
+      newFavorites.add(recipeId);
+    }
+    
+    setFavoriteRecipeIds(newFavorites);
+    await saveFavorites(Array.from(newFavorites));
+    
+    // Update the recipes state to reflect the change
+    setRecipes(prev => prev.map(recipe => 
+      recipe.id === recipeId 
+        ? { ...recipe, isFavorite: newFavorites.has(recipeId) }
+        : recipe
+    ));
   };
 
   const handleViewRecipe = (recipe: Recipe) => {
     setSelectedRecipe(recipe);
   };
 
+  const handleModalFavoriteToggle = async (recipeId: string | number) => {
+    const newFavorites = new Set(favoriteRecipeIds);
+    
+    if (newFavorites.has(recipeId)) {
+      newFavorites.delete(recipeId);
+    } else {
+      newFavorites.add(recipeId);
+    }
+    
+    setFavoriteRecipeIds(newFavorites);
+    await saveFavorites(Array.from(newFavorites));
+    
+    // Update the selected recipe in the modal to reflect the change
+    setSelectedRecipe(prev => prev ? { ...prev, isFavorite: newFavorites.has(recipeId) } : null);
+  };
+
   const handleCloseModal = () => {
     setSelectedRecipe(null);
   };
 
-  const filteredRecipes = recipes.filter(recipe => {
+  const handleAddToPlan = (recipe: Recipe) => {
+    setRecipeToAddToPlan(recipe);
+    setShowAddToPlanModal(true);
+  };
+
+  const handleAddToPlanSubmit = async (recipeId: number, selections: {day: string, mealType: string}[]) => {
+    try {
+      const recipe = recipes.find(r => r.id === recipeId);
+      if (recipe) {
+        // Add the recipe to all selected day/meal combinations
+        for (const selection of selections) {
+          await addToMealPlan(recipe, selection.day, selection.mealType);
+        }
+        setShowAddToPlanModal(false);
+        setRecipeToAddToPlan(null);
+      }
+    } catch (error) {
+      console.error('Error adding recipe to meal plan:', error);
+    }
+  };
+
+  const handleCloseAddToPlanModal = () => {
+    setShowAddToPlanModal(false);
+    setRecipeToAddToPlan(null);
+  };
+
+  const handleAddMeal = async (recipe: Recipe) => {
+    try {
+      // Add to daily progress
+      await addMealToProgress({
+        calories: recipe.calories,
+        protein: recipe.protein || 0,
+        carbs: recipe.carbs || 0,
+        fat: recipe.fat || 0,
+        fiber: recipe.fiber || 0,
+        sugar: recipe.sugar || 0,
+        cholesterol: recipe.cholesterol || 0,
+      });
+      
+      // Add to meal history (as lunch by default)
+      await addMealToHistory(
+        new Date().toISOString().split('T')[0], // date: YYYY-MM-DD format
+        'lunch', // mealType: default to lunch
+        recipe.id, // recipeId
+        recipe.name, // recipeName
+        true, // completed
+        undefined, // rating
+        undefined // notes
+      );
+
+      alert(`${recipe.name} added to your daily meals and progress!`);
+    } catch (error) {
+      console.error('Error adding meal:', error);
+      alert('Failed to add meal. Please try again.');
+    }
+  };
+
+  const addCustomCategory = () => {
+    if (newCategoryName.trim() && !customCategories.includes(newCategoryName.trim())) {
+      setCustomCategories(prev => [...prev, newCategoryName.trim()]);
+      setNewCategoryName('');
+      setShowAddCategory(false);
+    }
+  };
+
+  const removeCustomCategory = (category: string) => {
+    setCustomCategories(prev => prev.filter(c => c !== category));
+    if (selectedCategory === category) {
+      setSelectedCategory('all');
+    }
+  };
+
+  const getFilteredRecipesByCategory = () => {
+    switch (selectedCategory) {
+      case 'all':
+        return recipes;
+      case 'ai':
+        // AI recipes category - currently empty
+        return [];
+      case 'favorites':
+        return recipes.filter(recipe => favoriteRecipeIds.has(recipe.id));
+      default:
+        // Custom categories - in real app, this would filter by category tags
+        return recipes.filter(recipe => 
+          recipe.tags.some(tag => tag.toLowerCase().includes(selectedCategory.toLowerCase())) ||
+          recipe.name.toLowerCase().includes(selectedCategory.toLowerCase())
+        );
+    }
+  };
+
+  const filteredRecipes = getFilteredRecipesByCategory().filter(recipe => {
     const matchesSearch = recipe.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesFilters = selectedFilters.length === 0 || 
       selectedFilters.some(filter => recipe.tags.includes(filter));
@@ -81,44 +267,170 @@ export default function RecipeSearch() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-200 via-teal-200 to-emerald-200 pb-20">
-      <div className="p-4 space-y-6">
-        {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm border p-4">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Recipe Inspiration</h1>
-          
-          {/* Search Bar */}
-          <div className="relative mb-4">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-            <input
-              type="text"
-              placeholder="Search recipes..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-            />
-          </div>
+      <div className="flex gap-6 p-4">
+        {/* Left Sidebar - Categories */}
+        <div className="w-64 flex-shrink-0">
+          <div className="bg-white rounded-lg shadow-sm border p-4 sticky top-4">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Categories</h2>
+            
+            {/* Default Categories */}
+            <div className="space-y-2 mb-6">
+              <button
+                onClick={() => setSelectedCategory('all')}
+                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
+                  selectedCategory === 'all'
+                    ? 'bg-teal-100 text-teal-700 border border-teal-200'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <FolderOpen size={18} />
+                <span>All Recipes</span>
+                <span className="ml-auto text-xs text-gray-500">{recipes.length}</span>
+              </button>
+              
+              <button
+                onClick={() => setSelectedCategory('ai')}
+                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
+                  selectedCategory === 'ai'
+                    ? 'bg-teal-100 text-teal-700 border border-teal-200'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <Sparkles size={18} />
+                <span>My AI Recipes</span>
+                <span className="ml-auto text-xs text-gray-500">0</span>
+              </button>
+              
+              <button
+                onClick={() => setSelectedCategory('favorites')}
+                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
+                  selectedCategory === 'favorites'
+                    ? 'bg-teal-100 text-teal-700 border border-teal-200'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <Heart size={18} />
+                <span>Favorited Recipes</span>
+                <span className="ml-auto text-xs text-gray-500">{favoriteRecipeIds.size}</span>
+              </button>
+            </div>
 
-          {/* Filter Tags */}
-          <div className="flex items-center gap-2 mb-4">
-            <Filter className="text-gray-600" size={16} />
-            <span className="text-sm text-gray-600">Filters:</span>
-            <div className="flex flex-wrap gap-2">
-              {filterOptions.map(filter => (
+            {/* Custom Categories */}
+            <div className="border-t pt-4">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-medium text-gray-700">Custom Categories</h3>
                 <button
-                  key={filter}
-                  onClick={() => toggleFilter(filter)}
-                  className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-                    selectedFilters.includes(filter)
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
+                  onClick={() => setShowAddCategory(!showAddCategory)}
+                  className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  {filter}
+                  <Plus size={16} />
                 </button>
-              ))}
+              </div>
+              
+              {/* Add Category Input */}
+              {showAddCategory && (
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    placeholder="Category name"
+                    value={newCategoryName}
+                    onChange={(e) => setNewCategoryName(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && addCustomCategory()}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                  />
+                  <div className="flex gap-2 mt-2">
+                    <button
+                      onClick={addCustomCategory}
+                      className="px-3 py-1 bg-teal-600 text-white text-xs rounded hover:bg-teal-700 transition-colors"
+                    >
+                      Add
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowAddCategory(false);
+                        setNewCategoryName('');
+                      }}
+                      className="px-3 py-1 bg-gray-200 text-gray-700 text-xs rounded hover:bg-gray-300 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+              
+              {/* Custom Category List */}
+              <div className="space-y-2">
+                {customCategories.map(category => (
+                  <div key={category} className="flex items-center group">
+                    <button
+                      onClick={() => setSelectedCategory(category)}
+                      className={`flex-1 flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
+                        selectedCategory === category
+                          ? 'bg-teal-100 text-teal-700 border border-teal-200'
+                          : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      <FolderOpen size={18} />
+                      <span className="text-sm">{category}</span>
+                      <span className="ml-auto text-xs text-gray-500">
+                        {recipes.filter(r => 
+                          r.tags.some(tag => tag.toLowerCase().includes(category.toLowerCase())) ||
+                          r.name.toLowerCase().includes(category.toLowerCase())
+                        ).length}
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => removeCustomCategory(category)}
+                      className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-red-500 transition-all"
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Main Content */}
+        <div className="flex-1 space-y-6">
+          {/* Header */}
+          <div className="bg-white rounded-lg shadow-sm border p-4">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">Recipe Inspiration</h1>
+            
+            {/* Search Bar */}
+            <div className="relative mb-4">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <input
+                type="text"
+                placeholder="Search recipes..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              />
+            </div>
+
+            {/* Filter Tags */}
+            <div className="flex items-center gap-2 mb-4">
+              <Filter className="text-gray-600" size={16} />
+              <span className="text-sm text-gray-600">Filters:</span>
+              <div className="flex flex-wrap gap-2">
+                {filterOptions.map(filter => (
+                  <button
+                    key={filter}
+                    onClick={() => toggleFilter(filter)}
+                    className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                      selectedFilters.includes(filter)
+                        ? 'bg-teal-600 text-white'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
 
         {/* Recipe Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -130,12 +442,12 @@ export default function RecipeSearch() {
                   <button
                     onClick={() => toggleFavorite(recipe.id)}
                     className={`p-2 rounded-full transition-colors ${
-                      recipe.isFavorite 
+                      favoriteRecipeIds.has(recipe.id)
                         ? 'bg-red-500 text-white' 
                         : 'bg-white text-gray-400 hover:text-red-500'
                     }`}
                   >
-                    <Heart size={16} fill={recipe.isFavorite ? 'currentColor' : 'none'} />
+                    <Heart size={16} fill={favoriteRecipeIds.has(recipe.id) ? 'currentColor' : 'none'} />
                   </button>
                 </div>
                 <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
@@ -159,7 +471,7 @@ export default function RecipeSearch() {
                   </div>
                   <div className="flex items-center gap-1">
                     <Star size={14} className="text-yellow-500" fill="currentColor" />
-                    <span>{recipe.rating.toFixed(1)}</span>
+                    <span>{(recipe.rating || 4.5).toFixed(1)}</span>
                   </div>
                 </div>
 
@@ -189,12 +501,22 @@ export default function RecipeSearch() {
                 <div className="flex gap-2">
                   <button 
                     onClick={() => handleViewRecipe(recipe)}
-                    className="flex-1 bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors text-sm font-medium"
+                    className="flex-1 bg-teal-600 text-white py-2 px-4 rounded-md hover:bg-teal-700 transition-colors text-sm font-medium"
                   >
                     View Recipe
                   </button>
-                  <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium">
+                  <button 
+                    onClick={() => handleAddToPlan(recipe)}
+                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium"
+                  >
                     Add to Plan
+                  </button>
+                  <button 
+                    onClick={() => handleAddMeal(recipe)}
+                    className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium"
+                    title="Add to today's meals"
+                  >
+                    <Plus size={16} />
                   </button>
                 </div>
               </div>
@@ -202,14 +524,15 @@ export default function RecipeSearch() {
           ))}
         </div>
 
-        {/* No Results */}
-        {filteredRecipes.length === 0 && (
-          <div className="text-center py-12">
-            <Search className="mx-auto text-gray-400 mb-4" size={48} />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No recipes found</h3>
-            <p className="text-gray-600">Try adjusting your search or filters</p>
-          </div>
-        )}
+          {/* No Results */}
+          {filteredRecipes.length === 0 && (
+            <div className="text-center py-12">
+              <Search className="mx-auto text-gray-400 mb-4" size={48} />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No recipes found</h3>
+              <p className="text-gray-600">Try adjusting your search or filters</p>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Recipe Detail Modal */}
@@ -225,8 +548,20 @@ export default function RecipeSearch() {
             <div className="p-6">
               {/* Modal Header */}
               <div className="flex justify-between items-start mb-6">
-                <div>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-2">{selectedRecipe.name}</h2>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <h2 className="text-3xl font-bold text-gray-900">{selectedRecipe.name}</h2>
+                    <button
+                      onClick={() => handleModalFavoriteToggle(selectedRecipe.id)}
+                      className={`p-2 rounded-full transition-colors ${
+                        favoriteRecipeIds.has(selectedRecipe.id)
+                          ? 'bg-red-500 text-white hover:bg-red-600'
+                          : 'bg-gray-100 text-gray-400 hover:text-red-500 hover:bg-red-50'
+                      }`}
+                    >
+                      <Heart size={24} fill={favoriteRecipeIds.has(selectedRecipe.id) ? 'currentColor' : 'none'} />
+                    </button>
+                  </div>
                   <p className="text-gray-600 text-lg">Delicious recipe with fresh ingredients</p>
                 </div>
                 <button
@@ -313,19 +648,33 @@ export default function RecipeSearch() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-4">
-                <button className="flex-1 bg-teal-600 text-white py-4 px-6 rounded-lg hover:bg-teal-700 transition-colors font-medium text-lg">
-                  Add to Cart
-                </button>
-                <button className="flex-1 bg-sky-200 text-sky-700 py-4 px-6 rounded-lg hover:bg-sky-300 transition-colors font-medium text-lg">
-                  Save Recipe
-                </button>
-              </div>
+                 {/* Action Buttons */}
+                 <div className="flex gap-4">
+                   <button className="flex-1 bg-teal-600 text-white py-4 px-6 rounded-lg hover:bg-teal-700 transition-colors font-medium text-lg">
+                     Add to Cart
+                   </button>
+                   <button className="flex-1 bg-sky-200 text-sky-700 py-4 px-6 rounded-lg hover:bg-sky-300 transition-colors font-medium text-lg">
+                     Save Recipe
+                   </button>
+                   <button 
+                     onClick={() => handleAddToPlan(selectedRecipe)}
+                     className="flex-1 bg-emerald-500 text-white py-4 px-6 rounded-lg hover:bg-emerald-600 transition-colors font-medium text-lg"
+                   >
+                     Add to Plan
+                   </button>
+                 </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* Add to Plan Modal */}
+      <AddToPlanModal
+        recipe={recipeToAddToPlan}
+        isOpen={showAddToPlanModal}
+        onClose={handleCloseAddToPlanModal}
+        onAddToPlan={handleAddToPlanSubmit}
+      />
     </div>
   );
 }

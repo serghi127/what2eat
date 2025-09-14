@@ -2,6 +2,9 @@
 
 import React, { useState } from 'react';
 import { Plus, Camera, Search, Clock, Users, Utensils } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { useMealHistory } from '../hooks/useMealHistory';
+import { useDailyProgress } from '../hooks/useDailyProgress';
 
 interface MealOption {
   id: string;
@@ -13,6 +16,10 @@ interface MealOption {
 }
 
 export default function AddMeal() {
+  const { user } = useAuth();
+  const { addMealToHistory } = useMealHistory();
+  const { addMealToProgress } = useDailyProgress(user?.id || null);
+  
   const [activeTab, setActiveTab] = useState<'manual' | 'recipe' | 'scan'>('manual');
   const [mealData, setMealData] = useState({
     name: '',
@@ -27,6 +34,8 @@ export default function AddMeal() {
     servings: '',
     notes: ''
   });
+  const [mealType, setMealType] = useState<'breakfast' | 'lunch' | 'dinner'>('lunch');
+  const [isSaving, setIsSaving] = useState(false);
 
   const quickMealOptions: MealOption[] = [
     { id: '1', name: 'Grilled Chicken Breast', calories: 165, prepTime: 20, servings: 1, category: 'Protein' },
@@ -61,25 +70,81 @@ export default function AddMeal() {
     setActiveTab('manual');
   };
 
-  const handleSaveMeal = () => {
-    // In a real app, this would save to the database
-    console.log('Saving meal:', mealData);
-    alert('Meal saved successfully!');
-    
-    // Reset form
-    setMealData({
-      name: '',
-      calories: '',
-      protein: '',
-      carbs: '',
-      fat: '',
-      fiber: '',
-      sugar: '',
-      sodium: '',
-      prepTime: '',
-      servings: '',
-      notes: ''
-    });
+  const handleSaveMeal = async () => {
+    if (!mealData.name || !mealData.calories) {
+      alert('Please fill in at least the meal name and calories');
+      return;
+    }
+
+    setIsSaving(true);
+
+    try {
+      // Create a recipe object for meal history
+      const recipeData = {
+        id: Math.floor(Math.random() * 1000000) + 1000000, // Generate ID between 1000000-1999999 for manual entries
+        name: mealData.name,
+        time: parseInt(mealData.prepTime) || 0,
+        servings: parseInt(mealData.servings) || 1,
+        calories: parseInt(mealData.calories),
+        protein: parseInt(mealData.protein) || 0,
+        carbs: parseInt(mealData.carbs) || 0,
+        fat: parseInt(mealData.fat) || 0,
+        sugar: parseInt(mealData.sugar) || 0,
+        cholesterol: 0, // Not tracked in manual entry
+        fiber: parseInt(mealData.fiber) || 0,
+        tags: ['manual-entry'],
+        ingredients: ['Manually entered meal'],
+        steps: ['User-added meal'],
+        image: null,
+        source: 'Manual Entry',
+        credits: 'User Input'
+      };
+
+      // Add to meal history (only send recipe ID)
+      const today = new Date().toLocaleDateString('en-CA'); // Gets local date in YYYY-MM-DD format
+      await addMealToHistory(
+        today,
+        mealType,
+        recipeData.id, // Recipe ID
+        recipeData.name, // Recipe name
+        true, // completed
+        undefined, // rating
+        mealData.notes || undefined
+      );
+
+      // Add to daily progress
+      await addMealToProgress({
+        calories: parseInt(mealData.calories),
+        protein: parseInt(mealData.protein) || 0,
+        carbs: parseInt(mealData.carbs) || 0,
+        fat: parseInt(mealData.fat) || 0,
+        fiber: parseInt(mealData.fiber) || 0,
+        sugar: parseInt(mealData.sugar) || 0,
+        cholesterol: 0
+      });
+
+      alert('Meal saved successfully and added to your daily progress!');
+      
+      // Reset form
+      setMealData({
+        name: '',
+        calories: '',
+        protein: '',
+        carbs: '',
+        fat: '',
+        fiber: '',
+        sugar: '',
+        sodium: '',
+        prepTime: '',
+        servings: '',
+        notes: ''
+      });
+    } catch (error) {
+      console.error('Error saving meal:', error);
+      alert('Failed to save meal. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -140,6 +205,26 @@ export default function AddMeal() {
                   placeholder="e.g., Grilled Chicken with Rice"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
+              </div>
+
+              {/* Meal Type */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Meal Type</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {(['breakfast', 'lunch', 'dinner'] as const).map((type) => (
+                    <button
+                      key={type}
+                      onClick={() => setMealType(type)}
+                      className={`py-2 px-3 rounded-md text-sm font-medium transition-colors ${
+                        mealType === type
+                          ? 'bg-indigo-600 text-white'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      {type.charAt(0).toUpperCase() + type.slice(1)}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Nutritional Information */}
@@ -243,9 +328,14 @@ export default function AddMeal() {
 
               <button
                 onClick={handleSaveMeal}
-                className="w-full bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 transition-colors font-medium"
+                disabled={isSaving}
+                className={`w-full py-3 px-4 rounded-md font-medium transition-colors ${
+                  isSaving
+                    ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                    : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                }`}
               >
-                Save Meal
+                {isSaving ? 'Saving...' : 'Save Meal'}
               </button>
             </div>
           </div>

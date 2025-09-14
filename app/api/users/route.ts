@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import db from "../../../lib/db";
+import { supabase } from "../../../lib/supabase";
 
 // GET handler already exists
 export async function GET() {
   try {
-    const [rows] = await db.query("SELECT * FROM users");
+    const { data: rows, error } = await supabase.from('users').select('*');
     return NextResponse.json(rows);
   } catch (err) {
     return NextResponse.json({ error: "Database query failed" }, { status: 500 });
@@ -23,15 +23,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const [result] = await db.query(
-      "INSERT INTO users (name, email) VALUES (?, ?)",
-      [name, email]
-    );
+    const { data, error } = await supabase
+      .from('users')
+      .insert({ name, email })
+      .select()
+      .single();
 
-    // For MySQL, the insert result usually has an insertId
-    const insertedId = (result as any).insertId;
+    if (error) {
+      return NextResponse.json({ error: "Failed to insert user" }, { status: 500 });
+    }
 
-    return NextResponse.json({ id: insertedId, name, email });
+    return NextResponse.json(data);
   } catch (err) {
     return NextResponse.json(
       { error: "Failed to add user" },

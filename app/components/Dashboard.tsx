@@ -1,9 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import MacroTracking from './MacroTracking';
+import MealPlan from './MealPlan';
 import { useAuth } from '../contexts/AuthContext';
-import { Calendar, Clock, Users, ChevronLeft, ChevronRight, X, ChefHat, Clock as ClockIcon, FileText, Plus, Star, Ticket, ShoppingCart, Heart } from 'lucide-react';
+import { useUserStats } from '../hooks/useUserStats';
+import { useMealPlan } from '../hooks/useMealPlan';
+import { useMealHistory } from '../hooks/useMealHistory';
+import { useDailyProgress } from '../hooks/useDailyProgress';
+import { Recipe } from '../types';
+import { Clock, Users, ChevronLeft, ChevronRight, X, ChefHat, Clock as ClockIcon, FileText, Plus, Star, Ticket, ShoppingCart, Heart, Calendar } from 'lucide-react';
+
 
 interface WeeklyMeal {
   id: string;
@@ -15,14 +22,7 @@ interface WeeklyMeal {
   };
 }
 
-interface Macro {
-  id: string;
-  name: string;
-  current: number;
-  goal: number;
-  unit: string;
-  color: string;
-}
+// Macro interface moved to MacroTracking component
 
 interface MealDetail {
   id: string;
@@ -43,22 +43,35 @@ interface DashboardProps {
 
 export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
   const { user } = useAuth();
-  const [macros, setMacros] = useState<Macro[]>([
-    { id: 'calories', name: 'Calories', current: 1200, goal: 2000, unit: 'kcal', color: 'bg-blue-500' },
-    { id: 'protein', name: 'Protein', current: 80, goal: 150, unit: 'g', color: 'bg-green-500' },
-    { id: 'carbs', name: 'Carbs', current: 120, goal: 250, unit: 'g', color: 'bg-yellow-500' },
-    { id: 'fat', name: 'Fat', current: 45, goal: 65, unit: 'g', color: 'bg-red-500' },
-    { id: 'fiber', name: 'Fiber', current: 15, goal: 25, unit: 'g', color: 'bg-purple-500' },
-    { id: 'sugar', name: 'Sugar', current: 30, goal: 50, unit: 'g', color: 'bg-pink-500' },
-    { id: 'cholesterol', name: 'Cholesterol', current: 150, goal: 300, unit: 'mg', color: 'bg-orange-500' }
-  ]);
+  const { stats, updatePoints, addToCart } = useUserStats(user);
+  const { mealPlans, loading: mealPlansLoading, error: mealPlansError, removeFromMealPlan } = useMealPlan(user?.email || null);
+  const { mealHistory, addMealToHistory, deleteMealHistory } = useMealHistory();
+  const { progress, addMealToProgress, refreshProgress } = useDailyProgress(user?.id || null);
+  // Remove local macros state - MacroTracking now handles this internally
 
   const [currentSnackIndex, setCurrentSnackIndex] = useState(0);
-  const [selectedMeal, setSelectedMeal] = useState<MealDetail | null>(null);
+  const [selectedMeal, setSelectedMeal] = useState<Recipe | null>(null);
   const [userNotes, setUserNotes] = useState<{ [key: string]: string }>({});
-  const [cartItems, setCartItems] = useState<number>(0); // Cart item count
   const [favoriteMeals, setFavoriteMeals] = useState<Set<string>>(new Set()); // Track favorite meals
   const [checkedMeals, setCheckedMeals] = useState<Set<string>>(new Set()); // Track checked meals
+  const [showRemoveConfirm, setShowRemoveConfirm] = useState(false);
+  const [recipeToRemove, setRecipeToRemove] = useState<{day: string, mealType: string, recipe: Recipe} | null>(null);
+
+  // Force re-render when meal plans are loaded
+  useEffect(() => {
+    console.log('Dashboard: Component mounted or mealPlans changed');
+    console.log('Dashboard: mealPlansLoading:', mealPlansLoading);
+    console.log('Dashboard: mealPlans:', mealPlans);
+  }, [mealPlans, mealPlansLoading]);
+
+  // Get today's date
+  const today = new Date();
+  const todayString = today.toLocaleDateString('en-US', { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
 
   // Detailed meal information
   const mealDetails: { [key: string]: MealDetail } = {
@@ -511,63 +524,63 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
       id: '1',
       day: 'Monday',
       meals: {
-        breakfast: 'Oatmeal with berries',
-        lunch: 'Grilled chicken salad',
-        dinner: 'Salmon with quinoa'
+        breakfast: mealPlans.Monday?.breakfast?.name || '',
+        lunch: mealPlans.Monday?.lunch?.name || '',
+        dinner: mealPlans.Monday?.dinner?.name || ''
       }
     },
     {
       id: '2',
       day: 'Tuesday',
       meals: {
-        breakfast: 'Greek yogurt parfait',
-        lunch: 'Turkey wrap',
-        dinner: 'Vegetable stir-fry'
+        breakfast: mealPlans.Tuesday?.breakfast?.name || '',
+        lunch: mealPlans.Tuesday?.lunch?.name || '',
+        dinner: mealPlans.Tuesday?.dinner?.name || ''
       }
     },
     {
       id: '3',
       day: 'Wednesday',
       meals: {
-        breakfast: 'Avocado toast',
-        lunch: 'Lentil soup',
-        dinner: 'Grilled fish with vegetables'
+        breakfast: mealPlans.Wednesday?.breakfast?.name || '',
+        lunch: mealPlans.Wednesday?.lunch?.name || '',
+        dinner: mealPlans.Wednesday?.dinner?.name || ''
       }
     },
     {
       id: '4',
       day: 'Thursday',
       meals: {
-        breakfast: 'Smoothie bowl',
-        lunch: 'Chicken Caesar salad',
-        dinner: 'Pasta with marinara'
+        breakfast: mealPlans.Thursday?.breakfast?.name || '',
+        lunch: mealPlans.Thursday?.lunch?.name || '',
+        dinner: mealPlans.Thursday?.dinner?.name || ''
       }
     },
     {
       id: '5',
       day: 'Friday',
       meals: {
-        breakfast: 'Scrambled eggs',
-        lunch: 'Quinoa bowl',
-        dinner: 'BBQ chicken'
+        breakfast: mealPlans.Friday?.breakfast?.name || '',
+        lunch: mealPlans.Friday?.lunch?.name || '',
+        dinner: mealPlans.Friday?.dinner?.name || ''
       }
     },
     {
       id: '6',
       day: 'Saturday',
       meals: {
-        breakfast: 'Pancakes',
-        lunch: 'Burger',
-        dinner: 'Pizza'
+        breakfast: mealPlans.Saturday?.breakfast?.name || '',
+        lunch: mealPlans.Saturday?.lunch?.name || '',
+        dinner: mealPlans.Saturday?.dinner?.name || ''
       }
     },
     {
       id: '7',
       day: 'Sunday',
       meals: {
-        breakfast: 'French toast',
-        lunch: 'Sandwich',
-        dinner: 'Roast dinner'
+        breakfast: mealPlans.Sunday?.breakfast?.name || '',
+        lunch: mealPlans.Sunday?.lunch?.name || '',
+        dinner: mealPlans.Sunday?.dinner?.name || ''
       }
     }
   ];
@@ -582,7 +595,36 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
   const handleMealClick = (mealName: string) => {
     const mealDetail = getMealDetail(mealName);
     if (mealDetail) {
-      setSelectedMeal(mealDetail);
+      // Convert MealDetail to Recipe format
+      const recipe: Recipe = {
+        id: mealDetail.id,
+        name: mealDetail.name,
+        time: mealDetail.prepTime,
+        servings: mealDetail.servings,
+        calories: mealDetail.calories,
+        protein: 0,
+        ingredients: mealDetail.ingredients,
+        steps: mealDetail.instructions,
+        tags: mealDetail.tags,
+        image: null
+      };
+      setSelectedMeal(recipe);
+      onHideNavbar?.(true); // Hide navbar when meal is selected
+    } else {
+      // Create a fallback recipe for meals without detailed information
+      const fallbackRecipe: Recipe = {
+        id: mealName.toLowerCase().replace(/\s+/g, '-'),
+        name: mealName,
+        time: 15,
+        servings: 1,
+        calories: 300,
+        protein: 0,
+        ingredients: ['Ingredients not available'],
+        steps: ['Instructions not available'],
+        tags: ['meal-plan'],
+        image: null
+      };
+      setSelectedMeal(fallbackRecipe);
       onHideNavbar?.(true); // Hide navbar when meal is selected
     }
   };
@@ -595,9 +637,16 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
 
   // Add to cart handler
   const handleAddToCart = () => {
-    setCartItems(prev => prev + 1);
-    // In a real app, this would add the meal's ingredients to the shopping cart
-    console.log('Added meal ingredients to cart');
+    if (selectedMeal) {
+      addToCart({
+        id: selectedMeal.id,
+        name: selectedMeal.name,
+        ingredients: selectedMeal.ingredients,
+        addedAt: new Date().toISOString()
+      });
+      // Award points for adding to cart
+      updatePoints(stats.points + 10);
+    }
   };
 
   // Toggle favorite handler
@@ -613,8 +662,55 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
     });
   };
 
+  // Get today's meals from the weekly meal plan - recalculates when mealPlans changes
+  const todaysMeals = useMemo(() => {
+    const today = new Date();
+    const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const todayName = dayNames[today.getDay()];
+    
+    // Try both lowercase and capitalized versions
+    const todaysMealPlan = mealPlans[todayName] || mealPlans[todayName.charAt(0).toUpperCase() + todayName.slice(1)] || {};
+    
+    // Convert meal plan to array format for display
+    const meals = [];
+    if (todaysMealPlan.breakfast) {
+      meals.push({
+        id: `breakfast-${todaysMealPlan.breakfast.id}`,
+        name: todaysMealPlan.breakfast.name,
+        image: todaysMealPlan.breakfast.image || '/api/placeholder/150/150',
+        calories: todaysMealPlan.breakfast.calories,
+        time: 'Breakfast',
+        recipe: todaysMealPlan.breakfast
+      });
+    }
+    if (todaysMealPlan.lunch) {
+      meals.push({
+        id: `lunch-${todaysMealPlan.lunch.id}`,
+        name: todaysMealPlan.lunch.name,
+        image: todaysMealPlan.lunch.image || '/api/placeholder/150/150',
+        calories: todaysMealPlan.lunch.calories,
+        time: 'Lunch',
+        recipe: todaysMealPlan.lunch
+      });
+    }
+    if (todaysMealPlan.dinner) {
+      meals.push({
+        id: `dinner-${todaysMealPlan.dinner.id}`,
+        name: todaysMealPlan.dinner.name,
+        image: todaysMealPlan.dinner.image || '/api/placeholder/150/150',
+        calories: todaysMealPlan.dinner.calories,
+        time: 'Dinner',
+        recipe: todaysMealPlan.dinner
+      });
+    }
+    
+    return meals;
+  }, [mealPlans, mealPlansLoading]);
+
   // Toggle checkbox handler
-  const toggleCheckbox = (mealId: string) => {
+  const toggleCheckbox = async (mealId: string) => {
+    const wasChecked = checkedMeals.has(mealId);
+    
     setCheckedMeals(prev => {
       const newChecked = new Set(prev);
       if (newChecked.has(mealId)) {
@@ -624,75 +720,150 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
       }
       return newChecked;
     });
-  };
 
-  // Today's meals (using Wednesday as example)
-  const todaysMeals = [
-    {
-      id: '1',
-      name: 'Avocado Toast',
-      image: '/api/placeholder/150/150',
-      calories: 320,
-      time: 'Breakfast'
-    },
-    {
-      id: '2',
-      name: 'Lentil Soup',
-      image: '/api/placeholder/150/150',
-      calories: 280,
-      time: 'Lunch'
-    },
-    {
-      id: '3',
-      name: 'Grilled Fish',
-      image: '/api/placeholder/150/150',
-      calories: 350,
-      time: 'Dinner'
+    // If meal is being checked (not unchecked), add its macros to daily progress and meal history
+    if (!wasChecked) {
+      // First, try to find the meal in todaysMeals (for scheduled meals)
+      const meal = todaysMeals.find(m => m.id === mealId);
+      
+      if (meal && meal.recipe) {
+        // Handle scheduled meals
+        try {
+          // Add to daily progress
+          await addMealToProgress({
+            calories: meal.recipe.calories,
+            protein: meal.recipe.protein || 0,
+            carbs: meal.recipe.carbs || 0,
+            fat: meal.recipe.fat || 0,
+            fiber: meal.recipe.fiber || 0,
+            sugar: meal.recipe.sugar || 0,
+            cholesterol: meal.recipe.cholesterol || 0,
+          });
+          
+          // Add to meal history
+          await addMealToHistory(
+            new Date().toISOString().split('T')[0], // date: YYYY-MM-DD format
+            meal.time.toLowerCase(), // mealType: breakfast, lunch, dinner
+            Number(meal.recipe.id), // recipeId
+            meal.recipe.name, // recipeName
+            true, // completed
+            undefined, // rating
+            undefined // notes
+          );
+          
+          // Manually refresh progress to ensure UI updates
+          await refreshProgress();
+        } catch (error) {
+          console.error('Error adding meal to daily progress:', error);
+        }
+      } else {
+        // Handle snacks/desserts
+        const snack = snacksDesserts.find(s => s.id === mealId);
+        
+        if (snack) {
+          try {
+            // Add to daily progress
+            await addMealToProgress({
+              calories: snack.calories,
+              protein: snack.protein || 0,
+              carbs: snack.carbs || 0,
+              fat: snack.fat || 0,
+              fiber: snack.fiber || 0,
+              sugar: snack.sugar || 0,
+              cholesterol: snack.cholesterol || 0,
+            });
+            
+            // Add to meal history
+            await addMealToHistory(
+              new Date().toISOString().split('T')[0], // date: YYYY-MM-DD format
+              snack.type.toLowerCase(), // mealType: snack or dessert
+              parseInt(snack.id.replace('snack-', '')), // recipeId: Convert snack-1 to 1
+              snack.name, // recipeName
+              true, // completed
+              undefined, // rating
+              undefined // notes
+            );
+            
+            // Manually refresh progress to ensure UI updates
+            await refreshProgress();
+          } catch (error) {
+            console.error('Error adding snack to daily progress:', error);
+          }
+        }
+      }
     }
-  ];
+  };
 
   // Snacks/Desserts slider data
   const snacksDesserts = [
     {
-      id: '1',
+      id: 'snack-1',
       name: 'Greek Yogurt with Honey',
       image: '/api/placeholder/200/150',
       calories: 120,
+      protein: 15,
+      carbs: 12,
+      fat: 2,
+      fiber: 0,
+      sugar: 12,
+      cholesterol: 5,
       type: 'Snack'
     },
     {
-      id: '2',
+      id: 'snack-2',
       name: 'Dark Chocolate Bark',
       image: '/api/placeholder/200/150',
       calories: 180,
+      protein: 3,
+      carbs: 18,
+      fat: 12,
+      fiber: 3,
+      sugar: 15,
+      cholesterol: 0,
       type: 'Dessert'
     },
     {
-      id: '3',
+      id: 'snack-3',
       name: 'Apple Slices',
       image: '/api/placeholder/200/150',
       calories: 80,
+      protein: 0,
+      carbs: 21,
+      fat: 0,
+      fiber: 4,
+      sugar: 16,
+      cholesterol: 0,
       type: 'Snack'
     },
     {
-      id: '4',
+      id: 'snack-4',
       name: 'Protein Smoothie',
       image: '/api/placeholder/200/150',
       calories: 200,
+      protein: 25,
+      carbs: 15,
+      fat: 3,
+      fiber: 2,
+      sugar: 12,
+      cholesterol: 0,
       type: 'Snack'
     },
     {
-      id: '5',
+      id: 'snack-5',
       name: 'Chia Pudding',
       image: '/api/placeholder/200/150',
       calories: 150,
+      protein: 5,
+      carbs: 20,
+      fat: 6,
+      fiber: 10,
+      sugar: 8,
+      cholesterol: 0,
       type: 'Dessert'
     }
   ];
 
-  const handleUpdateMacros = (updatedMacros: Macro[]) => {
-    setMacros(updatedMacros);
-  };
+  // MacroTracking now handles its own state internally
 
   const nextSnack = () => {
     const maxIndex = Math.ceil(snacksDesserts.length / 4) - 1;
@@ -720,9 +891,21 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
             <div className="p-6">
               {/* Modal Header */}
               <div className="flex justify-between items-start mb-6">
-                <div>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-2">{selectedMeal.name}</h2>
-                  <p className="text-gray-600 text-lg">{selectedMeal.description}</p>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <h2 className="text-3xl font-bold text-gray-900">{selectedMeal.name}</h2>
+                    <button
+                      onClick={() => toggleFavorite(selectedMeal.name)}
+                      className={`p-2 rounded-full transition-colors ${
+                        favoriteMeals.has(selectedMeal.name)
+                          ? 'bg-red-500 text-white hover:bg-red-600'
+                          : 'bg-gray-100 text-gray-400 hover:text-red-500 hover:bg-red-50'
+                      }`}
+                    >
+                      <Heart size={24} fill={favoriteMeals.has(selectedMeal.name) ? 'currentColor' : 'none'} />
+                    </button>
+                  </div>
+                  <p className="text-gray-600 text-lg">A delicious recipe from your meal plan.</p>
                 </div>
                 <button
                   onClick={handleCloseModal}
@@ -736,12 +919,12 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                 <div className="text-center p-4 bg-sky-50 rounded-lg">
                   <ClockIcon className="mx-auto text-sky-600 mb-2" size={24} />
-                  <div className="text-lg font-medium text-gray-900">{selectedMeal.prepTime} min</div>
-                  <div className="text-sm text-gray-600">Prep Time</div>
+                  <div className="text-lg font-medium text-gray-900">{selectedMeal.time} min</div>
+                  <div className="text-sm text-gray-600">Total Time</div>
                 </div>
                 <div className="text-center p-4 bg-emerald-50 rounded-lg">
                   <ChefHat className="mx-auto text-emerald-600 mb-2" size={24} />
-                  <div className="text-lg font-medium text-gray-900">{selectedMeal.cookTime} min</div>
+                  <div className="text-lg font-medium text-gray-900">{selectedMeal.time} min</div>
                   <div className="text-sm text-gray-600">Cook Time</div>
                 </div>
                 <div className="text-center p-4 bg-teal-50 rounded-lg">
@@ -795,7 +978,7 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
                   </h3>
                   <div className="max-h-96 overflow-y-auto">
                     <ol className="space-y-4">
-                      {selectedMeal.instructions.map((instruction, index) => (
+                      {selectedMeal.steps.map((instruction, index) => (
                         <li key={index} className="flex gap-4">
                           <div className="flex-shrink-0 w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
                             {index + 1}
@@ -833,6 +1016,68 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
                 <button className="flex-1 bg-sky-200 text-sky-700 py-4 px-6 rounded-lg hover:bg-sky-300 transition-colors font-medium text-lg">
                   Save Recipe
                 </button>
+                {(() => {
+                  // Don't show button logic until meal plans are loaded
+                  if (mealPlansLoading) {
+                    return (
+                      <button
+                        disabled
+                        className="flex-1 bg-gray-300 text-gray-500 py-4 px-6 rounded-lg font-medium text-lg cursor-not-allowed"
+                      >
+                        Loading...
+                      </button>
+                    );
+                  }
+                  
+                  // More robust check for recipe in meal plan
+                  // Convert both IDs to numbers for comparison to handle any type mismatches
+                  const selectedRecipeId = Number(selectedMeal.id);
+                  
+                  // Check if this recipe is already in the meal plan
+                  const dayEntry = Object.entries(mealPlans).find(([day, meals]) => 
+                    Object.entries(meals).some(([mealType, recipe]) => {
+                      const recipeId = Number(recipe.id);
+                      return recipeId === selectedRecipeId;
+                    })
+                  );
+                  
+                  if (dayEntry) {
+                    // Recipe is already in meal plan - show Remove button
+                    const [day, meals] = dayEntry;
+                    const mealEntry = Object.entries(meals).find(([mealType, recipe]) => {
+                      const recipeId = Number(recipe.id);
+                      return recipeId === selectedRecipeId;
+                    });
+                    
+                    if (mealEntry) {
+                      const [mealType, recipe] = mealEntry;
+                      return (
+                        <button
+                          onClick={() => {
+                            setRecipeToRemove({ day, mealType, recipe });
+                            setShowRemoveConfirm(true);
+                          }}
+                          className="flex-1 bg-red-500 text-white py-4 px-6 rounded-lg hover:bg-red-600 transition-colors font-medium text-lg"
+                        >
+                          Remove from Plan
+                        </button>
+                      );
+                    }
+                  }
+                  
+                  // Recipe is not in meal plan - show Add button
+                  return (
+                    <button
+                      onClick={() => {
+                        // This would open the AddToPlanModal, but for now just show a message
+                        alert('Add to Plan functionality would open here');
+                      }}
+                      className="flex-1 bg-blue-500 text-white py-4 px-6 rounded-lg hover:bg-blue-600 transition-colors font-medium text-lg"
+                    >
+                      Add to Plan
+                    </button>
+                  );
+                })()}
               </div>
             </div>
           </div>
@@ -840,6 +1085,55 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
       </div>
     );
   }
+
+      // Confirmation Modal for Remove from Plan - shows on top of recipe popup
+      if (showRemoveConfirm && recipeToRemove) {
+        return (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60]">
+            <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+              <div className="text-center">
+                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                  <X className="h-6 w-6 text-red-600" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  Remove from Meal Plan?
+                </h3>
+                <p className="text-sm text-gray-500 mb-6">
+                  Are you sure you want to remove <strong>{recipeToRemove.recipe.name}</strong> from your {recipeToRemove.day} {recipeToRemove.mealType}?
+                </p>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      setShowRemoveConfirm(false);
+                      setRecipeToRemove(null);
+                    }}
+                    className="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={async () => {
+                      try {
+                        console.log(`Confirming removal of ${recipeToRemove.recipe.name} from ${recipeToRemove.day} ${recipeToRemove.mealType}`);
+                        await removeFromMealPlan(recipeToRemove.day, recipeToRemove.mealType);
+                        console.log('Meal removed successfully');
+                        setShowRemoveConfirm(false);
+                        setRecipeToRemove(null);
+                        setSelectedMeal(null); // Close the main modal
+                      } catch (error) {
+                        console.error('Error removing meal:', error);
+                      }
+                    }}
+                    className="flex-1 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors font-medium"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-200 via-teal-200 to-emerald-200 pb-20">
@@ -849,7 +1143,10 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome, {user?.name}!</h1>
-              <p className="text-gray-600">Welcome back! Here's your meal plan overview.</p>
+              <p className="text-gray-600 mb-2">Welcome back! Here's your meal plan overview.</p>
+              <div className="text-lg font-semibold text-purple-600 bg-purple-50 px-3 py-1 rounded-lg inline-block">
+                📅 {todayString}
+              </div>
             </div>
             
             {/* Nutrition Points, Coupons & Cart */}
@@ -859,7 +1156,7 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
                 <Star className="w-5 h-5" />
                 <div>
                   <div className="text-sm font-medium">Nutrition Points</div>
-                  <div className="text-lg font-bold">1,247</div>
+                  <div className="text-lg font-bold">{stats.points}</div>
                 </div>
               </div>
               
@@ -877,7 +1174,7 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
                 <ShoppingCart className="w-5 h-5" />
                 <div>
                   <div className="text-sm font-medium">Cart</div>
-                  <div className="text-lg font-bold">{cartItems}</div>
+                  <div className="text-lg font-bold">{stats.cartItems}</div>
                 </div>
               </button>
             </div>
@@ -889,8 +1186,23 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
           <div className="lg:col-span-2 space-y-6">
             {/* Today's Meals Box */}
             <div className="bg-white rounded-lg shadow-sm border p-4">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">Today's Meals</h2>
-              <div className="grid grid-cols-3 gap-4 mb-4">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                Today's Meals 
+                <span className="text-sm font-normal text-gray-500 ml-2">
+                  ({new Date().toLocaleDateString('en-US', { weekday: 'long' })})
+                </span>
+              </h2>
+              {mealPlansLoading ? (
+                <div className="text-center py-8">
+                  <div className="text-gray-500">Loading meal plans...</div>
+                </div>
+              ) : todaysMeals.length === 0 ? (
+                <div className="text-center py-8">
+                  <div className="text-gray-500 mb-2">No meals scheduled for today</div>
+                  <div className="text-sm text-gray-400">Add meals to your weekly plan to see them here</div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-3 gap-4 mb-4">
                 {todaysMeals.map((meal) => (
                   <div 
                     key={meal.id} 
@@ -899,7 +1211,12 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
                     }`}
                   >
                     <button
-                      onClick={() => handleMealClick(meal.name)}
+                      onClick={() => {
+                        if (meal.recipe) {
+                          setSelectedMeal(meal.recipe);
+                          if (onHideNavbar) onHideNavbar(true);
+                        }
+                      }}
                       className="w-full"
                     >
                       <div className="w-full h-40 bg-gray-200 rounded-lg mb-2 flex items-center justify-center">
@@ -933,19 +1250,23 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        toggleFavorite(meal.name);
+                        if (meal.recipe) {
+                          toggleFavorite(meal.recipe.id.toString());
+                        }
                       }}
                       className={`absolute top-3 right-3 p-1.5 rounded-full transition-colors ${
-                        favoriteMeals.has(meal.name)
+                        meal.recipe && favoriteMeals.has(meal.recipe.id.toString())
                           ? 'bg-red-500 text-white'
                           : 'bg-white text-gray-400 hover:text-red-500 hover:bg-red-50'
                       }`}
                     >
-                      <Heart size={16} fill={favoriteMeals.has(meal.name) ? 'currentColor' : 'none'} />
+                      <Heart size={16} fill={meal.recipe && favoriteMeals.has(meal.recipe.id.toString()) ? 'currentColor' : 'none'} />
                     </button>
+                    
                   </div>
                 ))}
-              </div>
+                </div>
+              )}
 
               {/* Snacks/Desserts Carousel */}
               <div className="border-t pt-3">
@@ -974,7 +1295,9 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
                   >
                     {snacksDesserts.map((item) => (
                       <div key={item.id} className="w-1/4 flex-shrink-0">
-                        <div className="w-full bg-white border rounded-lg p-2 hover:shadow-md transition-shadow text-left relative">
+                        <div className={`w-full bg-white border rounded-lg p-2 hover:shadow-md transition-all duration-300 text-left relative ${
+                          checkedMeals.has(item.id) ? 'opacity-40' : 'opacity-100'
+                        }`}>
                           <button
                             onClick={() => handleMealClick(item.name)}
                             className="w-full"
@@ -985,6 +1308,25 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
                             <h4 className="font-medium text-gray-900 text-xs mb-1">{item.name}</h4>
                             <p className="text-xs text-gray-600 mb-1">{item.type}</p>
                             <p className="text-xs text-gray-500">{item.calories} cal</p>
+                          </button>
+                          
+                          {/* Checkbox */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleCheckbox(item.id);
+                            }}
+                            className={`absolute top-2 left-2 w-5 h-5 rounded-full border-2 transition-all duration-200 flex items-center justify-center ${
+                              checkedMeals.has(item.id)
+                                ? 'bg-teal-500 border-teal-500 text-white'
+                                : 'bg-white border-gray-300 hover:border-teal-400'
+                            }`}
+                          >
+                            {checkedMeals.has(item.id) && (
+                              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                            )}
                           </button>
                           
                           {/* Favorite Button */}
@@ -1022,98 +1364,24 @@ export default function Dashboard({ onHideNavbar }: DashboardProps = {}) {
               </div>
             </div>
 
-            {/* Weekly Calendar - Horizontal */}
-            <div className="bg-white rounded-lg shadow-sm border p-4">
-              <div className="flex items-center gap-2 mb-4">
-                <Calendar className="text-teal-600" size={20} />
-                <h2 className="text-lg font-semibold text-gray-800">Weekly Meal Plan</h2>
-              </div>
-              
-              {/* Days Header */}
-              <div className="grid grid-cols-7 gap-2 mb-4">
-                {weeklyMeals.map((day) => (
-                  <div key={day.id} className="text-center">
-                    <div className="text-sm font-medium text-gray-800 mb-2">{day.day}</div>
-                    <div className="space-y-1">
-                      <div className="relative">
-                        <button
-                          onClick={() => handleMealClick(day.meals.breakfast)}
-                          className="w-full text-xs text-gray-600 bg-sky-50 p-2 rounded hover:bg-sky-100 transition-colors text-left"
-                        >
-                          <div className="font-medium">Breakfast</div>
-                          <div className="truncate">{day.meals.breakfast}</div>
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleFavorite(day.meals.breakfast);
-                          }}
-                          className={`absolute top-1 right-1 p-1 rounded-full transition-colors ${
-                            favoriteMeals.has(day.meals.breakfast)
-                              ? 'bg-red-500 text-white'
-                              : 'bg-white text-gray-400 hover:text-red-500 hover:bg-red-50'
-                          }`}
-                        >
-                          <Heart size={10} fill={favoriteMeals.has(day.meals.breakfast) ? 'currentColor' : 'none'} />
-                        </button>
-                      </div>
-                      <div className="relative">
-                        <button
-                          onClick={() => handleMealClick(day.meals.lunch)}
-                          className="w-full text-xs text-gray-600 bg-sky-50 p-2 rounded hover:bg-sky-100 transition-colors text-left"
-                        >
-                          <div className="font-medium">Lunch</div>
-                          <div className="truncate">{day.meals.lunch}</div>
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleFavorite(day.meals.lunch);
-                          }}
-                          className={`absolute top-1 right-1 p-1 rounded-full transition-colors ${
-                            favoriteMeals.has(day.meals.lunch)
-                              ? 'bg-red-500 text-white'
-                              : 'bg-white text-gray-400 hover:text-red-500 hover:bg-red-50'
-                          }`}
-                        >
-                          <Heart size={10} fill={favoriteMeals.has(day.meals.lunch) ? 'currentColor' : 'none'} />
-                        </button>
-                      </div>
-                      <div className="relative">
-                        <button
-                          onClick={() => handleMealClick(day.meals.dinner)}
-                          className="w-full text-xs text-gray-600 bg-sky-50 p-2 rounded hover:bg-sky-100 transition-colors text-left"
-                        >
-                          <div className="font-medium">Dinner</div>
-                          <div className="truncate">{day.meals.dinner}</div>
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleFavorite(day.meals.dinner);
-                          }}
-                          className={`absolute top-1 right-1 p-1 rounded-full transition-colors ${
-                            favoriteMeals.has(day.meals.dinner)
-                              ? 'bg-red-500 text-white'
-                              : 'bg-white text-gray-400 hover:text-red-500 hover:bg-red-50'
-                          }`}
-                        >
-                          <Heart size={10} fill={favoriteMeals.has(day.meals.dinner) ? 'currentColor' : 'none'} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* Weekly Calendar */}
+            <MealPlan
+              weeklyMeals={weeklyMeals}
+              mealPlans={mealPlans}
+              mealHistory={mealHistory}
+              onMealClick={(recipe: Recipe) => {
+                setSelectedMeal(recipe);
+                if (onHideNavbar) onHideNavbar(true);
+              }}
+              onHideNavbar={onHideNavbar}
+              onDeleteMeal={(id: string) => deleteMealHistory(id, refreshProgress)}
+              userEmail={user?.email || null}
+            />
           </div>
 
           {/* Right Column - Macro Tracking */}
           <div>
-            <MacroTracking 
-              userMacros={macros} 
-              onUpdateMacros={handleUpdateMacros}
-            />
+            <MacroTracking key={`macros-${progress?.calories || 0}-${progress?.protein || 0}`} />
           </div>
         </div>
 
