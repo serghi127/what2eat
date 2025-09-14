@@ -47,3 +47,26 @@ export const PREFERENCE_MAPPINGS = {
 export const getPreferenceOptions = (category: keyof typeof PREFERENCE_MAPPINGS): string[] => {
   return Object.keys(PREFERENCE_MAPPINGS[category]);
 };
+
+// Default preferences for new users
+export const DEFAULT_PREFERENCES = {
+  dietaryRestrictions: [],
+  mealType: [],
+  cookingTime: [],
+  course: [],
+  cuisine: [],
+  ingredients: [],
+  dislikes: '',
+  caloriesGoal: 2000,
+  proteinGoal: 100,
+  budget: 50,
+  timePerDay: 30,
+  servings: 1,
+  tools: [],
+  specificCravings: '',
+  age: undefined,
+  gender: undefined,
+  height_cm: undefined,
+  weight_kg: undefined,
+  activity_level: undefined
+};

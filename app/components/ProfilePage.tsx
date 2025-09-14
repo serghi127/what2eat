@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { User, Camera, Settings, Bell, Globe, Palette, Shield, HelpCircle, LogOut } from 'lucide-react';
+import { User, Camera, Settings, Globe, Palette, HelpCircle, LogOut } from 'lucide-react';
 import UserProfile from './UserProfile';
 
 interface ProfilePageProps {
@@ -15,20 +15,6 @@ export default function ProfilePage({ user, onUpdateUser, onLogout }: ProfilePag
   const [showProfileEditor, setShowProfileEditor] = useState(false);
 
   const settingsOptions = [
-    {
-      id: 'notifications',
-      title: 'Notifications',
-      description: 'Manage your notification preferences',
-      icon: Bell,
-      action: () => console.log('Notifications settings')
-    },
-    {
-      id: 'privacy',
-      title: 'Privacy & Security',
-      description: 'Control your privacy settings',
-      icon: Shield,
-      action: () => console.log('Privacy settings')
-    },
     {
       id: 'appearance',
       title: 'Appearance',

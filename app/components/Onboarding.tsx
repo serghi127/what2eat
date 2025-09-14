@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Clock, Users, DollarSign } from 'lucide-react';
 import { Preferences } from '../types';
 import { PREFERENCE_MAPPINGS, getPreferenceOptions } from '../constants/preferences';
+import { useDietaryPrefs } from '../hooks/useDietaryPrefs';
 
 interface OnboardingWizardProps {
   preferences: Preferences;
@@ -13,13 +14,37 @@ interface OnboardingWizardProps {
 
 export default function OnboardingWizard({ preferences, setPreferences, onComplete }: OnboardingWizardProps) {
   const [step, setStep] = useState(1);
-  const totalSteps = 6;
+  const totalSteps = 3;
+  const { dietaryPrefs, saveDietaryPrefs, loading: dietaryPrefsLoading } = useDietaryPrefs();
+  const [saving, setSaving] = useState(false);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step < totalSteps) {
       setStep(step + 1);
     } else {
+      // Save dietary preferences to Supabase before completing onboarding
+      await handleComplete();
+    }
+  };
+
+  const handleComplete = async () => {
+    try {
+      setSaving(true);
+      
+      // Save dietary preferences to Supabase
+      await saveDietaryPrefs({
+        restrictions: preferences.dietaryRestrictions,
+        allergies: preferences.dislikes ? preferences.dislikes.split(',').map(item => item.trim()).filter(item => item) : [],
+        tools: preferences.tools
+      });
+      
       onComplete();
+    } catch (error) {
+      console.error('Error saving dietary preferences:', error);
+      // Still complete onboarding even if saving fails
+      onComplete();
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -43,6 +68,18 @@ export default function OnboardingWizard({ preferences, setPreferences, onComple
   const updateField = (field: keyof Preferences, value: any) => {
     setPreferences(prev => ({ ...prev, [field]: value }));
   };
+
+  // Sync dietary preferences from Supabase to local state
+  useEffect(() => {
+    if (dietaryPrefs && !dietaryPrefsLoading) {
+      setPreferences(prev => ({
+        ...prev,
+        dietaryRestrictions: dietaryPrefs.restrictions || [],
+        tools: dietaryPrefs.tools || [],
+        dislikes: dietaryPrefs.allergies ? dietaryPrefs.allergies.join(', ') : ''
+      }));
+    }
+  }, [dietaryPrefs, dietaryPrefsLoading, setPreferences]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-400 to-blue-600 flex items-center justify-center p-4">
@@ -96,26 +133,95 @@ export default function OnboardingWizard({ preferences, setPreferences, onComple
           </div>
         )}
 
+
+
+
+
         {step === 2 && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold">Meal Types</h2>
-            <p className="text-gray-600">What types of meals do you enjoy?</p>
+            <h2 className="text-2xl font-semibold">Tell us about yourself</h2>
+            <p className="text-gray-600">This helps us calculate your nutritional needs</p>
             
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Age</label>
+                <input
+                  type="number"
+                  min="13"
+                  max="120"
+                  className="w-full p-3 border rounded-lg"
+                  placeholder="25"
+                  value={preferences.age || ''}
+                  onChange={(e) => updateField('age', parseInt(e.target.value) || undefined)}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Gender</label>
+                <select
+                  className="w-full p-3 border rounded-lg"
+                  value={preferences.gender || ''}
+                  onChange={(e) => updateField('gender', e.target.value as any)}
+                >
+                  <option value="">Select gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                  <option value="prefer_not_to_say">Prefer not to say</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Height (cm)</label>
+                <input
+                  type="number"
+                  min="100"
+                  max="250"
+                  className="w-full p-3 border rounded-lg"
+                  placeholder="170"
+                  value={preferences.height_cm || ''}
+                  onChange={(e) => updateField('height_cm', parseInt(e.target.value) || undefined)}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Weight (kg)</label>
+                <input
+                  type="number"
+                  min="30"
+                  max="200"
+                  className="w-full p-3 border rounded-lg"
+                  placeholder="70"
+                  value={preferences.weight_kg || ''}
+                  onChange={(e) => updateField('weight_kg', parseInt(e.target.value) || undefined)}
+                />
+              </div>
+            </div>
+
             <div>
-              <label className="block text-sm font-medium mb-2">Meal Types</label>
-              <div className="flex flex-wrap gap-2">
-                {getPreferenceOptions('meal_type').map(meal => (
-                  <button
-                    key={meal}
-                    className={`px-4 py-2 rounded-full text-sm ${
-                      preferences.mealType.includes(meal)
-                        ? 'bg-blue-500 text-white' 
-                        : 'bg-gray-200 hover:bg-gray-300'
-                    }`}
-                    onClick={() => updateArrayField('mealType', meal)}
-                  >
-                    {meal}
-                  </button>
+              <label className="block text-sm font-medium mb-2">Activity Level</label>
+              <div className="space-y-2">
+                {[
+                  { value: 'sedentary', label: 'Sedentary', description: 'Little to no exercise' },
+                  { value: 'lightly_active', label: 'Lightly Active', description: 'Light exercise 1-3 days/week' },
+                  { value: 'moderately_active', label: 'Moderately Active', description: 'Moderate exercise 3-5 days/week' },
+                  { value: 'very_active', label: 'Very Active', description: 'Heavy exercise 6-7 days/week' },
+                  { value: 'extremely_active', label: 'Extremely Active', description: 'Very heavy exercise, physical job' }
+                ].map(activity => (
+                  <label key={activity.value} className="flex items-center space-x-3 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="activity_level"
+                      value={activity.value}
+                      checked={preferences.activity_level === activity.value}
+                      onChange={(e) => updateField('activity_level', e.target.value as any)}
+                      className="text-green-500 focus:ring-green-500"
+                    />
+                    <div>
+                      <div className="font-medium">{activity.label}</div>
+                      <div className="text-sm text-gray-500">{activity.description}</div>
+                    </div>
+                  </label>
                 ))}
               </div>
             </div>
@@ -123,100 +229,6 @@ export default function OnboardingWizard({ preferences, setPreferences, onComple
         )}
 
         {step === 3 && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-semibold">Cooking Time</h2>
-            <p className="text-gray-600">How much time do you have for cooking?</p>
-            
-            <div>
-              <label className="block text-sm font-medium mb-2">Cooking Time Preferences</label>
-              <div className="flex flex-wrap gap-2">
-                {getPreferenceOptions('cooking_time').map(time => (
-                  <button
-                    key={time}
-                    className={`px-4 py-2 rounded-full text-sm ${
-                      preferences.cookingTime.includes(time)
-                        ? 'bg-orange-500 text-white' 
-                        : 'bg-gray-200 hover:bg-gray-300'
-                    }`}
-                    onClick={() => updateArrayField('cookingTime', time)}
-                  >
-                    {time}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2">Time per day for cooking</label>
-              <div className="flex items-center space-x-2">
-                <Clock className="w-5 h-5 text-gray-400" />
-                <input
-                  type="range"
-                  min="15"
-                  max="90"
-                  value={preferences.timePerDay}
-                  onChange={(e) => updateField('timePerDay', parseInt(e.target.value))}
-                  className="flex-1"
-                />
-                <span className="w-20 text-right">{preferences.timePerDay} min</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {step === 4 && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-semibold">Course Types</h2>
-            <p className="text-gray-600">What types of dishes do you enjoy?</p>
-            
-            <div>
-              <label className="block text-sm font-medium mb-2">Course Types</label>
-              <div className="flex flex-wrap gap-2">
-                {getPreferenceOptions('course').map(course => (
-                  <button
-                    key={course}
-                    className={`px-4 py-2 rounded-full text-sm ${
-                      preferences.course.includes(course)
-                        ? 'bg-purple-500 text-white' 
-                        : 'bg-gray-200 hover:bg-gray-300'
-                    }`}
-                    onClick={() => updateArrayField('course', course)}
-                  >
-                    {course}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {step === 5 && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-semibold">Cuisine Preferences</h2>
-            <p className="text-gray-600">What cuisines do you enjoy?</p>
-            
-            <div>
-              <label className="block text-sm font-medium mb-2">Cuisines</label>
-              <div className="flex flex-wrap gap-2">
-                {getPreferenceOptions('cuisine').map(cuisine => (
-                  <button
-                    key={cuisine}
-                    className={`px-4 py-2 rounded-full text-sm ${
-                      preferences.cuisine.includes(cuisine)
-                        ? 'bg-red-500 text-white' 
-                        : 'bg-gray-200 hover:bg-gray-300'
-                    }`}
-                    onClick={() => updateArrayField('cuisine', cuisine)}
-                  >
-                    {cuisine}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {step === 6 && (
           <div className="space-y-6">
             <h2 className="text-2xl font-semibold">Ingredients & Final Details</h2>
             <p className="text-gray-600">What ingredients do you prefer and final preferences</p>
@@ -345,10 +357,11 @@ export default function OnboardingWizard({ preferences, setPreferences, onComple
           </button>
           <button
             onClick={handleNext}
-            className="flex items-center px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+            disabled={saving || dietaryPrefsLoading}
+            className="flex items-center px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {step === totalSteps ? 'Generate Plan' : 'Next'}
-            {step !== totalSteps && <ChevronRight className="w-4 h-4 ml-1" />}
+            {saving ? 'Saving...' : step === totalSteps ? 'Complete Setup' : 'Next'}
+            {step !== totalSteps && !saving && <ChevronRight className="w-4 h-4 ml-1" />}
           </button>
         </div>
       </div>

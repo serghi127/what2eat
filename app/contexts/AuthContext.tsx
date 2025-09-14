@@ -8,6 +8,8 @@ interface AuthContextType {
   login: (user: UserWithoutPassword) => void;
   logout: () => void;
   isLoading: boolean;
+  hasCompletedOnboarding: boolean;
+  setHasCompletedOnboarding: (completed: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -15,10 +17,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserWithoutPassword | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
 
   useEffect(() => {
     // Check if user is logged in (from localStorage or session)
     const savedUser = localStorage.getItem('user');
+    const savedOnboarding = localStorage.getItem('hasCompletedOnboarding');
+    
     if (savedUser) {
       try {
         setUser(JSON.parse(savedUser));
@@ -27,24 +32,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.removeItem('user');
       }
     }
+    
+    if (savedOnboarding) {
+      setHasCompletedOnboarding(savedOnboarding === 'true');
+    }
+    
     setIsLoading(false);
   }, []);
 
   const login = (userData: UserWithoutPassword) => {
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
+    // For new users, assume they haven't completed onboarding
+    // This will be updated when they complete onboarding
+    if (!localStorage.getItem('hasCompletedOnboarding')) {
+      setHasCompletedOnboarding(false);
+    }
   };
 
   const logout = () => {
     setUser(null);
+    setHasCompletedOnboarding(false);
     localStorage.removeItem('user');
+    localStorage.removeItem('hasCompletedOnboarding');
+  };
+
+  const handleSetHasCompletedOnboarding = (completed: boolean) => {
+    setHasCompletedOnboarding(completed);
+    localStorage.setItem('hasCompletedOnboarding', completed.toString());
   };
 
   const value = {
     user,
     login,
     logout,
-    isLoading
+    isLoading,
+    hasCompletedOnboarding,
+    setHasCompletedOnboarding: handleSetHasCompletedOnboarding
   };
 
   return (

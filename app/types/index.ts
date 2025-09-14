@@ -43,6 +43,11 @@ export interface Preferences {
   servings: number;
   tools: string[];
   specificCravings?: string;
+  age?: number;
+  gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say';
+  height_cm?: number;
+  weight_kg?: number;
+  activity_level?: 'sedentary' | 'lightly_active' | 'moderately_active' | 'very_active' | 'extremely_active';
 }
 
 // Supabase Database Types based on your schema
