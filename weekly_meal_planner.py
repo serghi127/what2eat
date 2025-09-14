@@ -13,6 +13,8 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 import os
 import sys
+import psycopg2
+import argparse
 
 # Add the current directory to Python path to import local modules
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -150,7 +152,7 @@ class Recipe:
 class WeeklyMealPlanner:
     """Main meal planning class"""
     
-    def __init__(self, recipes_file: str = "all_recipes.ts"):
+    def __init__(self, recipes_file: str = "all_recipes.csv"):
         self.recipes_file = recipes_file
         self.recipes = []
         self.llm_generator = None
@@ -168,9 +170,61 @@ class WeeklyMealPlanner:
         self.load_recipes()
     
     def load_recipes(self):
-        """Load recipes from TypeScript file"""
-        print("📖 Loading recipes from TypeScript file...")
+        """Load recipes from CSV file"""
+        print("📖 Loading recipes from CSV file...")
         import time
+        import csv
+        start_time = time.time()
+        
+        try:
+            print(f"   📂 Reading file: {self.recipes_file}")
+            
+            with open(self.recipes_file, 'r', encoding='utf-8') as f:
+                csv_reader = csv.DictReader(f)
+                parsed_count = 0
+                
+                for row in csv_reader:
+                    try:
+                        # Parse the CSV row into recipe data
+                        recipe_data = {
+                            'id': int(row['id']),
+                            'name': row['name'],
+                            'time': int(row['time']) if row['time'] else 30,
+                            'servings': int(row['servings']) if row['servings'] else 4,
+                            'calories': int(row['calories']) if row['calories'] else 300,
+                            'protein': float(row['protein']) if row['protein'] else 20,
+                            'tags': json.loads(row['tags']) if row['tags'] else [],
+                            'ingredients': json.loads(row['ingredients']) if row['ingredients'] else [],
+                            'steps': json.loads(row['steps']) if row['steps'] else [],
+                            'image': row['image'] if row['image'] else None,
+                            'source': row['source'] if row['source'] else 'Allrecipes',
+                            'credits': row['credits'] if row['credits'] else 'From all_recipes.csv'
+                        }
+                        
+                        self.recipes.append(Recipe(recipe_data))
+                        parsed_count += 1
+                        
+                    except Exception as e:
+                        print(f"   ⚠️  Could not parse recipe row: {e}")
+                        continue
+            
+            total_time = time.time() - start_time
+            print(f"✅ Successfully loaded {len(self.recipes)} recipes from {self.recipes_file}")
+            print(f"   📈 Successfully parsed {parsed_count} recipe objects")
+            print(f"   ⏱️  Total loading time: {total_time:.2f} seconds")
+            
+        except FileNotFoundError:
+            print(f"❌ Error: Could not find {self.recipes_file}")
+            self.recipes = []
+        except Exception as e:
+            print(f"❌ Error loading recipes: {e}")
+            self.recipes = []
+    
+    def load_recipes_old(self):
+        """Load recipes from CSV file"""
+        print("📖 Loading recipes from CSV file...")
+        import time
+        import csv
         start_time = time.time()
         
         try:
@@ -639,7 +693,7 @@ class WeeklyMealPlanner:
         
         for day, daily_plan in weekly_plan.items():
             print(f"\n📅 {day.upper()}")
-            if daily_plan['craving']:
+            if daily_plan.get('craving'):
                 print(f"   🍯 Craving: {daily_plan['craving']}")
             
             print(f"   📊 Daily Totals: {daily_plan['total_calories']} calories, {daily_plan['total_protein']}g protein")
@@ -707,19 +761,29 @@ export const WEEKLY_MEAL_PLAN: MealPlan[] = [
         for day in days:
             for meal_type in meals:
                 meal_data = weekly_plan[day]['meals'][meal_type]
+                # Escape quotes for TypeScript generation
+                escaped_name = meal_data['name'].replace('"', '\\"')
+                escaped_source = meal_data['source'].replace('"', '\\"')
+                escaped_credits = meal_data['credits'].replace('"', '\\"')
+                
+                # Prepare JSON data outside of f-string
+                ingredients_json = json.dumps(meal_data['ingredients'], ensure_ascii=False)
+                steps_json = json.dumps(meal_data['steps'], ensure_ascii=False)
+                is_ai_generated = str(meal_data['is_ai_generated']).lower()
+                
                 ts_content += f"""  {{
     id: {meal_data['id']},
-    name: "{meal_data['name'].replace('"', '\\"')}",
+    name: "{escaped_name}",
     mealType: "{meal_type}",
     day: "{day}",
     calories: {meal_data['calories']},
     protein: {meal_data['protein']},
     time: {meal_data['time']},
-    ingredients: {json.dumps(meal_data['ingredients'], ensure_ascii=False)},
-    steps: {json.dumps(meal_data['steps'], ensure_ascii=False)},
-    source: "{meal_data['source'].replace('"', '\\"')}",
-    credits: "{meal_data['credits'].replace('"', '\\"')}",
-    isAiGenerated: {str(meal_data['is_ai_generated']).lower()}
+    ingredients: {ingredients_json},
+    steps: {steps_json},
+    source: "{escaped_source}",
+    credits: "{escaped_credits}",
+    isAiGenerated: {is_ai_generated}
   }},
 """
         
@@ -747,18 +811,37 @@ export const WEEKLY_MEAL_PLAN: MealPlan[] = [
         # Create 7x3 array (7 days, 3 meals per day)
         print(f"   📊 Creating 7x3 meal ID array...")
         meal_ids_array = []
+        recipes_lookup = {}  # NEW: Store full recipe data
+        
         for day in days:
             day_meals = []
             for meal_type in meals:
-                meal_id = weekly_plan[day]['meals'][meal_type]['id']
+                meal_data = weekly_plan[day]['meals'][meal_type]
+                meal_id = meal_data['id']
                 day_meals.append(meal_id)
+                
+                # NEW: Store full recipe data in lookup object
+                if str(meal_id) not in recipes_lookup:
+                    recipes_lookup[str(meal_id)] = {
+                        'id': meal_data['id'],
+                        'name': meal_data['name'],
+                        'calories': meal_data['calories'],
+                        'protein': meal_data['protein'],
+                        'time': meal_data['time'],
+                        'ingredients': meal_data['ingredients'],
+                        'steps': meal_data['steps'],
+                        'source': meal_data['source'],
+                        'credits': meal_data['credits'],
+                        'is_ai_generated': meal_data['is_ai_generated']
+                    }
             meal_ids_array.append(day_meals)
         
         json_data = {
             'generated_at': datetime.now().isoformat(),
-            'description': '7x3 array of recipe IDs (7 days, 3 meals per day)',
+            'description': '7x3 array of recipe IDs (7 days, 3 meals per day) with full recipe data',
             'format': 'meal_ids[day][meal] where day=0-6 (Mon-Sun), meal=0-2 (breakfast-lunch-dinner)',
             'meal_ids': meal_ids_array,
+            'recipes': recipes_lookup,  # NEW: Full recipe data lookup
             'days': days,
             'meals': meals
         }
@@ -771,6 +854,34 @@ export const WEEKLY_MEAL_PLAN: MealPlan[] = [
         except Exception as e:
             print(f"   ❌ Error saving JSON meal IDs: {e}")
             return None
+    
+    def save_plan_to_database(self, weekly_plan: Dict[str, Any], user_id: str, supabase_url: str, supabase_key: str) -> bool:
+        """Save the meal plan to Supabase database using the API"""
+        try:
+            from supabase import create_client, Client
+            
+            # Create Supabase client
+            supabase: Client = create_client(supabase_url, supabase_key)
+            
+            # Convert to database format
+            db_format = self.convert_to_database_format(weekly_plan)
+            
+            # Update meal_table with the weekly plan using Supabase API
+            result = supabase.table("meal_table").update({
+                "weekly_plan": db_format
+            }).eq("id", user_id).execute()
+            
+            if result.data:
+                print(f"✅ Meal plan saved to meal_table for user {user_id}")
+                print(f"📊 Database format: {json.dumps(db_format, indent=2)}")
+                return True
+            else:
+                print(f"❌ No data returned from Supabase update")
+                return False
+            
+        except Exception as e:
+            print(f"❌ Error saving meal plan to Supabase: {e}")
+            return False
     
     def save_plan_to_file(self, weekly_plan: Dict[str, Any], preferences: UserPreferences, filename: str = None):
         """Save the meal plan to a JSON file (legacy method)"""
@@ -801,9 +912,17 @@ export const WEEKLY_MEAL_PLAN: MealPlan[] = [
             print(f"Error saving meal plan: {e}")
 
 def main():
-    """Example usage of the Weekly Meal Planner"""
+    """Main function with command-line argument support"""
     import time
-    import sys
+    
+    parser = argparse.ArgumentParser(description='Generate weekly meal plans')
+    parser.add_argument('--preferences', type=str, help='Path to preferences JSON file')
+    parser.add_argument('--user-id', type=str, help='User ID for database storage')
+    parser.add_argument('--save-to-db', action='store_true', help='Save meal plan to database')
+    parser.add_argument('--output-format', choices=['json', 'ts', 'db', 'all'], default='all', 
+                       help='Output format (json, ts, db, or all)')
+    
+    args = parser.parse_args()
     
     print("🚀 Starting Weekly Meal Planner...")
     total_start = time.time()
@@ -819,24 +938,36 @@ def main():
         print("❌ No recipes loaded. Please check the all_recipes.ts file.")
         return
     
-    # Example user preferences
-    print("⚙️  Setting up user preferences...")
-    preferences = UserPreferences(
-        dietary_restrictions=['vegetarian'],  # vegan, vegetarian, gluten-free, dairy-free, low-carb, halal
-        disliked_foods=['mushrooms', 'olives'],  # foods to avoid
-        preferred_ingredients=['vegetables', 'cheese'],  # preferred ingredients (removed chicken for vegetarian)
-        daily_calories=2000,  # target daily calories
-        daily_protein=120,    # target daily protein (grams)
-        servings_per_meal=1,  # servings per meal
-        kitchen_tools=['oven', 'stovetop', 'blender'],  # available kitchen tools
-        specific_cravings=['pasta', 'pizza', 'soup', 'salad', 'stir-fry', 'sandwich', 'curry']  # one per day
-    )
-    print("✅ User preferences configured")
+    # Load preferences
+    if args.preferences:
+        print("⚙️  Loading user preferences from file...")
+        try:
+            with open(args.preferences, 'r') as f:
+                prefs_data = json.load(f)
+            preferences = UserPreferences(**prefs_data)
+            print("✅ User preferences loaded from file")
+        except Exception as e:
+            print(f"❌ Error loading preferences: {e}")
+            return
+    else:
+        # Default preferences for testing
+        print("⚙️  Using default user preferences...")
+        preferences = UserPreferences(
+            dietary_restrictions=['vegetarian'],
+            disliked_foods=['mushrooms', 'olives'],
+            preferred_ingredients=['vegetables', 'cheese'],
+            daily_calories=2000,
+            daily_protein=120,
+            servings_per_meal=1,
+            kitchen_tools=['oven', 'stovetop', 'blender'],
+            specific_cravings=['pasta', 'pizza', 'soup', 'salad', 'stir-fry', 'sandwich', 'curry']
+        )
+        print("✅ Default preferences configured")
     
     print("🍽️  Generating weekly meal plan...")
     print(f"📚 Using {len(planner.recipes)} available recipes")
     
-    # Create the weekly plan using new approach
+    # Create the weekly plan
     plan_start = time.time()
     weekly_plan, meal_plans = planner.create_weekly_plan(preferences)
     plan_time = time.time() - plan_start
@@ -846,15 +977,43 @@ def main():
     print("📋 Displaying meal plan...")
     planner.print_weekly_plan(weekly_plan, preferences)
     
-    # Create TypeScript output
-    print("📝 Creating output files...")
-    ts_file = planner.create_ts_output(weekly_plan, meal_plans, preferences)
+    # Save to database if requested
+    if args.save_to_db and args.user_id:
+        print("💾 Saving meal plan to meal_table...")
+        # Load environment variables from .env.local
+        from dotenv import load_dotenv
+        load_dotenv('.env.local')
+        
+        # Get Supabase credentials
+        supabase_url = os.getenv('NEXT_PUBLIC_SUPABASE_URL')
+        supabase_key = os.getenv('NEXT_PUBLIC_SUPABASE_ANON_KEY')
+        
+        # Validate that all required environment variables are set
+        if not supabase_url or not supabase_key:
+            print("❌ Missing required Supabase environment variables:")
+            print(f"   NEXT_PUBLIC_SUPABASE_URL: {'✅' if supabase_url else '❌'}")
+            print(f"   NEXT_PUBLIC_SUPABASE_ANON_KEY: {'✅' if supabase_key else '❌'}")
+            print("Please check your .env.local file has the correct Supabase credentials")
+            return False
+        
+        success = planner.save_plan_to_database(weekly_plan, args.user_id, supabase_url, supabase_key)
+        if success:
+            print("✅ Meal plan saved to meal_table successfully")
+        else:
+            print("❌ Failed to save meal plan to meal_table")
     
-    # Create JSON output with meal IDs
-    json_file = planner.create_json_output(weekly_plan)
+    # Create output files based on format
+    if args.output_format in ['json', 'all']:
+        print("📝 Creating JSON output...")
+        json_file = planner.create_json_output(weekly_plan)
     
-    # Also save detailed plan to JSON (legacy)
-    planner.save_plan_to_file(weekly_plan, preferences)
+    if args.output_format in ['ts', 'all']:
+        print("📝 Creating TypeScript output...")
+        ts_file = planner.create_ts_output(weekly_plan, meal_plans, preferences)
+    
+    if args.output_format in ['json', 'all']:
+        print("📝 Creating detailed JSON file...")
+        planner.save_plan_to_file(weekly_plan, preferences)
     
     # Close database connection if open
     if planner.db:
@@ -863,11 +1022,6 @@ def main():
     total_time = time.time() - total_start
     print(f"\n🎉 Meal planning completed successfully!")
     print(f"⏱️  Total execution time: {total_time:.2f} seconds")
-    print(f"📁 Output files created:")
-    if ts_file:
-        print(f"   📄 TypeScript: {ts_file}")
-    if json_file:
-        print(f"   📊 JSON IDs: {json_file}")
 
 if __name__ == "__main__":
     main()
