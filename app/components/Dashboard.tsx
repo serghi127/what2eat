@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import MacroTracking from './MacroTracking';
 import ShoppingCartComponent from './ShoppingCart';
+import ShoppingCartModal from './ShoppingCartModal';
 import { useAuth } from '../contexts/AuthContext';
 import { Calendar, Users, ChevronLeft, ChevronRight, X, ChefHat, Clock as ClockIcon, FileText, Plus, Star, Ticket, ShoppingCart, Heart, Sparkles } from 'lucide-react';
 import { CartItem, Recipe, WeeklyMealPlan } from '../types';
@@ -67,6 +68,7 @@ export default function Dashboard({ onHideNavbar, cart, setCart, addToCart }: Da
   const [selectedMeal, setSelectedMeal] = useState<MealDetail | null>(null);
   const [userNotes, setUserNotes] = useState<{ [key: string]: string }>({});
   const [showCart, setShowCart] = useState(false); // Show/hide cart
+  const [showSmartCart, setShowSmartCart] = useState(false); // Show/hide smart shopping cart modal
   const [favoriteMeals, setFavoriteMeals] = useState<Set<string>>(new Set()); // Track favorite meals
   const [checkedMeals, setCheckedMeals] = useState<Set<string>>(new Set()); // Track checked meals
   const [isGeneratingMealPlan, setIsGeneratingMealPlan] = useState(false); // Track meal plan generation
@@ -1024,15 +1026,15 @@ export default function Dashboard({ onHideNavbar, cart, setCart, addToCart }: Da
                 </div>
               </button>
 
-              {/* Cart Icon */}
+              {/* Smart Shopping Cart Button */}
               <button 
-                onClick={() => setShowCart(true)}
+                onClick={() => setShowSmartCart(true)}
                 className="flex items-center gap-2 bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors cursor-pointer"
               >
                 <ShoppingCart className="w-5 h-5" />
                 <div>
-                  <div className="text-sm font-medium">Cart</div>
-                  <div className="text-lg font-bold">{cart.length}</div>
+                  <div className="text-sm font-medium">Smart Cart</div>
+                  <div className="text-lg font-bold">AI</div>
                 </div>
               </button>
             </div>
@@ -1321,6 +1323,14 @@ export default function Dashboard({ onHideNavbar, cart, setCart, addToCart }: Da
           </div>
         </div>
       )}
+
+      {/* Smart Shopping Cart Modal */}
+      <ShoppingCartModal 
+        isOpen={showSmartCart}
+        onClose={() => setShowSmartCart(false)}
+        mealPlanData={weeklyMeals}
+        userId={user?.id?.toString()}
+      />
     </div>
   );
 }
