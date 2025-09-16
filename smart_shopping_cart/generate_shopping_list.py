@@ -12,6 +12,11 @@ import os
 import argparse
 from typing import Dict, List, Any, Optional
 from datetime import datetime
+import requests
+from dotenv import load_dotenv
+
+# Load environment variables from .env.local
+load_dotenv('.env.local')
 
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -23,86 +28,107 @@ class MealPlanToShoppingList:
     
     def __init__(self):
         self.recipes_data = {}
-        self.load_recipes_from_csv()
+        self.supabase_url = os.getenv('NEXT_PUBLIC_SUPABASE_URL')
+        self.supabase_key = os.getenv('NEXT_PUBLIC_SUPABASE_ANON_KEY')
+        
+        if not self.supabase_url or not self.supabase_key:
+            print("❌ Supabase credentials not found in environment variables")
+            sys.exit(1)
+        
+        self.load_recipes_from_supabase()
     
-    def load_recipes_from_csv(self):
-        """Load all recipes from the CSV file"""
-        print("📖 Loading recipes from CSV...")
+    def load_recipes_from_supabase(self):
+        """Load all recipes from Supabase"""
+        print("📖 Loading recipes from Supabase...")
         
         try:
-            import csv
+            # Make request to Supabase to get all recipes
+            headers = {
+                'apikey': self.supabase_key,
+                'Authorization': f'Bearer {self.supabase_key}',
+                'Content-Type': 'application/json'
+            }
             
-            csv_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'all_recipes.csv')
+            # Get all recipes from the all_recipes table
+            url = f"{self.supabase_url}/rest/v1/all_recipes"
+            response = requests.get(url, headers=headers)
             
-            with open(csv_file, 'r', encoding='utf-8') as f:
-                csv_reader = csv.DictReader(f)
+            if response.status_code != 200:
+                print(f"❌ Error fetching recipes from Supabase: {response.status_code}")
+                print(f"Response: {response.text}")
+                sys.exit(1)
+            
+            recipes = response.json()
+            print(f"📊 Fetched {len(recipes)} recipes from Supabase")
+            
+            for recipe in recipes:
+                recipe_id = recipe['id']
                 
-                for row in csv_reader:
-                    recipe_id = int(row['id'])
-                    
-                    # Parse ingredients from JSON string
-                    ingredients = []
-                    if row['ingredients']:
-                        try:
-                            # Handle the JSON string format in CSV
-                            ingredients_str = row['ingredients']
-                            if ingredients_str.startswith('[') and ingredients_str.endswith(']'):
-                                # Parse as JSON array
-                                ingredients = json.loads(ingredients_str)
+                # Parse ingredients - handle both JSON string and array formats
+                ingredients = []
+                if recipe.get('ingredients'):
+                    try:
+                        if isinstance(recipe['ingredients'], str):
+                            if recipe['ingredients'].startswith('[') and recipe['ingredients'].endswith(']'):
+                                ingredients = json.loads(recipe['ingredients'])
                             else:
-                                # Fallback: split by comma
-                                ingredients = [ing.strip().strip('"') for ing in ingredients_str.split(',')]
-                        except:
-                            # If parsing fails, use the raw string
-                            ingredients = [row['ingredients']]
-                    
-                    # Parse steps from JSON string
-                    steps = []
-                    if row['steps']:
-                        try:
-                            steps_str = row['steps']
-                            if steps_str.startswith('[') and steps_str.endswith(']'):
-                                steps = json.loads(steps_str)
+                                ingredients = [recipe['ingredients']]
+                        elif isinstance(recipe['ingredients'], list):
+                            ingredients = recipe['ingredients']
+                    except:
+                        ingredients = [str(recipe['ingredients'])]
+                
+                # Parse steps - handle both JSON string and array formats
+                steps = []
+                if recipe.get('steps'):
+                    try:
+                        if isinstance(recipe['steps'], str):
+                            if recipe['steps'].startswith('[') and recipe['steps'].endswith(']'):
+                                steps = json.loads(recipe['steps'])
                             else:
-                                steps = [row['steps']]
-                        except:
-                            steps = [row['steps']]
-                    
-                    # Parse tags from JSON string
-                    tags = []
-                    if row['tags']:
-                        try:
-                            tags_str = row['tags']
-                            if tags_str.startswith('[') and tags_str.endswith(']'):
-                                tags = json.loads(tags_str)
+                                steps = [recipe['steps']]
+                        elif isinstance(recipe['steps'], list):
+                            steps = recipe['steps']
+                    except:
+                        steps = [str(recipe['steps'])]
+                
+                # Parse tags - handle both JSON string and array formats
+                tags = []
+                if recipe.get('tags'):
+                    try:
+                        if isinstance(recipe['tags'], str):
+                            if recipe['tags'].startswith('[') and recipe['tags'].endswith(']'):
+                                tags = json.loads(recipe['tags'])
                             else:
-                                tags = [row['tags']]
-                        except:
-                            tags = [row['tags']]
-                    
-                    self.recipes_data[recipe_id] = {
-                        'id': recipe_id,
-                        'name': row['name'],
-                        'time': int(row.get('time', 0)),
-                        'servings': int(row.get('servings', 1)),
-                        'calories': int(row.get('calories', 0)),
-                        'protein': int(row.get('protein', 0)),
-                        'carbs': int(row.get('carbs', 0)),
-                        'fat': int(row.get('fat', 0)),
-                        'sugar': int(row.get('sugar', 0)),
-                        'cholesterol': int(row.get('cholesterol', 0)),
-                        'fiber': int(row.get('fiber', 0)),
-                        'tags': tags,
-                        'ingredients': ingredients,
-                        'steps': steps,
-                        'source': row.get('source', ''),
-                        'credits': row.get('credits', '')
-                    }
+                                tags = [recipe['tags']]
+                        elif isinstance(recipe['tags'], list):
+                            tags = recipe['tags']
+                    except:
+                        tags = [str(recipe['tags'])]
+                
+                self.recipes_data[recipe_id] = {
+                    'id': recipe_id,
+                    'name': recipe.get('name', ''),
+                    'time': int(recipe.get('time', 0)),
+                    'servings': int(recipe.get('servings', 1)),
+                    'calories': int(recipe.get('calories', 0)),
+                    'protein': int(recipe.get('protein', 0)),
+                    'carbs': int(recipe.get('carbs', 0)),
+                    'fat': int(recipe.get('fat', 0)),
+                    'sugar': int(recipe.get('sugar', 0)),
+                    'cholesterol': int(recipe.get('cholesterol', 0)),
+                    'fiber': int(recipe.get('fiber', 0)),
+                    'tags': tags,
+                    'ingredients': ingredients,
+                    'steps': steps,
+                    'source': recipe.get('source', ''),
+                    'credits': recipe.get('credits', '')
+                }
             
-            print(f"✅ Loaded {len(self.recipes_data)} recipes from CSV")
+            print(f"✅ Loaded {len(self.recipes_data)} recipes from Supabase")
             
         except Exception as e:
-            print(f"❌ Error loading recipes from CSV: {e}")
+            print(f"❌ Error loading recipes from Supabase: {e}")
             sys.exit(1)
     
     def convert_meal_plan_to_full_data(self, meal_plan: Dict[str, Any]) -> Dict[str, Any]:
